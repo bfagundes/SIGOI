@@ -71,27 +71,27 @@
   					$prioridades = db_select("SELECT * FROM ".$tabPrioridade); ?>
 
 					<div class="form-group">
-						<label for="nome-solicitante">Prioridade 1:</label>
+						<label for="nome-solicitante">Prioridade 1</label>
 						<input type="text" class="form-control" placeholder="<?php echo $prioridades[0]['nome']; ?>" id="prioridade-1">
 					</div>
 
 					<div class="form-group">
-						<label for="nome-solicitante">Prioridade 2:</label>
+						<label for="nome-solicitante">Prioridade 2</label>
 						<input type="text" class="form-control" placeholder="<?php echo $prioridades[1]['nome']; ?>" id="prioridade-2">
 					</div>
 
 					<div class="form-group">
-						<label for="nome-solicitante">Prioridade 3:</label>
+						<label for="nome-solicitante">Prioridade 3</label>
 						<input type="text" class="form-control" placeholder="<?php echo $prioridades[2]['nome']; ?>" id="prioridade-3">
 					</div>
 
 					<div class="form-group">
-						<label for="nome-solicitante">Prioridade 4:</label>
+						<label for="nome-solicitante">Prioridade 4</label>
 						<input type="text" class="form-control" placeholder="<?php echo $prioridades[3]['nome']; ?>" id="prioridade-4">
 					</div>
 
 					<div class="form-group">
-						<label for="nome-solicitante">Prioridade 5:</label>
+						<label for="nome-solicitante">Prioridade 5</label>
 						<input type="text" class="form-control" placeholder="<?php echo $prioridades[4]['nome']; ?>" id="prioridade-5">
 					</div>
 
@@ -108,27 +108,27 @@
   					$tipos = db_select("SELECT * FROM ".$tabTipo); ?>
 
 					<div class="form-group">
-						<label for="nome-solicitante">Tipo 1:</label>
+						<label for="nome-solicitante">Tipo 1</label>
 						<input type="text" class="form-control" placeholder="<?php echo $tipos[0]['nome']; ?>" id="tipo-1">
 					</div>
 
 					<div class="form-group">
-						<label for="nome-solicitante">Tipo 2:</label>
+						<label for="nome-solicitante">Tipo 2</label>
 						<input type="text" class="form-control" placeholder="<?php echo $tipos[1]['nome']; ?>" id="tipo-2">
 					</div>
 
 					<div class="form-group">
-						<label for="nome-solicitante">Tipo 3:</label>
+						<label for="nome-solicitante">Tipo 3</label>
 						<input type="text" class="form-control" placeholder="<?php echo $tipos[2]['nome']; ?>" id="tipo-3">
 					</div>
 
 					<div class="form-group">
-						<label for="nome-solicitante">Tipo 4:</label>
+						<label for="nome-solicitante">Tipo 4</label>
 						<input type="text" class="form-control" placeholder="<?php echo $tipos[3]['nome']; ?>" id="tipo-4">
 					</div>
 
 					<div class="form-group">
-						<label for="nome-solicitante">Tipo 5:</label>
+						<label for="nome-solicitante">Tipo 5</label>
 						<input type="text" class="form-control" placeholder="<?php echo $tipos[4]['nome']; ?>" id="tipo-5">
 					</div>
 
@@ -145,27 +145,27 @@
   					$situacoes = db_select("SELECT * FROM ".$tabSituacao); ?>
 
 					<div class="form-group">
-						<label for="nome-solicitante">Situação 1:</label>
+						<label for="nome-solicitante">Situação 1</label>
 						<input type="text" class="form-control" placeholder="<?php echo $situacoes[0]['nome']; ?>" id="situacao-1">
 					</div>
 
 					<div class="form-group">
-						<label for="nome-solicitante">Situação 2:</label>
+						<label for="nome-solicitante">Situação 2</label>
 						<input type="text" class="form-control" placeholder="<?php echo $situacoes[1]['nome']; ?>" id="situacao-2">
 					</div>
 
 					<div class="form-group">
-						<label for="nome-solicitante">Situação 3:</label>
+						<label for="nome-solicitante">Situação 3</label>
 						<input type="text" class="form-control" placeholder="<?php echo $situacoes[2]['nome']; ?>" id="situacao-3">
 					</div>
 
 					<div class="form-group">
-						<label for="nome-solicitante">Situação 4:</label>
+						<label for="nome-solicitante">Situação 4</label>
 						<input type="text" class="form-control" placeholder="<?php echo $situacoes[3]['nome']; ?>" id="situacao-4">
 					</div>
 
 					<div class="form-group">
-						<label for="nome-solicitante">Situação 5:</label>
+						<label for="nome-solicitante">Situação 5</label>
 						<input type="text" class="form-control" placeholder="<?php echo $situacoes[4]['nome']; ?>" id="situacao-5">
 					</div>
 
@@ -178,27 +178,27 @@
   				<div class="panel-body">
 
 					<div class="form-group">
-						<label for="nome-solicitante">Situação 1:</label>
+						<label for="nome-solicitante">Situação 1</label>
 						<input type="text" class="form-control" placeholder="Aberto" id="situacao-1">
 					</div>
 
 					<div class="form-group">
-						<label for="nome-solicitante">Situação 2:</label>
+						<label for="nome-solicitante">Situação 2</label>
 						<input type="text" class="form-control" placeholder="Pendente" id="situacao-2">
 					</div>
 
 					<div class="form-group">
-						<label for="nome-solicitante">Situação 3:</label>
+						<label for="nome-solicitante">Situação 3</label>
 						<input type="text" class="form-control" placeholder="Fechado" id="situacao-3">
 					</div>
 
 					<div class="form-group">
-						<label for="nome-solicitante">Situação 4:</label>
+						<label for="nome-solicitante">Situação 4</label>
 						<input type="text" class="form-control" placeholder="" id="situacao-4">
 					</div>
 
 					<div class="form-group">
-						<label for="nome-solicitante">Situação 5:</label>
+						<label for="nome-solicitante">Situação 5</label>
 						<input type="text" class="form-control" placeholder="" id="situacao-5">
 					</div>
 
