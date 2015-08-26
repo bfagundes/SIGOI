@@ -56,14 +56,6 @@
 				</ul>
 				<!-- ----- Barra de Navegação: Direita ------ -->
 				<ul class="nav navbar-nav navbar-right">
-					<form class="navbar-form navbar-left" role="search">
-						<!-- <div class="input-group">
-							<input type="text" class="form-control" placeholder="Pesquisar">
-							<span class="input-group-btn">
-								<button class="btn btn-default" type="button">Vai!</button>
-							</span>
-						</div> -->
-					</form>
 				</ul>
 			</div>
 		</div>
@@ -71,9 +63,8 @@
 
 	<!-- ------------------------------------------------------------ Conteúdo ------------------------------------------------------------------------------ -->
 
-	<?php
-		$data_hoje = date("d/m/y");
-	?>
+	<!-- Data de Hoje -->
+	<?php $data_hoje = date("d/m/y"); ?>
 
 	<div class="container-fluid">
 	<div class="row">
@@ -172,7 +163,6 @@
 					// 		});
 					// 	});
 					// </script> -->
-
 
   				</div> <!-- panel-body -->
 			</div> <!-- panel -->
