@@ -52,7 +52,7 @@
 							<li><a href="#">Excluir Chamado</a></li>
 						</ul>
 					</li>
-					<li><a href="#">Cancelar</a></li>
+					<li class="nav nav-btn"><a href="#">Cancelar</a></li>
 				</ul>
 				<!-- ----- Barra de Navegação: Direita ------ -->
 				<ul class="nav navbar-nav navbar-right">
@@ -154,24 +154,24 @@
 						</div>
 					</div> <!-- dropdonws group -->
 
-					<script>
-						$(function() {
-							$('#prioridade-chamado').on('change', function(){
-								if($(this).find("option:selected").val() == "Urgente"){
-									$('#prioridade-chamado').selectpicker('setStyle', 'btn-danger');
-								} 
-								if($(this).find("option:selected").val() == "Alta"){
-									$('#prioridade-chamado').selectpicker('setStyle', 'btn-warning');
-								} 
-								if($(this).find("option:selected").val() == "Média"){
-									$('#prioridade-chamado').selectpicker('setStyle', 'btn-success');
-								} 
-								if($(this).find("option:selected").val() == "Baixa"){
-									$('#prioridade-chamado').selectpicker('setStyle', 'btn-info');
-								}
-							});
-						});
-					</script>
+					<!-- // <script>
+					// 	$(function() {
+					// 		$('#prioridade-chamado').on('change', function(){
+					// 			if($(this).find("option:selected").val() == "Urgente"){
+					// 				$('#prioridade-chamado').selectpicker('setStyle', 'btn-danger');
+					// 			} 
+					// 			if($(this).find("option:selected").val() == "Alta"){
+					// 				$('#prioridade-chamado').selectpicker('setStyle', 'btn-warning');
+					// 			} 
+					// 			if($(this).find("option:selected").val() == "Média"){
+					// 				$('#prioridade-chamado').selectpicker('setStyle', 'btn-success');
+					// 			} 
+					// 			if($(this).find("option:selected").val() == "Baixa"){
+					// 				$('#prioridade-chamado').selectpicker('setStyle', 'btn-info');
+					// 			}
+					// 		});
+					// 	});
+					// </script> -->
 
 
   				</div> <!-- panel-body -->
