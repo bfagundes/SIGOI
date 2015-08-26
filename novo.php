@@ -29,7 +29,7 @@
 	<script type="text/javascript" src="js/bootstrap-select.min.js"></script>
 	<script type="text/javascript" src="js/custom.js"></script>	
 
-	<!-- ------------------------------------------------------------- Barra de Navegação -------------------------------------------------------------------------------->
+	<!-- Barra de Navegação -->
 	<nav class="navbar navbar-default">
 		<div class="container-fluid">
 			<div class="navbar-header">
@@ -61,7 +61,7 @@
 		</div>
 	</nav>
 
-	<!-- ------------------------------------------------------------ Conteúdo ------------------------------------------------------------------------------ -->
+	<!-- Conteúdo -->
 
 	<!-- Data de Hoje -->
 	<?php $data_hoje = date("d/m/y"); ?>
