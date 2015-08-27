@@ -9,6 +9,14 @@
 		$tabTipo = "tipo";
 		$tabSituacao = "situacao";
 		$tabRespPadrao = "respostaPadrao";
+
+		function salvar(){
+			salvarPrioridades();
+		}
+
+		function salvarPrioridades(){
+			
+		}
 	?>
 
 	<meta charset="utf-8">
@@ -49,13 +57,13 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#">SIGOI</a>
+				<a class="navbar-brand" href="index.php">SIGOI</a>
 			</div>
 
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<!-- ----- Barra de Navegação: Esquerda ------ -->
 				<ul class="nav navbar-nav">
-					<li><a href="#">Cancelar</a></li>
+					<li><a href="index.php">Cancelar</a></li>
 					<li><a href="#">Salvar</a></li>
 				</ul>
 				<!-- ----- Barra de Navegação: Direita ------ -->
@@ -181,57 +189,60 @@
 		<div class="col-md-6">
 			<div class="panel panel-default">
   				<div class="panel-body">
-
   					<div class="col-md-3">
+
+  						<!-- buscando a lista de respostas padrao no banco -->
+  						<?php $respostasPadrao = db_select("SELECT * FROM ".$tabRespPadrao); ?>
+
 						<div class="form-group">
 							<label for="nome-solicitante">Titulo</label>
-							<input type="text" class="form-control" placeholder="Aberto" id="situacao-1">
+							<input type="text" class="form-control" placeholder="<?php echo $respostasPadrao[0]['titulo']; ?>" id="resp-padrao-assunto-1">
 						</div>
 
 						<div class="form-group">
 							<label for="nome-solicitante">Titulo</label>
-							<input type="text" class="form-control" placeholder="Pendente" id="situacao-2">
+							<input type="text" class="form-control" placeholder="<?php echo $respostasPadrao[1]['titulo']; ?>" id="resp-padrao-assunto-2">
 						</div>
 
 						<div class="form-group">
 							<label for="nome-solicitante">Titulo</label>
-							<input type="text" class="form-control" placeholder="Fechado" id="situacao-3">
+							<input type="text" class="form-control" placeholder="<?php echo $respostasPadrao[2]['titulo']; ?>" id="resp-padrao-assunto-3">
 						</div>
 
 						<div class="form-group">
 							<label for="nome-solicitante">Titulo</label>
-							<input type="text" class="form-control" placeholder="" id="situacao-4">
+							<input type="text" class="form-control" placeholder="<?php echo $respostasPadrao[3]['titulo']; ?>" id="resp-padrao-assunto-4">
 						</div>
 
 						<div class="form-group">
 							<label for="nome-solicitante">Titulo</label>
-							<input type="text" class="form-control" placeholder="" id="situacao-5">
+							<input type="text" class="form-control" placeholder="<?php echo $respostasPadrao[4]['titulo']; ?>" id="resp-padrao-assunto-5">
 						</div>
 					</div>
 					<div class="col-md-9">
 						<div class="form-group">
 							<label for="nome-solicitante">Resposta Padrão 1</label>
-							<input type="text" class="form-control" placeholder="Aberto" id="situacao-1">
+							<input type="text" class="form-control" placeholder="<?php echo $respostasPadrao[0]['texto']; ?>" id="resp-padrao-texto-1">
 						</div>
 
 						<div class="form-group">
 							<label for="nome-solicitante">Resposta Padrão 2</label>
-							<input type="text" class="form-control" placeholder="Pendente" id="situacao-2">
+							<input type="text" class="form-control" placeholder="<?php echo $respostasPadrao[1]['texto']; ?>" id="resp-padrao-texto-2">
 						</div>
 
 						<div class="form-group">
 							<label for="nome-solicitante">Resposta Padrão 3</label>
-							<input type="text" class="form-control" placeholder="Fechado" id="situacao-3">
+							<input type="text" class="form-control" placeholder="<?php echo $respostasPadrao[2]['texto']; ?>" id="resp-padrao-texto-3">
 						</div>
 
 						<div class="form-group">
 							<label for="nome-solicitante">Resposta Padrão 4</label>
-							<input type="text" class="form-control" placeholder="" id="situacao-4">
+							<input type="text" class="form-control" placeholder="<?php echo $respostasPadrao[3]['texto']; ?>" id="resp-padrao-texto-4">
 						</div>
 
 						<div class="form-group">
 							<label for="nome-solicitante">Resposta Padrão 5</label>
-							<input type="text" class="form-control" placeholder="" id="situacao-5">
+							<input type="text" class="form-control" placeholder="<?php echo $respostasPadrao[4]['texto']; ?>" id="resp-padrao-texto-5">
 						</div>
 					</div>
 

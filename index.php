@@ -37,7 +37,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#">SIGOI</a>
+				<a class="navbar-brand" href="index.php">SIGOI</a>
 			</div>
 
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -49,28 +49,28 @@
 							<li class="disabled"><a href="#">Editar Chamado</a></li>
 							<li class="disabled"><a href="#">Excluir Chamado</a></li>
 							<li role="separator" class="divider"></li>
-							<li><a href="#">Cadastro de Pessoas</a></li>
-							<li><a href="#">Cadastro de Usuários</a></li>
-							<li><a href="#">Cadastro de Setores</a></li>
-							<li><a href="#">Cadastro de Funções</a></li>
+							<li class="disabled"><a href="#">Cadastro de Pessoas</a></li>
+							<li class="disabled"><a href="#">Cadastro de Usuários</a></li>
+							<li class="disabled"><a href="#">Cadastro de Setores</a></li>
+							<li class="disabled"><a href="#">Cadastro de Funções</a></li>
 							<li role="separator" class="divider"></li>
-							<li><a href="#">Parâmetros SIGOI</a></li>
+							<li><a href="parametros.php">Parâmetros SIGOI</a></li>
 						</ul>
 					</li>
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Visualizações <span class="caret"></span></a>
 						<ul class="dropdown-menu">
-							<li><a href="#">Seus Chamados</a></li>
-							<li><a href="#">Seus Chamados Abertos</a></li>
-							<li><a href="#">Seus Chamados Pendentes</a></li>
-							<li><a href="#">Seus Chamados Fechados</a></li>
+							<li class="disabled"><a href="#">Seus Chamados</a></li>
+							<li class="disabled"><a href="#">Seus Chamados Abertos</a></li>
+							<li class="disabled"><a href="#">Seus Chamados Pendentes</a></li>
+							<li class="disabled"><a href="#">Seus Chamados Fechados</a></li>
 							<li role="separator" class="divider"></li>
-							<li><a href="#">Todos os Chamados</a></li>
-							<li><a href="#">Todos os Chamados Abertos</a></li>					
-							<li><a href="#">Todos os Chamados Pendentes</a></li>
-							<li><a href="#">Todos os Chamados Fechados</a></li>
+							<li class="disabled"><a href="#">Todos os Chamados</a></li>
+							<li class="disabled"><a href="#">Todos os Chamados Abertos</a></li>					
+							<li class="disabled"><a href="#">Todos os Chamados Pendentes</a></li>
+							<li class="disabled"><a href="#">Todos os Chamados Fechados</a></li>
 							<li role="separator" class="divider"></li>
-							<li><a href="#">Chamados Não Atribuídos</a></li>							
+							<li class="disabled"><a href="#">Chamados Não Atribuídos</a></li>							
 						</ul>
 					</li>
 					<!-- <li class="active"><a href="#">Link</a></li> -->
