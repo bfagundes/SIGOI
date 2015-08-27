@@ -59,7 +59,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!-- The above 3 meta tags *must* come first in the head -->
-	<title>Lista de Chamados</title>
+	<title>Parâmetros SIGOI</title>
 
 	<!-- CSS Styles -->
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
@@ -87,12 +87,6 @@
 	<nav class="navbar navbar-default">
 		<div class="container-fluid">
 			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
 				<a class="navbar-brand" href="index.php">SIGOI</a>
 			</div>
 
@@ -142,7 +136,7 @@
 							<div class="form-group">
                     			<input name="submit-prioridade" type="submit" class="btn btn-primary" value="Salvar"/>
             				</div>
-						</form/>
+						</form>
 					</div>
   				</div> <!-- panel-body -->
 			</div> <!-- panel -->
@@ -178,7 +172,7 @@
 							<div class="form-group">
                     			<input name="submit-tipo" type="submit" class="btn btn-primary" value="Salvar"/>
             				</div>
-						</form/>
+						</form>
 					</div>
   				</div> <!-- panel-body -->
 			</div> <!-- panel -->
@@ -214,7 +208,7 @@
 							<div class="form-group">
                     			<input name="submit-situacao" type="submit" class="btn btn-primary" value="Salvar"/>
             				</div>
-						</form/>
+						</form>
 					</div>
   				</div> <!-- panel-body -->
 			</div> <!-- panel -->

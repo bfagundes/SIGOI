@@ -21,4 +21,4 @@ INSERT INTO prioridade (nome) VALUES ('Baixa');
 INSERT INTO prioridade (nome) VALUES ('');
 
 /* busca os dados */
-SELECT * FROM prioridade;
+SELECT * FROM prioridade ORDER BY id;

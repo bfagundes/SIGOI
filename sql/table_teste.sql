@@ -14,4 +14,4 @@ TRUNCATE TABLE teste;
 ALTER SEQUENCE teste_id_seq RESTART WITH 1;
 
 /* busca os dados */
-SELECT * FROM teste;
+SELECT * FROM teste ORDER BY id;

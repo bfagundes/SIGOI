@@ -21,4 +21,4 @@ INSERT INTO situacao (nome) VALUES ('');
 INSERT INTO situacao (nome) VALUES ('');
 
 /* busca os dados */
-SELECT * FROM situacao;
+SELECT * FROM situacao ORDER BY id;

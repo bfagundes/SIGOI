@@ -43,16 +43,16 @@
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<!-- ----- Barra de Navegação: Esquerda ------ -->
 				<ul class="nav navbar-nav">
+					<li class="nav nav-btn"><a href="novo.php">Novo Chamado</a></li>
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Opções <span class="caret"></span></a>
 						<ul class="dropdown-menu">
 							<li class="disabled"><a href="#">Editar Chamado</a></li>
 							<li class="disabled"><a href="#">Excluir Chamado</a></li>
 							<li role="separator" class="divider"></li>
-							<li class="disabled"><a href="#">Cadastro de Pessoas</a></li>
 							<li class="disabled"><a href="#">Cadastro de Usuários</a></li>
 							<li class="disabled"><a href="#">Cadastro de Setores</a></li>
-							<li class="disabled"><a href="#">Cadastro de Funções</a></li>
+							<li><a href="cadastro_funcao.php">Cadastro de Funções</a></li>
 							<li role="separator" class="divider"></li>
 							<li><a href="parametros.php">Parâmetros SIGOI</a></li>
 						</ul>

@@ -5,7 +5,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!-- The above 3 meta tags *must* come first in the head -->
-	<title>Lista de Chamados</title>
+	<title>Novo Chamado</title>
 
 	<!-- CSS Styles -->
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
@@ -43,18 +43,11 @@
 			</div>
 
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-				<!-- ----- Barra de Navegação: Esquerda ------ -->
+				<!--  Barra de Navegação: Esquerda -->
 				<ul class="nav navbar-nav">
-					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Opções <span class="caret"></span></a>
-						<ul class="dropdown-menu">
-							<li><a href="#">Editar Chamado</a></li>
-							<li><a href="#">Excluir Chamado</a></li>
-						</ul>
-					</li>
-					<li class="nav nav-btn"><a href="index.php">Cancelar</a></li>
+					<li class="nav nav-btn"><a href="index.php">Sair</a></li>
 				</ul>
-				<!-- ----- Barra de Navegação: Direita ------ -->
+				<!-- Barra de Navegação: Direita -->
 				<ul class="nav navbar-nav navbar-right">
 				</ul>
 			</div>

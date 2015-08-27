@@ -23,4 +23,4 @@ INSERT INTO respostaPadrao (titulo, texto, idSituacao) VALUES ('', '');
 INSERT INTO respostaPadrao (titulo, texto, idSituacao) VALUES ('', '');
 
 /* busca os dados */
-SELECT * FROM respostaPadrao;
+SELECT * FROM respostaPadrao ORDER BY id;

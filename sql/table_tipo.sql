@@ -21,4 +21,4 @@ INSERT INTO tipo (nome) VALUES ('Solicitação');
 INSERT INTO tipo (nome) VALUES ('Pergunta');
 
 /* busca os dados */
-SELECT * FROM tipo;
+SELECT * FROM tipo ORDER BY id;
