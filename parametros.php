@@ -2,7 +2,14 @@
 <html lang="en">
 <head>
 	<!-- PHP Includes -->
-	<?php include "conexao.php"; ?>
+	<?php 
+		include "conexao.php"; 
+
+		$tabPrioridade = "prioridade";
+		$tabTipo = "tipo";
+		$tabSituacao = "situacao";
+		$tabRespPadrao = "respostaPadrao";
+	?>
 
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,7 +19,7 @@
 
 	<!-- CSS Styles -->
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="datepicker/css/bootstrap-datepicker.css">
+	<link rel="stylesheet" type="text/css" href="css/bootstrap-datepicker.css">
 	<link rel="stylesheet" type="text/css" href="css/bootstrap-select.min.css" />
 	<link rel="stylesheet" type="text/css" href="css/custom.css">
 
@@ -28,7 +35,7 @@
 	<!-- jQuery -->
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="datepicker/js/bootstrap-datepicker.js"></script>
+	<script type="text/javascript" src="js/bootstrap-datepicker.js"></script>
 	<script type="text/javascript" src="js/bootstrap-select.min.js"></script>
 	<script type="text/javascript" src="js/custom.js"></script>	
 
@@ -66,8 +73,7 @@
   				<div class="panel-body">
 
   					<!-- buscando a lista de prioridades no banco -->
-  					<?php $tabPrioridade = "prioridade";
-  					$prioridades = db_select("SELECT * FROM ".$tabPrioridade); ?>
+  					<?php $prioridades = db_select("SELECT * FROM ".$tabPrioridade); ?>
 
 					<div class="form-group">
 						<label for="nome-solicitante">Prioridade 1</label>
@@ -103,8 +109,7 @@
   				<div class="panel-body">
 
   					<!-- buscando a lista de tipos no banco -->
-  					<?php $tabTipo = "tipo";
-  					$tipos = db_select("SELECT * FROM ".$tabTipo); ?>
+  					<?php $tipos = db_select("SELECT * FROM ".$tabTipo); ?>
 
 					<div class="form-group">
 						<label for="nome-solicitante">Tipo 1</label>
@@ -140,8 +145,7 @@
   				<div class="panel-body">
 
   					<!-- buscando a lista de situacoes no banco -->
-  					<?php $tabSituacao = "situacao";
-  					$situacoes = db_select("SELECT * FROM ".$tabSituacao); ?>
+  					<?php $situacoes = db_select("SELECT * FROM ".$tabSituacao); ?>
 
 					<div class="form-group">
 						<label for="nome-solicitante">Situação 1</label>
@@ -171,34 +175,64 @@
   				</div> <!-- panel-body -->
 			</div> <!-- panel -->
 		</div> <!-- col-md-2 -->
+	</div> <!-- Entire Row -->
 
+	<div class="row">
 		<div class="col-md-6">
 			<div class="panel panel-default">
   				<div class="panel-body">
 
-					<div class="form-group">
-						<label for="nome-solicitante">Situação 1</label>
-						<input type="text" class="form-control" placeholder="Aberto" id="situacao-1">
-					</div>
+  					<div class="col-md-3">
+						<div class="form-group">
+							<label for="nome-solicitante">Titulo</label>
+							<input type="text" class="form-control" placeholder="Aberto" id="situacao-1">
+						</div>
 
-					<div class="form-group">
-						<label for="nome-solicitante">Situação 2</label>
-						<input type="text" class="form-control" placeholder="Pendente" id="situacao-2">
-					</div>
+						<div class="form-group">
+							<label for="nome-solicitante">Titulo</label>
+							<input type="text" class="form-control" placeholder="Pendente" id="situacao-2">
+						</div>
 
-					<div class="form-group">
-						<label for="nome-solicitante">Situação 3</label>
-						<input type="text" class="form-control" placeholder="Fechado" id="situacao-3">
-					</div>
+						<div class="form-group">
+							<label for="nome-solicitante">Titulo</label>
+							<input type="text" class="form-control" placeholder="Fechado" id="situacao-3">
+						</div>
 
-					<div class="form-group">
-						<label for="nome-solicitante">Situação 4</label>
-						<input type="text" class="form-control" placeholder="" id="situacao-4">
-					</div>
+						<div class="form-group">
+							<label for="nome-solicitante">Titulo</label>
+							<input type="text" class="form-control" placeholder="" id="situacao-4">
+						</div>
 
-					<div class="form-group">
-						<label for="nome-solicitante">Situação 5</label>
-						<input type="text" class="form-control" placeholder="" id="situacao-5">
+						<div class="form-group">
+							<label for="nome-solicitante">Titulo</label>
+							<input type="text" class="form-control" placeholder="" id="situacao-5">
+						</div>
+					</div>
+					<div class="col-md-9">
+						<div class="form-group">
+							<label for="nome-solicitante">Resposta Padrão 1</label>
+							<input type="text" class="form-control" placeholder="Aberto" id="situacao-1">
+						</div>
+
+						<div class="form-group">
+							<label for="nome-solicitante">Resposta Padrão 2</label>
+							<input type="text" class="form-control" placeholder="Pendente" id="situacao-2">
+						</div>
+
+						<div class="form-group">
+							<label for="nome-solicitante">Resposta Padrão 3</label>
+							<input type="text" class="form-control" placeholder="Fechado" id="situacao-3">
+						</div>
+
+						<div class="form-group">
+							<label for="nome-solicitante">Resposta Padrão 4</label>
+							<input type="text" class="form-control" placeholder="" id="situacao-4">
+						</div>
+
+						<div class="form-group">
+							<label for="nome-solicitante">Resposta Padrão 5</label>
+							<input type="text" class="form-control" placeholder="" id="situacao-5">
+						</div>
 					</div>
 
   				</div> <!-- panel-body -->
