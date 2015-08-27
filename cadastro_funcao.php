@@ -48,6 +48,7 @@
 				<!--  Barra de Navegação: Esquerda -->
 				<ul class="nav navbar-nav">
 					<li class="nav nav-btn"><a href="index.php">Sair</a></li>
+					<li class="nav nav-btn"><a href="#">Incluir Funcao</a></li>
 				</ul>
 				<!-- Barra de Navegação: Direita -->
 				<ul class="nav navbar-nav navbar-right">
@@ -84,12 +85,12 @@
 	</div> <!-- Container-Fluid -->
 
 	<!-- Modal -->
-	<div class="modal fade" id="modalFuncao" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal fade" id="modalFuncao" tabindex="-1" role="dialog">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title" id="myModalLabel">Editar Função</h4>
+					<h4 class="modal-title" id="editFuncao">Editar Função</h4>
 				</div>
 				<div class="modal-body">
 					<form role="form" method="post" action="parametros.php">
