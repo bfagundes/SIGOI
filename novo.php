@@ -52,7 +52,7 @@
 							<li><a href="#">Excluir Chamado</a></li>
 						</ul>
 					</li>
-					<li class="nav nav-btn"><a href="#">Cancelar</a></li>
+					<li class="nav nav-btn"><a href="index.php">Cancelar</a></li>
 				</ul>
 				<!-- ----- Barra de Navegação: Direita ------ -->
 				<ul class="nav navbar-nav navbar-right">
