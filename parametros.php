@@ -10,12 +10,15 @@
 		$tabSituacao = "situacao";
 		$tabRespPadrao = "respostaPadrao";
 
-		function salvar(){
-			salvarPrioridades();
-		}
-
-		function salvarPrioridades(){
-			
+		if(isset($_POST['submit-prioridade'])){
+			$result = db_query("UPDATE prioridade SET nome = ".db_quote($_POST['prioridade-1'])." WHERE id = 1");
+			$result = db_query("UPDATE prioridade SET nome = ".db_quote($_POST['prioridade-2'])." WHERE id = 2");
+			$result = db_query("UPDATE prioridade SET nome = ".db_quote($_POST['prioridade-3'])." WHERE id = 3");
+			$result = db_query("UPDATE prioridade SET nome = ".db_quote($_POST['prioridade-4'])." WHERE id = 4");
+			$result = db_query("UPDATE prioridade SET nome = ".db_quote($_POST['prioridade-5'])." WHERE id = 5");
+			if($result === false) {
+				$error = pg_result_error($result);
+			}
 		}
 	?>
 
@@ -61,12 +64,12 @@
 			</div>
 
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-				<!-- ----- Barra de Navegação: Esquerda ------ -->
+				<!-- Barra de Navegação: Esquerda -->
 				<ul class="nav navbar-nav">
-					<li><a href="index.php">Cancelar</a></li>
-					<li><a href="#">Salvar</a></li>
+					<li><a href="index.php">Sair</a></li>
+					<!-- <li><a href="#">Salvar</a></li> -->
 				</ul>
-				<!-- ----- Barra de Navegação: Direita ------ -->
+				<!-- Barra de Navegação: Direita -->
 				<ul class="nav navbar-nav navbar-right">
 				</ul>
 			</div>
@@ -79,35 +82,35 @@
 		<div class="col-md-2">
 			<div class="panel panel-default">
   				<div class="panel-body">
-
   					<!-- buscando a lista de prioridades no banco -->
-  					<?php $prioridades = db_select("SELECT * FROM ".$tabPrioridade); ?>
-
-					<div class="form-group">
-						<label for="nome-solicitante">Prioridade 1</label>
-						<input type="text" class="form-control" placeholder="<?php echo $prioridades[0]['nome']; ?>" id="prioridade-1">
-					</div>
-
-					<div class="form-group">
-						<label for="nome-solicitante">Prioridade 2</label>
-						<input type="text" class="form-control" placeholder="<?php echo $prioridades[1]['nome']; ?>" id="prioridade-2">
-					</div>
-
-					<div class="form-group">
-						<label for="nome-solicitante">Prioridade 3</label>
-						<input type="text" class="form-control" placeholder="<?php echo $prioridades[2]['nome']; ?>" id="prioridade-3">
-					</div>
-
-					<div class="form-group">
-						<label for="nome-solicitante">Prioridade 4</label>
-						<input type="text" class="form-control" placeholder="<?php echo $prioridades[3]['nome']; ?>" id="prioridade-4">
-					</div>
-
-					<div class="form-group">
-						<label for="nome-solicitante">Prioridade 5</label>
-						<input type="text" class="form-control" placeholder="<?php echo $prioridades[4]['nome']; ?>" id="prioridade-5">
-					</div>
-
+  					<?php $prioridades = db_select("SELECT * FROM ".$tabPrioridade." ORDER by id"); ?>
+						<div class="form-group">
+							<form role="form" method="post" action="parametros.php">
+								<div class="form-group">
+									<label for="nome-solicitante">Prioridade 1</label>
+									<input type="text" name='prioridade-1' class="form-control" value="<?php echo $prioridades[0]['nome']; ?>" id="prioridade-1">
+								</div>
+								<div class="form-group">
+									<label for="nome-solicitante">Prioridade 2</label>
+									<input type="text" name='prioridade-2' class="form-control" value="<?php echo $prioridades[1]['nome']; ?>" id="prioridade-2">
+								</div>
+								<div class="form-group">
+									<label for="nome-solicitante">Prioridade 3</label>
+									<input type="text" name='prioridade-3' class="form-control" value="<?php echo $prioridades[2]['nome']; ?>" id="prioridade-3">
+								</div>
+								<div class="form-group">
+									<label for="nome-solicitante">Prioridade 4</label>
+									<input type="text" name='prioridade-4' class="form-control" value="<?php echo $prioridades[3]['nome']; ?>" id="prioridade-4">
+								</div>
+								<div class="form-group">
+									<label for="nome-solicitante">Prioridade 5</label>
+									<input type="text" name='prioridade-5' class="form-control" value="<?php echo $prioridades[4]['nome']; ?>" id="prioridade-5">
+								</div>
+								<div class="form-group">
+                        			<input name="submit-prioridade" type="submit" class="btn btn-primary" value="Salvar"/>
+                				</div>
+							</form/>
+						</div>
   				</div> <!-- panel-body -->
 			</div> <!-- panel -->
 		</div> <!-- col-md-2 -->
