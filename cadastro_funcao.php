@@ -7,6 +7,15 @@
 		//buscando a lista de funcoes no banco
 		$tabFuncao = "funcao";
 		$funcoes = db_select("SELECT * FROM ".$tabFuncao." ORDER BY nome");
+
+		// salvando alteracao de funcao no banco
+		if(isset($_POST['submit-funcao'])){
+			$result = db_query("UPDATE ".$tabFuncao." SET nome = ".db_quote($_POST['inputFuncao'])." WHERE id = ".db_quote($_POST['idFuncao']));
+			if($result === false) {
+				$error = pg_result_error($result);
+			}
+			header("Refresh:0");
+		}
 	?>
 
 	<meta charset="utf-8">
@@ -31,7 +40,8 @@
 </head>
 <body>
 	<!-- jQuery -->
-	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> -->
+	<script type="text/javascript" src="js/jquery1-11-3.min.js"></script>
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="js/bootstrap-datepicker.js"></script>
 	<script type="text/javascript" src="js/bootstrap-select.min.js"></script>
@@ -65,16 +75,14 @@
 			<thead>
 				<tr>
 					<th width="1%"></th>
-					<th width="1%">#</th>
 					<th class="col-sm-3">Função</th>
 				</tr>
 			</thead>
 			<tbody>
 				<?php 
 				for ($i = 0; $i < count($funcoes); $i++) {
-					echo "<tr data-toggle=\"modal\" data-id=\"".$funcoes[$i]['id']."\" data-target=\"#modalFuncao\">";
+					echo "<tr data-toggle=\"modal\" data-id=\"".$funcoes[$i]['id']."\" data-target=\"#modalFuncao\" data-raw=\"".$funcoes[$i]['nome']."\">";
 					echo "<td></td>";
-					echo "<td>".($i+1)."</td>";
 					echo "<td>".$funcoes[$i]['nome']."</td>";
 					echo "</tr>";
 				} ?>
@@ -93,31 +101,31 @@
 					<h4 class="modal-title" id="editFuncao">Editar Função</h4>
 				</div>
 				<div class="modal-body">
-					<form role="form" method="post" action="parametros.php">
+					<form role="form" method="post" action="cadastro_funcao.php">
 						<div class="form-group">
-							<label for="funcao-heading">Função</label>
-							<input type="text" name="nomeFuncao" class="form-control" value="<?php echo $prioridades[0]['nome']; ?>" id="nomeFuncao">
+							<label for="funcao-heading" id="lol">Função</label>
+							<input type="hidden" name="idFuncao" id="idFuncao" value=""/>
+							<input type="text" name="inputFuncao" class="form-control" value="" id="inputFuncao">
 						</div>
-						<!-- <div class="form-group">
-                			<input name="submit-rrr" type="submit" class="btn btn-primary" value="Salvar"/>
-        				</div> -->
+						<div class="form-group">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                			<input name="submit-funcao" type="submit" class="btn btn-primary" value="Salvar"/>
+        				</div>
 					</form>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-primary">Salvar</button>
 				</div>
 			</div>
 		</div>
 	</div>
 
 	<script>
-	$(function(){
-	    $('#modalFuncao').modal.on('show', function(){ //subscribe to show method
-	          var getIdFromRow = $(event.target).closest('tr').data('id'); //get the id from tr
-	        //make your ajax call populate items or what even you need
-	        $(this).find('#myModalLabel').html($('<b> Order Id selected: ' + getIdFromRow  + '</b>'))
-	    });
+    $('tr').on('click', function (e) {
+	    e.preventDefault();
+	    // pegando o id e o nome da funcao na linha clicada
+	    var id = $(this).closest('tr').data('id');
+	    var nome = $(this).closest('tr').data('raw');
+	    // mandando isso pra dentro do modal
+	    $("#modalFuncao #idFuncao").val(id);
+	    $("#modalFuncao #inputFuncao").val(nome);
 	});
 	</script>
 
