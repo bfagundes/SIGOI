@@ -16,6 +16,24 @@
 			}
 			header("Refresh:0");
 		}
+
+		// salvando exclusao de funcao no banco
+		if(isset($_POST['delete-funcao'])){
+			$result = db_query("DELETE from ".$tabFuncao." WHERE id = ".db_quote($_POST['idFuncao']));
+			if($result === false) {
+				$error = pg_result_error($result);
+			}
+			header("Refresh:0");
+		}
+
+		// salvando insercao de funcao no banco
+		if(isset($_POST['insert-funcao'])){
+			$result = db_query("INSERT INTO ".$tabFuncao." (nome) VALUES (".db_quote($_POST['inputFuncao']).")");
+			if($result === false) {
+				$error = pg_result_error($result);
+			}
+			//header("Refresh:0");
+		}
 	?>
 
 	<meta charset="utf-8">
@@ -58,7 +76,7 @@
 				<!--  Barra de Navegação: Esquerda -->
 				<ul class="nav navbar-nav">
 					<li class="nav nav-btn"><a href="index.php">Sair</a></li>
-					<li class="nav nav-btn"><a href="#">Incluir Funcao</a></li>
+					<li class="nav nav-btn" data-toggle="modal" data-target="#insertFuncao"><a href="#">Incluir Funcao</a></li>
 				</ul>
 				<!-- Barra de Navegação: Direita -->
 				<ul class="nav navbar-nav navbar-right">
@@ -81,7 +99,7 @@
 			<tbody>
 				<?php 
 				for ($i = 0; $i < count($funcoes); $i++) {
-					echo "<tr data-toggle=\"modal\" data-id=\"".$funcoes[$i]['id']."\" data-target=\"#modalFuncao\" data-raw=\"".$funcoes[$i]['nome']."\">";
+					echo "<tr data-toggle=\"modal\" data-id=\"".$funcoes[$i]['id']."\" data-target=\"#editFuncao\" data-raw=\"".$funcoes[$i]['nome']."\">";
 					echo "<td></td>";
 					echo "<td>".$funcoes[$i]['nome']."</td>";
 					echo "</tr>";
@@ -92,13 +110,13 @@
 	</div> <!-- Entire Row -->
 	</div> <!-- Container-Fluid -->
 
-	<!-- Modal -->
-	<div class="modal fade" id="modalFuncao" tabindex="-1" role="dialog">
+	<!-- Modal Edit Funcao -->
+	<div class="modal fade" id="editFuncao" tabindex="-1" role="dialog">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title" id="editFuncao">Editar Função</h4>
+					<h4 class="modal-title">Editar Função</h4>
 				</div>
 				<div class="modal-body">
 					<form role="form" method="post" action="cadastro_funcao.php">
@@ -110,12 +128,55 @@
 						<div class="form-group">
 							<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                 			<input name="submit-funcao" type="submit" class="btn btn-primary" value="Salvar"/>
+                			<input name="delete-funcao" type="submit" class="btn btn-danger" value="Delete" onclick="return confirm('Você tem certeza?');"/>
         				</div>
 					</form>
 				</div>
 			</div>
 		</div>
 	</div>
+
+	<!-- Modal Insert Funcao -->
+	<div class="modal fade" id="insertFuncao" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">Incluir Função</h4>
+				</div>
+				<div class="modal-body">
+					<form role="form" method="post" action="cadastro_funcao.php">
+						<div class="form-group">
+							<label for="funcao-heading" id="lol">Função</label>
+							<input type="text" name="inputFuncao" class="form-control" value="" id="inputFuncao">
+						</div>
+						<div class="form-group">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                			<input name="insert-funcao" type="submit" class="btn btn-primary" value="Salvar"/>
+        				</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal Alert Duplicate -->
+	<div class="modal fade" id="alertDuplicate">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					<h4 class="modal-title">Erro</h4>
+				</div>
+				<div class="modal-body">
+					<p>Essa função já existe!</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
 
 	<script>
     $('tr').on('click', function (e) {
@@ -124,8 +185,8 @@
 	    var id = $(this).closest('tr').data('id');
 	    var nome = $(this).closest('tr').data('raw');
 	    // mandando isso pra dentro do modal
-	    $("#modalFuncao #idFuncao").val(id);
-	    $("#modalFuncao #inputFuncao").val(nome);
+	    $("#editFuncao #idFuncao").val(id);
+	    $("#editFuncao #inputFuncao").val(nome);
 	});
 	</script>
 

@@ -18,9 +18,12 @@
 
 	/** Faz Queries no banco */
 	function db_query($query) {
-	    $connection = db_connect();	// conecta no banco
-	    $result = pg_query($query);	// executa a query
-	    return $result;				// retorna o resultado
+		// conecta no banco
+	    $connection = db_connect();
+	    // executa a query
+	    $result = pg_query($query);
+	    // retorna o resultado
+	    return $result;				
 	}
 
 	/** Exibe erros */
