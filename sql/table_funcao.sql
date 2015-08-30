@@ -2,7 +2,7 @@
 
 CREATE TABLE funcao (
 	id serial NOT NULL,
-	nome character varying(50) NOT NULL,
+	nome character varying(50) NOT NULL UNIQUE,
 	CONSTRAINT funcao_pkey PRIMARY KEY (id)
 ) WITH (OIDS=FALSE);
 ALTER TABLE funcao OWNER TO postgres;
@@ -18,4 +18,4 @@ INSERT INTO funcao (nome) VALUES ('Tec Informatica');
 INSERT INTO funcao (nome) VALUES ('Assistente Administrativo');
 
 /* busca os dados */
-SELECT * FROM funcao ORDER BY nome;
+SELECT * FROM funcao ORDER BY LOWER(nome);

@@ -6,7 +6,7 @@
 		include "conexao.php"; 
 		//buscando a lista de funcoes no banco
 		$tabFuncao = "funcao";
-		$funcoes = db_select("SELECT * FROM ".$tabFuncao." ORDER BY nome");
+		$funcoes = db_select("SELECT * FROM ".$tabFuncao." ORDER BY LOWER(nome)");
 
 		// salvando alteracao de funcao no banco
 		if(isset($_POST['submit-funcao'])){
@@ -28,11 +28,27 @@
 
 		// salvando insercao de funcao no banco
 		if(isset($_POST['insert-funcao'])){
-			$result = db_query("INSERT INTO ".$tabFuncao." (nome) VALUES (".db_quote($_POST['inputFuncao']).")");
-			if($result === false) {
-				$error = pg_result_error($result);
+
+			// testa se já não existe uma entrada duplicada (case insensitive)
+			$duplicate = false;
+			for ($i = 0; $i < count($funcoes); $i++) {
+				if(strcasecmp ($funcoes[$i]['nome'],$_POST['inputFuncao']) == 0){
+					echo $funcoes[$i]['nome']." vs ".$_POST['inputFuncao'];
+					$duplicate = true;
+					echo "<script> $('#alertDuplicate').fadeIn('show') </script>";
+				}
 			}
-			//header("Refresh:0");
+
+			// se não existe insere no banco
+			if($duplicate == false){
+				$result = db_query("INSERT INTO ".$tabFuncao." (nome) VALUES (".db_quote($_POST['inputFuncao']).")");
+				if($result === false) {
+					$error = pg_result_error($result);
+				}
+				// atualiza o array com a lista de funcoes
+				$funcoes = db_select("SELECT * FROM ".$tabFuncao." ORDER BY LOWER(nome)");
+				header("Refresh:0");
+			}
 		}
 	?>
 
@@ -188,6 +204,11 @@
 	    $("#editFuncao #idFuncao").val(id);
 	    $("#editFuncao #inputFuncao").val(nome);
 	});
+
+    // seta o foco pro text field inputFuncao
+	$("#insertFuncao").on('shown.bs.modal', function(){
+        $(this).find('#inputFuncao').focus();
+    });
 	</script>
 
 </body>
