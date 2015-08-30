@@ -32,10 +32,9 @@
 			// testa se já não existe uma entrada duplicada (case insensitive)
 			$duplicate = false;
 			for ($i = 0; $i < count($funcoes); $i++) {
-				if(strcasecmp ($funcoes[$i]['nome'],$_POST['inputFuncao']) == 0){
-					echo $funcoes[$i]['nome']." vs ".$_POST['inputFuncao'];
+				if(strcasecmp($funcoes[$i]['nome'], $_POST['inputFuncao']) == 0){
 					$duplicate = true;
-					echo "<script> $('#alertDuplicate').fadeIn('show') </script>";
+					$duplicateError = "TESTE";
 				}
 			}
 
@@ -47,8 +46,9 @@
 				}
 				// atualiza o array com a lista de funcoes
 				$funcoes = db_select("SELECT * FROM ".$tabFuncao." ORDER BY LOWER(nome)");
-				header("Refresh:0");
+				header("Refresh:0");	
 			}
+			
 		}
 	?>
 
@@ -104,6 +104,16 @@
 	<!-- Conteúdo -->
 	<div class="container-fluid">
 	<div class="row">
+
+	<!-- Mensagem de Erro ao cadastrar funcao duplicada -->
+	<?php if(!empty($duplicateError)){ ?>
+	<div class="col-md-10 col-md-offset-1">
+		<div class="alert alert-danger alert-dismissible" role="alert">
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<strong>Atenção!</strong> Essa função já existe no cadastro.
+		</div>
+	</div>
+	<?php } ?>
 		
 		<table class="table table-condensed table-hover">
 			<thead>
@@ -207,6 +217,9 @@
 
     // seta o foco pro text field inputFuncao
 	$("#insertFuncao").on('shown.bs.modal', function(){
+        $(this).find('#inputFuncao').focus();
+    });
+    $("#editFuncao").on('shown.bs.modal', function(){
         $(this).find('#inputFuncao').focus();
     });
 	</script>

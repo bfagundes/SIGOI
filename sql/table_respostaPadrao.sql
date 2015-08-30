@@ -19,8 +19,8 @@ ALTER SEQUENCE respostaPadrao_id_seq RESTART WITH 1;
 INSERT INTO respostaPadrao (titulo, texto, idSituacao) VALUES ('Solicitacao Atendida', 'A solicitacao foi atendida conforme solicitado', 3);
 INSERT INTO respostaPadrao (titulo, texto, idSituacao) VALUES ('Solicitacoes Atendidas', 'As Solicitações foram atendidas conforme solicitado.', 3);
 INSERT INTO respostaPadrao (titulo, texto, idSituacao) VALUES ('Alteração Realizada', 'Realizadas as devidas alterações conforme solicitado.', 3);
-INSERT INTO respostaPadrao (titulo, texto, idSituacao) VALUES ('', '');
-INSERT INTO respostaPadrao (titulo, texto, idSituacao) VALUES ('', '');
+INSERT INTO respostaPadrao (titulo, texto) VALUES ('', '');
+INSERT INTO respostaPadrao (titulo, texto) VALUES ('', '');
 
 /* busca os dados */
 SELECT * FROM respostaPadrao ORDER BY id;
