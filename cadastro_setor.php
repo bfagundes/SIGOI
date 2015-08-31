@@ -6,7 +6,7 @@
 		include "conexao.php"; 
 		//buscando a lista de setores no banco
 		$tabSetor = "setor";
-		$setores = db_select("SELECT SETOR.id AS id, SETOR.nome AS setor, LOCAL.nome AS local FROM setor INNER JOIN local on (setor.idlocal = local.id)");
+		$setores = db_select("SELECT SETOR.id AS id, SETOR.nome AS setor, LOCAL.nome AS local FROM ".$tabSetor." INNER JOIN local on (setor.idlocal = local.id)");
 
 
 
@@ -58,7 +58,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!-- The above 3 meta tags *must* come first in the head -->
-	<title>Cadastro de Funções</title>
+	<title>Cadastro de Setores</title>
 
 	<!-- CSS Styles -->
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">

@@ -6,7 +6,9 @@
 		include "conexao.php"; 
 		//buscando a lista de locais no banco
 		$tabLocal = "local";
+		$tabSetor = "setor";
 		$locais = db_select("SELECT * FROM ".$tabLocal." ORDER BY LOWER(nome)");
+		$locaisBlocked = db_select("SELECT idLocal AS id FROM ".$tabSetor);
 
 		// salvando alteracao de local no banco
 		if(isset($_POST['submit-local'])){
@@ -19,16 +21,30 @@
 
 		// salvando exclusao de local no banco
 		if(isset($_POST['delete-local'])){
-			$result = db_query("DELETE from ".$tabLocal." WHERE id = ".db_quote($_POST['idLocal']));
-			if($result === false) {
-				$error = pg_result_error($result);
+			// testa se não existe dependências
+			$blocked = false;
+			for ($i = 0; $i < count($locais); $i++){
+				for($j = 0; $j < count($locaisBlocked); $j++){
+					if(strcasecmp($locais[$i]['nome'], $locaisBlocked[$j]['id'])){
+						$blocked = true;
+						$blockedError = "Yes";
+						break;
+					}
+				}
 			}
-			header("Refresh:0");
+
+			// se não existe insere no banco
+			if($blocked == false){
+				$result = db_query("DELETE from ".$tabLocal." WHERE id = ".db_quote($_POST['idLocal']));
+				if($result === false) {
+					$error = pg_result_error($result);
+				}
+				header("Refresh:0");	
+			}
 		}
 
 		// salvando insercao de local no banco
 		if(isset($_POST['insert-local'])){
-
 			// testa se já não existe uma entrada duplicada (case insensitive)
 			$duplicate = false;
 			for ($i = 0; $i < count($locais); $i++) {
@@ -48,7 +64,6 @@
 				$locais = db_select("SELECT * FROM ".$tabLocal." ORDER BY LOWER(nome)");
 				header("Refresh:0");	
 			}
-			
 		}
 	?>
 
@@ -111,6 +126,16 @@
 		<div class="alert alert-danger alert-dismissible" role="alert">
 			<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 			<strong>Atenção!</strong> Esse local já existe no cadastro.
+		</div>
+	</div>
+	<?php } ?>
+
+	<!-- Mensagem de Erro ao tentar deletar um local com dependências -->
+	<?php if(!empty($blockedError)){ ?>
+	<div class="col-md-10 col-md-offset-1">
+		<div class="alert alert-danger alert-dismissible" role="alert">
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<strong>Atenção!</strong> Esse local está vinculado a um ou mais setores. Não é possível efetuar a exclusão.
 		</div>
 	</div>
 	<?php } ?>
