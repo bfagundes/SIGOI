@@ -8,7 +8,6 @@
 		$tabLocal = "local";
 		$tabSetor = "setor";
 		$locais = db_select("SELECT * FROM ".$tabLocal." ORDER BY LOWER(nome)");
-		$locaisBlocked = db_select("SELECT idLocal AS id FROM ".$tabSetor);
 
 		// salvando alteracao de local no banco
 		if(isset($_POST['submit-local'])){
@@ -23,17 +22,15 @@
 		if(isset($_POST['delete-local'])){
 			// testa se não existe dependências
 			$blocked = false;
-			for ($i = 0; $i < count($locais); $i++){
-				for($j = 0; $j < count($locaisBlocked); $j++){
-					if(strcasecmp($locais[$i]['nome'], $locaisBlocked[$j]['id'])){
-						$blocked = true;
-						$blockedError = "Yes";
-						break;
-					}
+			$locaisBlocked = db_select("SELECT DISTINCT idLocal FROM ".$tabSetor);
+			for ($i = 0; $i < count($locaisBlocked); $i++){
+				if(strcasecmp($_POST['idLocal'], $locaisBlocked[$i]['idlocal']) == 0){
+					$blocked = true;
+					$blockedError = "Yes";
 				}
 			}
 
-			// se não existe insere no banco
+			// se não existe deleta o local
 			if($blocked == false){
 				$result = db_query("DELETE from ".$tabLocal." WHERE id = ".db_quote($_POST['idLocal']));
 				if($result === false) {

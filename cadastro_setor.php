@@ -6,9 +6,9 @@
 		include "conexao.php"; 
 		//buscando a lista de setores no banco
 		$tabSetor = "setor";
+		$tabLocal = "local";
 		$setores = db_select("SELECT SETOR.id AS id, SETOR.nome AS setor, LOCAL.nome AS local FROM ".$tabSetor." INNER JOIN local on (setor.idlocal = local.id)");
-
-
+		$locais = db_select("SELECT * FROM ".$tabLocal." ORDER BY LOWER(nome)");
 
 		// salvando alteracao de setor no banco
 		if(isset($_POST['submit-setor'])){
@@ -30,7 +30,6 @@
 
 		// salvando insercao de setor no banco
 		if(isset($_POST['insert-setor'])){
-
 			// testa se já não existe uma entrada duplicada (case insensitive)
 			$duplicate = false;
 			for ($i = 0; $i < count($setores); $i++) {
@@ -42,13 +41,15 @@
 
 			// se não existe insere no banco
 			if($duplicate == false){
-				$result = db_query("INSERT INTO ".$tabSetor." (nome) VALUES (".db_quote($_POST['inputSetor']).")");
-				if($result === false) {
-					$error = pg_result_error($result);
-				}
+				echo $_POST['dropdown-local'];
+				//$result = db_query("INSERT INTO ".$tabSetor." (nome, idLocal) VALUES (".db_quote($_POST['inputSetor']).", ".db_quote($_POST['inputSetor']).")");
+				//INSERT INTO setor (nome, idLocal) VALUES ('Informática', 1);
+				//if($result === false) {
+					//$error = pg_result_error($result);
+				//}
 				// atualiza o array com a lista de setores
 				$setores = db_select("SELECT * FROM ".$tabSetor." ORDER BY LOWER(nome)");
-				header("Refresh:0");	
+				//header("Refresh:0");	
 			}
 			
 		}
@@ -129,7 +130,7 @@
 			<tbody>
 				<?php 
 				for ($i = 0; $i < count($setores); $i++) {
-					echo "<tr data-toggle=\"modal\" data-id=\"".$setores[$i]['id']."\" data-target=\"#editSetor\" data-raw=\"".$setores[$i]['setor']."\">";
+					echo "<tr data-toggle=\"modal\" data-id=\"".$setores[$i]['id']."\" data-target=\"#editSetor\" data-nome=\"".$setores[$i]['setor']."\" data-local=\"".$setores[$i]['local']."\">";
 					echo "<td></td>";
 					echo "<td>".$setores[$i]['setor']."</td>";
 					echo "<td>".$setores[$i]['local']."</td>";
@@ -157,6 +158,17 @@
 							<input type="hidden" name="idSetor" id="idSetor" value=""/>
 							<input type="text" name="inputSetor" class="form-control" value="" id="inputSetor">
 						</div>
+						<div class="btn-group" role="group">
+							<div class="form-group">
+								<select id="dropdown-local" class="selectpicker" data-width="100%">
+									<?php
+									for($i = 0; $i <count($locais); $i++){
+										echo "<option>".$locais[$i]['nome']."</option>";
+									}
+									?>
+								</select> 
+							</div>
+						</div>
 						<div class="form-group">
 							<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                 			<input name="submit-setor" type="submit" class="btn btn-primary" value="Salvar"/>
@@ -182,6 +194,18 @@
 							<label for="setor-heading">Setor</label>
 							<input type="text" name="inputSetor" class="form-control" value="" id="inputSetor">
 						</div>
+						<div class="btn-group" role="group">
+							<div class="form-group">
+								<select id="dropdown-local" class="selectpicker" data-width="100%">
+								<option>Selecione o local:</option>
+									<?php
+									for($i = 0; $i <count($locais); $i++){
+										echo "<option>".$locais[$i]['nome']."</option>";
+									}
+									?>
+								</select> 
+							</div>
+						</div>
 						<div class="form-group">
 							<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                 			<input name="insert-setor" type="submit" class="btn btn-primary" value="Salvar"/>
@@ -195,12 +219,14 @@
 	<script>
     $('tr').on('click', function (e) {
 	    e.preventDefault();
-	    // pegando o id e o nome da local na linha clicada
+	    // pegando os valores dos parametros
 	    var id = $(this).closest('tr').data('id');
-	    var nome = $(this).closest('tr').data('raw');
-	    // mandando isso pra dentro do modal
+	    var nome = $(this).closest('tr').data('nome');
+	    var local = $(this).closest('tr').data('local');
+	    // e setando eles dentro do modal
 	    $("#editSetor #idSetor").val(id);
 	    $("#editSetor #inputSetor").val(nome);
+	    $("#editSetor #dropdown-local").selectpicker('val', local);
 	});
 
     // seta o foco pro text field inputSetor
@@ -210,6 +236,9 @@
     $("#editSetor").on('shown.bs.modal', function(){
         $(this).find('#inputSetor').focus();
     });
+
+    // altera o estilo doselectpicker
+	$('.selectpicker').selectpicker();
 	</script>
 
 </body>
