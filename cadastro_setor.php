@@ -41,14 +41,16 @@
 
 			// se não existe insere no banco
 			if($duplicate == false){
-				echo $_POST['dropdown-local'];
+				//$kookie = $_COOKIE['popcorn'];
+				//echo "Kookie: ".$kookie;
 				//$result = db_query("INSERT INTO ".$tabSetor." (nome, idLocal) VALUES (".db_quote($_POST['inputSetor']).", ".db_quote($_POST['inputSetor']).")");
 				//INSERT INTO setor (nome, idLocal) VALUES ('Informática', 1);
 				//if($result === false) {
 					//$error = pg_result_error($result);
 				//}
 				// atualiza o array com a lista de setores
-				$setores = db_select("SELECT * FROM ".$tabSetor." ORDER BY LOWER(nome)");
+				//$setores = db_select("SELECT * FROM ".$tabSetor." ORDER BY LOWER(nome)");
+				$setores = db_select("SELECT SETOR.id AS id, SETOR.nome AS setor, LOCAL.nome AS local FROM ".$tabSetor." INNER JOIN local on (setor.idlocal = local.id)");
 				//header("Refresh:0");	
 			}
 			
@@ -152,7 +154,7 @@
 					<h4 class="modal-title">Editar Setor</h4>
 				</div>
 				<div class="modal-body">
-					<form role="form" method="post" action="cadastro_local.php">
+					<form role="form" method="post" action="cadastro_setor.php">
 						<div class="form-group">
 							<label for="setor-heading">Setor</label>
 							<input type="hidden" name="idSetor" id="idSetor" value=""/>
@@ -189,7 +191,7 @@
 					<h4 class="modal-title">Incluir Setor</h4>
 				</div>
 				<div class="modal-body">
-					<form role="form" method="post" action="cadastro_local.php">
+					<form role="form" method="post" action="cadastro_setor.php">
 						<div class="form-group">
 							<label for="setor-heading">Setor</label>
 							<input type="text" name="inputSetor" class="form-control" value="" id="inputSetor">
