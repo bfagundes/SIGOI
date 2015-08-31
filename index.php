@@ -53,6 +53,7 @@
 							<li role="separator" class="divider"></li>
 							<li class="disabled"><a href="#">Cadastro de Usuários</a></li>
 							<li class="disabled"><a href="#">Cadastro de Setores</a></li>
+							<li><a href="cadastro_local.php">Cadastro de Locais</a></li>
 							<li><a href="cadastro_funcao.php">Cadastro de Funções</a></li>
 							<li role="separator" class="divider"></li>
 							<li><a href="parametros.php">Parâmetros SIGOI</a></li>

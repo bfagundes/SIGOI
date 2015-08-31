@@ -1,5 +1,3 @@
-/* Cria a tabela situacao e insere nela os valores padrão */
-
 CREATE TABLE situacao (
 	id serial NOT NULL,
 	nome character varying(50) NOT NULL,

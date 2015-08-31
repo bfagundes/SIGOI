@@ -1,5 +1,3 @@
-/* Cria a tabela tipo e insere nela os valores padrão */
-
 CREATE TABLE tipo (
 	id serial NOT NULL,
 	nome character varying(50) NOT NULL,

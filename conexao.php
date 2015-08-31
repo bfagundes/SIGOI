@@ -68,7 +68,4 @@
 	// 	  echo count($rows);
 	// }
 	//echo " - Tudo Ok. Pode ficar tranquilo!";
-
-	
-
 ?>

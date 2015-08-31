@@ -4,35 +4,35 @@
 	<!-- PHP Includes -->
 	<?php 
 		include "conexao.php"; 
-		//buscando a lista de funcoes no banco
-		$tabFuncao = "funcao";
-		$funcoes = db_select("SELECT * FROM ".$tabFuncao." ORDER BY LOWER(nome)");
+		//buscando a lista de locais no banco
+		$tabLocal = "local";
+		$locais = db_select("SELECT * FROM ".$tabLocal." ORDER BY LOWER(nome)");
 
-		// salvando alteracao de funcao no banco
-		if(isset($_POST['submit-funcao'])){
-			$result = db_query("UPDATE ".$tabFuncao." SET nome = ".db_quote($_POST['inputFuncao'])." WHERE id = ".db_quote($_POST['idFuncao']));
+		// salvando alteracao de local no banco
+		if(isset($_POST['submit-local'])){
+			$result = db_query("UPDATE ".$tabLocal." SET nome = ".db_quote($_POST['inputLocal'])." WHERE id = ".db_quote($_POST['idLocal']));
 			if($result === false) {
 				$error = pg_result_error($result);
 			}
 			header("Refresh:0");
 		}
 
-		// salvando exclusao de funcao no banco
-		if(isset($_POST['delete-funcao'])){
-			$result = db_query("DELETE from ".$tabFuncao." WHERE id = ".db_quote($_POST['idFuncao']));
+		// salvando exclusao de local no banco
+		if(isset($_POST['delete-local'])){
+			$result = db_query("DELETE from ".$tabLocal." WHERE id = ".db_quote($_POST['idLocal']));
 			if($result === false) {
 				$error = pg_result_error($result);
 			}
 			header("Refresh:0");
 		}
 
-		// salvando insercao de funcao no banco
-		if(isset($_POST['insert-funcao'])){
+		// salvando insercao de local no banco
+		if(isset($_POST['insert-local'])){
 
 			// testa se já não existe uma entrada duplicada (case insensitive)
 			$duplicate = false;
-			for ($i = 0; $i < count($funcoes); $i++) {
-				if(strcasecmp($funcoes[$i]['nome'], $_POST['inputFuncao']) == 0){
+			for ($i = 0; $i < count($locais); $i++) {
+				if(strcasecmp($locais[$i]['nome'], $_POST['inputLocal']) == 0){
 					$duplicate = true;
 					$duplicateError = "Yes";
 				}
@@ -40,12 +40,12 @@
 
 			// se não existe insere no banco
 			if($duplicate == false){
-				$result = db_query("INSERT INTO ".$tabFuncao." (nome) VALUES (".db_quote($_POST['inputFuncao']).")");
+				$result = db_query("INSERT INTO ".$tabLocal." (nome) VALUES (".db_quote($_POST['inputLocal']).")");
 				if($result === false) {
 					$error = pg_result_error($result);
 				}
-				// atualiza o array com a lista de funcoes
-				$funcoes = db_select("SELECT * FROM ".$tabFuncao." ORDER BY LOWER(nome)");
+				// atualiza o array com a lista de locais
+				$locais = db_select("SELECT * FROM ".$tabLocal." ORDER BY LOWER(nome)");
 				header("Refresh:0");	
 			}
 			
@@ -92,7 +92,7 @@
 				<!--  Barra de Navegação: Esquerda -->
 				<ul class="nav navbar-nav">
 					<li class="nav nav-btn"><a href="index.php">Sair</a></li>
-					<li class="nav nav-btn" data-toggle="modal" data-target="#insertFuncao"><a href="#">Incluir Funcao</a></li>
+					<li class="nav nav-btn" data-toggle="modal" data-target="#insertLocal"><a href="#">Incluir Local</a></li>
 				</ul>
 				<!-- Barra de Navegação: Direita -->
 				<ul class="nav navbar-nav navbar-right">
@@ -105,12 +105,12 @@
 	<div class="container-fluid">
 	<div class="row">
 
-	<!-- Mensagem de Erro ao cadastrar funcao duplicada -->
+	<!-- Mensagem de Erro ao cadastrar local duplicada -->
 	<?php if(!empty($duplicateError)){ ?>
 	<div class="col-md-10 col-md-offset-1">
 		<div class="alert alert-danger alert-dismissible" role="alert">
 			<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			<strong>Atenção!</strong> Essa função já existe no cadastro.
+			<strong>Atenção!</strong> Esse local já existe no cadastro.
 		</div>
 	</div>
 	<?php } ?>
@@ -119,15 +119,15 @@
 			<thead>
 				<tr>
 					<th width="1%"></th>
-					<th class="col-sm-3">Função</th>
+					<th class="col-sm-3">Local</th>
 				</tr>
 			</thead>
 			<tbody>
 				<?php 
-				for ($i = 0; $i < count($funcoes); $i++) {
-					echo "<tr data-toggle=\"modal\" data-id=\"".$funcoes[$i]['id']."\" data-target=\"#editFuncao\" data-raw=\"".$funcoes[$i]['nome']."\">";
+				for ($i = 0; $i < count($locais); $i++) {
+					echo "<tr data-toggle=\"modal\" data-id=\"".$locais[$i]['id']."\" data-target=\"#editLocal\" data-raw=\"".$locais[$i]['nome']."\">";
 					echo "<td></td>";
-					echo "<td>".$funcoes[$i]['nome']."</td>";
+					echo "<td>".$locais[$i]['nome']."</td>";
 					echo "</tr>";
 				} ?>
 			</tbody>
@@ -136,25 +136,25 @@
 	</div> <!-- Entire Row -->
 	</div> <!-- Container-Fluid -->
 
-	<!-- Modal Edit Funcao -->
-	<div class="modal fade" id="editFuncao" tabindex="-1" role="dialog">
+	<!-- Modal Edit Local -->
+	<div class="modal fade" id="editLocal" tabindex="-1" role="dialog">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title">Editar Função</h4>
+					<h4 class="modal-title">Editar Local</h4>
 				</div>
 				<div class="modal-body">
-					<form role="form" method="post" action="cadastro_funcao.php">
+					<form role="form" method="post" action="cadastro_local.php">
 						<div class="form-group">
-							<label for="funcao-heading">Função</label>
-							<input type="hidden" name="idFuncao" id="idFuncao" value=""/>
-							<input type="text" name="inputFuncao" class="form-control" value="" id="inputFuncao">
+							<label for="local-heading">Função</label>
+							<input type="hidden" name="idLocal" id="idLocal" value=""/>
+							<input type="text" name="inputLocal" class="form-control" value="" id="inputLocal">
 						</div>
 						<div class="form-group">
 							<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                			<input name="submit-funcao" type="submit" class="btn btn-primary" value="Salvar"/>
-                			<input name="delete-funcao" type="submit" class="btn btn-danger" value="Delete" onclick="return confirm('Você tem certeza?');"/>
+                			<input name="submit-local" type="submit" class="btn btn-primary" value="Salvar"/>
+                			<input name="delete-local" type="submit" class="btn btn-danger" value="Delete" onclick="return confirm('Você tem certeza?');"/>
         				</div>
 					</form>
 				</div>
@@ -162,23 +162,23 @@
 		</div>
 	</div>
 
-	<!-- Modal Insert Funcao -->
-	<div class="modal fade" id="insertFuncao" tabindex="-1" role="dialog">
+	<!-- Modal Insert local -->
+	<div class="modal fade" id="insertLocal" tabindex="-1" role="dialog">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title">Incluir Função</h4>
+					<h4 class="modal-title">Incluir Local</h4>
 				</div>
 				<div class="modal-body">
-					<form role="form" method="post" action="cadastro_funcao.php">
+					<form role="form" method="post" action="cadastro_local.php">
 						<div class="form-group">
-							<label for="funcao-heading">Função</label>
-							<input type="text" name="inputFuncao" class="form-control" value="" id="inputFuncao">
+							<label for="local-heading">Local</label>
+							<input type="text" name="inputLocal" class="form-control" value="" id="inputLocal">
 						</div>
 						<div class="form-group">
 							<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                			<input name="insert-funcao" type="submit" class="btn btn-primary" value="Salvar"/>
+                			<input name="insert-local" type="submit" class="btn btn-primary" value="Salvar"/>
         				</div>
 					</form>
 				</div>
@@ -189,20 +189,20 @@
 	<script>
     $('tr').on('click', function (e) {
 	    e.preventDefault();
-	    // pegando o id e o nome da funcao na linha clicada
+	    // pegando o id e o nome da local na linha clicada
 	    var id = $(this).closest('tr').data('id');
 	    var nome = $(this).closest('tr').data('raw');
 	    // mandando isso pra dentro do modal
-	    $("#editFuncao #idFuncao").val(id);
-	    $("#editFuncao #inputFuncao").val(nome);
+	    $("#editLocal #idLocal").val(id);
+	    $("#editLocal #inputLocal").val(nome);
 	});
 
-    // seta o foco pro text field inputFuncao
-	$("#insertFuncao").on('shown.bs.modal', function(){
-        $(this).find('#inputFuncao').focus();
+    // seta o foco pro text field inputLocal
+	$("#insertLocal").on('shown.bs.modal', function(){
+        $(this).find('#inputLocal').focus();
     });
-    $("#editFuncao").on('shown.bs.modal', function(){
-        $(this).find('#inputFuncao').focus();
+    $("#editLocal").on('shown.bs.modal', function(){
+        $(this).find('#inputLocal').focus();
     });
 	</script>
 

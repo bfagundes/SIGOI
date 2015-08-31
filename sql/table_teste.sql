@@ -1,5 +1,3 @@
-/* Cria a tabela teste e insere nela os valores padrão */
-
 CREATE TABLE teste (
 	id serial NOT NULL,
 	nome character varying(50) NOT NULL,

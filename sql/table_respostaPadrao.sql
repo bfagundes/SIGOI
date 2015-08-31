@@ -1,5 +1,3 @@
-/* Cria a tabela prioridade e insere nela os valores padrão */
-
 CREATE TABLE respostaPadrao (
 	id serial NOT NULL,
 	titulo character varying(50) NOT NULL,
