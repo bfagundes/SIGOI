@@ -7,7 +7,7 @@
 		//buscando a lista de setores no banco
 		$tabSetor = "setor";
 		$tabLocal = "local";
-		$setores = db_select("SELECT SETOR.id AS id, SETOR.nome AS setor, LOCAL.nome AS local FROM ".$tabSetor." INNER JOIN local on (setor.idlocal = local.id)");
+		$setores = db_select("SELECT SETOR.id AS id, SETOR.nome AS setor, LOCAL.nome AS local FROM ".$tabSetor." INNER JOIN local on (setor.idlocal = local.id) ORDER BY LOWER(SETOR.nome)");
 		$locais = db_select("SELECT * FROM ".$tabLocal." ORDER BY LOWER(nome)");
 
 		// alterando setor no banco
@@ -62,14 +62,18 @@
 				// buscando o ID do local selecionado
 				$localSelected = $_POST['select-local'];
 				$localSelected = db_select("SELECT id from ".$tabLocal." WHERE nome =".db_quote($localSelected));
-				$localSelected = $localSelected[0]['id'];
-				$result = db_query("INSERT INTO ".$tabSetor." (nome, idLocal) VALUES (".db_quote($_POST['inputSetor']).", ".$localSelected.")");
-				if($result === false) {
-					$error = pg_result_error($result);
+				if($localSelected == null){
+					$missedReqFieldError = "Yes";
+				} else {
+					$localSelected = $localSelected[0]['id'];
+					$result = db_query("INSERT INTO ".$tabSetor." (nome, idLocal) VALUES (".db_quote($_POST['inputSetor']).", ".$localSelected.")");
+					if($result === false) {
+						$error = pg_result_error($result);
+					}
+					// atualiza o array com a lista de setores
+					$setores = db_select("SELECT SETOR.id AS id, SETOR.nome AS setor, LOCAL.nome AS local FROM ".$tabSetor." INNER JOIN local on (setor.idlocal = local.id) ORDER BY LOWER(SETOR.nome)");
+					header("Refresh:0");	
 				}
-				// atualiza o array com a lista de setores
-				$setores = db_select("SELECT SETOR.id AS id, SETOR.nome AS setor, LOCAL.nome AS local FROM ".$tabSetor." INNER JOIN local on (setor.idlocal = local.id)");
-				header("Refresh:0");	
 			}
 			
 		}
@@ -134,6 +138,16 @@
 		<div class="alert alert-danger alert-dismissible" role="alert">
 			<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 			<strong>Atenção!</strong> Esse setor já existe no cadastro.
+		</div>
+	</div>
+	<?php } ?>
+
+	<!-- Mensagem de Erro ao deixae de selecionar um local -->
+	<?php if(!empty($missedReqFieldError)){ ?>
+	<div class="col-md-10 col-md-offset-1">
+		<div class="alert alert-danger alert-dismissible" role="alert">
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<strong>Atenção!</strong> Você não selecionou um local.
 		</div>
 	</div>
 	<?php } ?>
@@ -258,7 +272,7 @@
     });
 
     // altera o estilo doselectpicker
-	$('.selectpicker').selectpicker();
+	$('.selectpicker').selectpicker();	
 	</script>
 
 </body>

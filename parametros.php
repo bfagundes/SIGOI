@@ -107,6 +107,31 @@
 	<!-- Conteúdo -->
 	<div class="container-fluid">
 	<div class="row">
+
+		<div id="exTab2">	
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#1" data-toggle="tab"><span class="glyphicon glyphicon-alert"></span> Prioridades</a></li>
+				<li><a href="#3" data-toggle="tab"><span class="glyphicon glyphicon-alert"></span> Situações</a></li>
+				<li><a href="#2" data-toggle="tab"><span class="glyphicon glyphicon-alert"></span> Tipos</a></li>
+				<li><a href="#4" data-toggle="tab"><span class="glyphicon glyphicon-align-justify"></span> Respostas Padrão</a></li>
+			</ul>
+
+			<div class="tab-content ">
+				<div class="tab-pane active" id="1">
+					Tab 1
+				</div>
+				<div class="tab-pane" id="2">
+					Tab 2
+				</div>
+				<div class="tab-pane" id="3">
+					Tab 3
+				</div>
+				<div class="tab-pane" id="4">
+					Tab 4
+				</div>
+			</div>
+		</div>
+
 		<div class="col-md-2">
 			<div class="panel panel-default">
   				<div class="panel-body">
