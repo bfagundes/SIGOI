@@ -10,30 +10,48 @@
 		$setores = db_select("SELECT SETOR.id AS id, SETOR.nome AS setor, LOCAL.nome AS local FROM ".$tabSetor." INNER JOIN local on (setor.idlocal = local.id)");
 		$locais = db_select("SELECT * FROM ".$tabLocal." ORDER BY LOWER(nome)");
 
-		// salvando alteracao de setor no banco
+		// alterando setor no banco
 		if(isset($_POST['submit-setor'])){
-			$result = db_query("UPDATE ".$tabSetor." SET nome = ".db_quote($_POST['inputSetor'])." WHERE id = ".db_quote($_POST['idSetor']));
-			if($result === false) {
+			// buscando o ID do local selecionado
+			$localSelected = $_POST['select-local'];
+			$localSelected = db_select("SELECT id from ".$tabLocal." WHERE nome =".db_quote($localSelected));
+			$localSelected = $localSelected[0]['id'];
+			// executando a query
+			$result = db_query("UPDATE ".$tabSetor." SET nome = ".db_quote($_POST['inputSetor']).", idLocal =".$localSelected." WHERE id = ".db_quote($_POST['idSetor']));
+			if($result === false){
 				$error = pg_result_error($result);
 			}
 			header("Refresh:0");
 		}
 
-		// salvando exclusao de setor no banco
+		// excluindo setor do banco
 		if(isset($_POST['delete-setor'])){
-			$result = db_query("DELETE from ".$tabSetor." WHERE id = ".db_quote($_POST['idSetor']));
-			if($result === false) {
-				$error = pg_result_error($result);
+			// testa se não existe dependências
+			$blocked = false;
+			//$locaisBlocked = db_select("SELECT DISTINCT idLocal FROM ".$tabSetor);
+			//for ($i = 0; $i < count($locaisBlocked); $i++){
+				//if(strcasecmp($_POST['idLocal'], $locaisBlocked[$i]['idlocal']) == 0){
+					//$blocked = true;
+					//$blockedError = "Yes";
+				//}
+			//}
+
+			// se não existe deleta o local
+			if($blocked == false){
+				$result = db_query("DELETE from ".$tabSetor." WHERE id = ".db_quote($_POST['idSetor']));
+				if($result === false) {
+					$error = pg_result_error($result);
+				}
+				header("Refresh:0");	
 			}
-			header("Refresh:0");
 		}
 
-		// salvando insercao de setor no banco
+		// inserindo setor no banco
 		if(isset($_POST['insert-setor'])){
-			// testa se já não existe uma entrada duplicada (case insensitive)
+			// testando se já não existe uma entrada com esses valores
 			$duplicate = false;
 			for ($i = 0; $i < count($setores); $i++) {
-				if(strcasecmp($setores[$i]['setor'], $_POST['inputSetor']) == 0){
+				if((strcasecmp($setores[$i]['setor'], $_POST['inputSetor']) == 0) && (strcasecmp($setores[$i]['local'], $_POST['select-local']) == 0)){
 					$duplicate = true;
 					$duplicateError = "Yes";
 				}
@@ -41,17 +59,17 @@
 
 			// se não existe insere no banco
 			if($duplicate == false){
-				//$kookie = $_COOKIE['popcorn'];
-				//echo "Kookie: ".$kookie;
-				//$result = db_query("INSERT INTO ".$tabSetor." (nome, idLocal) VALUES (".db_quote($_POST['inputSetor']).", ".db_quote($_POST['inputSetor']).")");
-				//INSERT INTO setor (nome, idLocal) VALUES ('Informática', 1);
-				//if($result === false) {
-					//$error = pg_result_error($result);
-				//}
+				// buscando o ID do local selecionado
+				$localSelected = $_POST['select-local'];
+				$localSelected = db_select("SELECT id from ".$tabLocal." WHERE nome =".db_quote($localSelected));
+				$localSelected = $localSelected[0]['id'];
+				$result = db_query("INSERT INTO ".$tabSetor." (nome, idLocal) VALUES (".db_quote($_POST['inputSetor']).", ".$localSelected.")");
+				if($result === false) {
+					$error = pg_result_error($result);
+				}
 				// atualiza o array com a lista de setores
-				//$setores = db_select("SELECT * FROM ".$tabSetor." ORDER BY LOWER(nome)");
 				$setores = db_select("SELECT SETOR.id AS id, SETOR.nome AS setor, LOCAL.nome AS local FROM ".$tabSetor." INNER JOIN local on (setor.idlocal = local.id)");
-				//header("Refresh:0");	
+				header("Refresh:0");	
 			}
 			
 		}
@@ -162,7 +180,7 @@
 						</div>
 						<div class="btn-group" role="group">
 							<div class="form-group">
-								<select id="dropdown-local" class="selectpicker" data-width="100%">
+								<select id="select-local" name="select-local" class="selectpicker" data-width="100%">
 									<?php
 									for($i = 0; $i <count($locais); $i++){
 										echo "<option>".$locais[$i]['nome']."</option>";
@@ -198,7 +216,7 @@
 						</div>
 						<div class="btn-group" role="group">
 							<div class="form-group">
-								<select id="dropdown-local" class="selectpicker" data-width="100%">
+								<select id="select-local" name="select-local" class="selectpicker" data-width="100%">
 								<option>Selecione o local:</option>
 									<?php
 									for($i = 0; $i <count($locais); $i++){
@@ -228,7 +246,7 @@
 	    // e setando eles dentro do modal
 	    $("#editSetor #idSetor").val(id);
 	    $("#editSetor #inputSetor").val(nome);
-	    $("#editSetor #dropdown-local").selectpicker('val', local);
+	    $("#editSetor #select-local").selectpicker('val', local);
 	});
 
     // seta o foco pro text field inputSetor
