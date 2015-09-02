@@ -1,5 +1,4 @@
 <?php
-	
 	/** Faz a conexão com o banco */
 	function db_connect() {
 		static $connection;
@@ -54,18 +53,4 @@
     	$connection = db_connect();
     	return "'" . pg_escape_string($value) . "'";
 	}
-
-	// Tentando inserir dados na tabela teste
-	// $nome = db_quote("Tamarindo");
-	// $result = db_query("INSERT INTO teste (nome) VALUES (".$nome.")");
-	// if($result === false) {
-	// 	$error = pg_result_error($result);
-	// }
-	
-	// Tentando pegar dados da tabela teste
-	// $rows = db_select("SELECT * FROM teste");
-	// if($rows === false) { $error = db_error(); } else {
-	// 	  echo count($rows);
-	// }
-	//echo " - Tudo Ok. Pode ficar tranquilo!";
 ?>
