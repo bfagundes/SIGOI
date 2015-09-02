@@ -8,7 +8,7 @@ $btnInsert = "btnInsert";
 $btnDelete = "btnDelete";
 $modalInsert = "insert-local";
 $modalUpdate = "update-local";
-$dataInput = "inputLocal";
+$inputLocal = "inputLocal";
 $dataId = "idLocal";
 $duplicate = false;
 $blocked = false;
@@ -21,7 +21,7 @@ $locais = db_select("SELECT * FROM ".$sqlTabLocal." ".$sqlOrder);
 
 // altera locais no banco
 if(isset($_POST[$btnUpdate])){
-	$result = db_query("UPDATE ".$sqlTabLocal." SET nome = ".db_quote($_POST[$dataInput])." WHERE id = ".db_quote($_POST[$dataId]));
+	$result = db_query("UPDATE ".$sqlTabLocal." SET nome = ".db_quote($_POST[$inputLocal])." WHERE id = ".db_quote($_POST[$dataId]));
 	if($result === false) {
 		$error = pg_result_error($result);
 	}
@@ -54,14 +54,14 @@ if(isset($_POST[$btnInsert])){
 	// testa se já não existe uma entrada duplicada (case insensitive)
 	$duplicate = false;
 	for ($i = 0; $i < count($locais); $i++) {
-		if(strcasecmp($locais[$i]['nome'], $_POST[$dataInput]) == 0){
+		if(strcasecmp($locais[$i]['nome'], $_POST[$inputLocal]) == 0){
 			$duplicate = true;
 		}
 	}
 
 	// se não existe insere no banco
 	if($duplicate == false){
-		$result = db_query("INSERT INTO ".$sqlTabLocal." (nome) VALUES (".db_quote($_POST[$dataInput]).")");
+		$result = db_query("INSERT INTO ".$sqlTabLocal." (nome) VALUES (".db_quote($_POST[$inputLocal]).")");
 		if($result === false) {
 			$error = pg_result_error($result);
 		}
@@ -178,7 +178,7 @@ if(isset($_POST[$btnInsert])){
 						<div class="form-group">
 							<label for="local-heading">Função</label>
 							<input type="hidden" <?php echo(" name=\"".$dataId."\""); ?> <?php echo(" id=\"".$dataId."\""); ?> value=""/>
-							<input type="text" name=<?php echo("\"".$dataInput."\""); ?> class="form-control" value="" <?php echo(" id=\"".$dataInput."\""); ?>>
+							<input type="text" name=<?php echo("\"".$inputLocal."\""); ?> class="form-control" value="" <?php echo(" id=\"".$inputLocal."\""); ?>>
 						</div>
 						<div class="form-group">
 							<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
@@ -203,7 +203,7 @@ if(isset($_POST[$btnInsert])){
 					<form role="form" method="post" <?php echo(" action=\"".$page."\""); ?>>
 						<div class="form-group">
 							<label for="local-heading">Local</label>
-							<input type="text" <?php echo(" name=\"".$dataInput."\""); ?> class="form-control" value="" <?php echo(" id=\"".$dataInput."\""); ?>>
+							<input type="text" <?php echo(" name=\"".$inputLocal."\""); ?> class="form-control" value="" <?php echo(" id=\"".$inputLocal."\""); ?>>
 						</div>
 						<div class="form-group">
 							<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>

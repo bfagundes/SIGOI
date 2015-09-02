@@ -8,7 +8,7 @@ $btnInsert = "btnInsert";
 $btnDelete = "btnDelete";
 $modalInsert = "insert-funcao";
 $modalUpdate = "update-funcao";
-$dataInput = "inputFuncao";
+$inputFuncao = "inputFuncao";
 $dataId = "idFuncao";
 $duplicate = false;
 $sqlTabFuncao = "funcao";
@@ -19,7 +19,7 @@ $funcoes = db_select("SELECT * FROM ".$sqlTabFuncao." ".$sqlOrder);
 
 // altera funcoes no banco
 if(isset($_POST[$btnUpdate])){
-	$result = db_query("UPDATE ".$sqlTabFuncao." SET nome = ".db_quote($_POST[$dataInput])." WHERE id = ".db_quote($_POST[$dataId]));
+	$result = db_query("UPDATE ".$sqlTabFuncao." SET nome = ".db_quote($_POST[$inputFuncao])." WHERE id = ".db_quote($_POST[$dataId]));
 	if($result === false) {
 		$error = pg_result_error($result);
 	}
@@ -40,14 +40,14 @@ if(isset($_POST[$btnInsert])){
 	// testa se já não existe uma entrada duplicada (case insensitive)
 	$duplicate = false;
 	for ($i = 0; $i < count($funcoes); $i++) {
-		if(strcasecmp($funcoes[$i]['nome'], $_POST[$dataInput]) == 0){
+		if(strcasecmp($funcoes[$i]['nome'], $_POST[$inputFuncao]) == 0){
 			$duplicate = true;
 		}
 	}
 
 	// se não existe insere no banco
 	if($duplicate === false){
-		$result = db_query("INSERT INTO ".$sqlTabFuncao." (nome) VALUES (".db_quote($_POST[$dataInput]).")");
+		$result = db_query("INSERT INTO ".$sqlTabFuncao." (nome) VALUES (".db_quote($_POST[$inputFuncao]).")");
 		if($result === false) {
 			$error = pg_result_error($result);
 		}
@@ -154,7 +154,7 @@ if(isset($_POST[$btnInsert])){
 						<div class="form-group">
 							<label for="funcao-heading">Função</label>
 							<input type="hidden" <?php echo(" name=\"".$dataId."\""); ?> <?php echo(" id=\"".$dataId."\""); ?> value=""/>
-							<input type="text" name=<?php echo("\"".$dataInput."\""); ?> class="form-control" value="" <?php echo(" id=\"".$dataInput."\""); ?>>
+							<input type="text" name=<?php echo("\"".$inputFuncao."\""); ?> class="form-control" value="" <?php echo(" id=\"".$inputFuncao."\""); ?>>
 						</div>
 						<div class="form-group">
 							<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
@@ -179,7 +179,7 @@ if(isset($_POST[$btnInsert])){
 					<form role="form" method="post" <?php echo(" action=\"".$page."\""); ?>>
 						<div class="form-group">
 							<label for="funcao-heading">Função</label>
-							<input type="text" <?php echo(" name=\"".$dataInput."\""); ?> class="form-control" value="" <?php echo(" id=\"".$dataInput."\""); ?>>
+							<input type="text" <?php echo(" name=\"".$inputFuncao."\""); ?> class="form-control" value="" <?php echo(" id=\"".$inputFuncao."\""); ?>>
 						</div>
 						<div class="form-group">
 							<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
