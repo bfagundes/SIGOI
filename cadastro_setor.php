@@ -8,8 +8,8 @@ $btnInsert = "btnInsert";
 $btnDelete = "btnDelete";
 $modalInsert = "insert-setor";
 $modalUpdate = "update-setor";
-$dataInputNome = "inputSetor";
-$dataInputLocal = "inputLocal";
+$inputSetor = "inputSetor";
+$inputLocal = "inputLocal";
 $dataId = "idSetor";
 $duplicate = false;
 $blocked = false;
@@ -27,11 +27,11 @@ $locais = db_select("SELECT * FROM ".$sqlTabLocal." ".$sqlOrderLocal);
 // altera setores no banco
 if(isset($_POST[$btnUpdate])){
 	// buscando o ID do local selecionado
-	$localSelected = $_POST[$dataInputLocal];
+	$localSelected = $_POST[$inputLocal];
 	$localSelected = db_select("SELECT id from ".$sqlTabLocal." WHERE nome =".db_quote($localSelected));
 	$localSelected = $localSelected[0]['id'];
 	// executando a query
-	$result = db_query("UPDATE ".$sqlTabSetor." SET nome = ".db_quote($_POST[$dataInputNome]).", idLocal =".$localSelected." WHERE id = ".db_quote($_POST[$dataId]));
+	$result = db_query("UPDATE ".$sqlTabSetor." SET nome = ".db_quote($_POST[$inputSetor]).", idLocal =".$localSelected." WHERE id = ".db_quote($_POST[$dataId]));
 	if($result === false){
 		$error = pg_result_error($result);
 	}
@@ -64,7 +64,7 @@ if(isset($_POST[$btnInsert])){
 	// testando se já não existe uma entrada com esses valores
 	$duplicate = false;
 	for ($i = 0; $i < count($setores); $i++) {
-		if((strcasecmp($setores[$i]['setor'], $_POST[$dataInputNome]) == 0) && (strcasecmp($setores[$i]['local'], $_POST[$dataInputLocal]) == 0)){
+		if((strcasecmp($setores[$i]['setor'], $_POST[$inputSetor]) == 0) && (strcasecmp($setores[$i]['local'], $_POST[$inputLocal]) == 0)){
 			$duplicate = true;
 		}
 	}
@@ -72,14 +72,14 @@ if(isset($_POST[$btnInsert])){
 	// se não existe insere no banco
 	if($duplicate === false){
 		// buscando o ID do local selecionado
-		$localSelected = $_POST[$dataInputLocal];
+		$localSelected = $_POST[$inputLocal];
 		$localSelected = db_select("SELECT id from ".$sqlTabLocal." WHERE nome =".db_quote($localSelected));
 		$missedReqField = false;
 		if($localSelected == null){
 			$missedReqField = true;
 		} else {
 			$localSelected = $localSelected[0]['id'];
-			$result = db_query("INSERT INTO ".$sqlTabSetor." (nome, idLocal) VALUES (".db_quote($_POST[$dataInputNome]).", ".$localSelected.")");
+			$result = db_query("INSERT INTO ".$sqlTabSetor." (nome, idLocal) VALUES (".db_quote($_POST[$inputSetor]).", ".$localSelected.")");
 			if($result === false) {
 				$error = pg_result_error($result);
 			}
@@ -201,11 +201,11 @@ if(isset($_POST[$btnInsert])){
 						<div class="form-group">
 							<label for="setor-heading">Setor</label>
 							<input type="hidden" <?php echo(" name=\"".$dataId."\""); ?> <?php echo(" id=\"".$dataId."\""); ?> value=""/>
-							<input type="text" <?php echo(" name=\"".$dataInputNome."\""); ?> class="form-control" value="" <?php echo(" id=\"".$dataInputNome."\""); ?>>
+							<input type="text" <?php echo(" name=\"".$inputSetor."\""); ?> class="form-control" value="" <?php echo(" id=\"".$inputSetor."\""); ?>>
 						</div>
 						<div class="btn-group" role="group">
 							<div class="form-group">
-								<select <?php echo(" id=\"".$dataInputLocal."\""); ?> <?php echo(" name=\"".$dataInputLocal."\""); ?> class="selectpicker" data-width="100%">
+								<select <?php echo(" id=\"".$inputLocal."\""); ?> <?php echo(" name=\"".$inputLocal."\""); ?> class="selectpicker" data-width="100%">
 									<?php
 									for($i = 0; $i <count($locais); $i++){
 										echo "<option>".$locais[$i]['nome']."</option>";
@@ -237,11 +237,11 @@ if(isset($_POST[$btnInsert])){
 					<form role="form" method="post" <?php echo(" action=\"".$page."\""); ?>>
 						<div class="form-group">
 							<label for="setor-heading">Setor</label>
-							<input type="text" <?php echo(" name=\"".$dataInputNome."\""); ?> class="form-control" value="" <?php echo(" id=\"".$dataInputNome."\""); ?>>
+							<input type="text" <?php echo(" name=\"".$inputSetor."\""); ?> class="form-control" value="" <?php echo(" id=\"".$inputSetor."\""); ?>>
 						</div>
 						<div class="btn-group" role="group">
 							<div class="form-group">
-								<select <?php echo(" id=\"".$dataInputLocal."\""); ?> <?php echo(" name=\"".$dataInputLocal."\""); ?> class="selectpicker" data-width="100%">
+								<select <?php echo(" id=\"".$inputLocal."\""); ?> <?php echo(" name=\"".$inputLocal."\""); ?> class="selectpicker" data-width="100%">
 								<option>Selecione o local:</option>
 									<?php
 									for($i = 0; $i <count($locais); $i++){
