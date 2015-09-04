@@ -8,11 +8,14 @@ $page = "cadastro_usuario.php";
 //$btnDelete = "btnDelete";
 //$modalInsert = "insert-usuario";
 //$modalUpdate = "update-funcao";
-//$inputFuncao = "inputFuncao";
-//$dataId = "idFuncao";
+$inputNome = "inputNome";
+$dataId = $_GET['id'];
 //$duplicate = false;
 $sqlTabUsuario = "usuario";
 //$sqlOrder = "ORDER BY LOWER(nome)";
+
+// busca o usuario no banco
+$usuarios = db_select("SELECT * FROM ".$sqlTabUsuario." WHERE id = ".$dataId);
 
 ?>
 
@@ -55,7 +58,7 @@ $sqlTabUsuario = "usuario";
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<!--  Barra de Navegação: Esquerda -->
 				<ul class="nav navbar-nav">
-					<li class="nav nav-btn"><a href="index.php">Sair</a></li>
+					<li class="nav nav-btn"><a href="lista_usuario.php">Sair</a></li>
 				</ul>
 				<!-- Barra de Navegação: Direita -->
 				<ul class="nav navbar-nav navbar-right">
@@ -68,90 +71,87 @@ $sqlTabUsuario = "usuario";
 	<div class="container-fluid">
 		<div class="row">
 
+			<form role="form" method="post" action="lista_usuario.php">
 
 
-		<div class="col-md-3">
-			<div class="panel panel-default">
-  				<div class="panel-body">
-
-					<div class="form-group">
-						<form role="form" method="post" action="parametros.php">
+				<div class="col-md-3">
+					<div class="panel panel-default">
+		  				<div class="panel-body" style="height: 500px;">
 							<div class="form-group">
-								<label for="nome-solicitante">Nome</label>
-								<input type="text" name='prioridade-1' class="form-control" value="" id="prioridade-1">
-							</div>
+								<!-- <form role="form" method="post" action="parametros.php"> -->
+									<div class="form-group">
+										<label for="usuario-nome">Nome</label>
+										<input type="text" name=<?php echo("\"".$inputNome."\""); ?> class="form-control" <?php echo(" value=\"".$usuarios[0]['nome']."\""); ?>>
+									</div>
+									<div class="form-group">
+										<label for="nome-solicitante">Setor</label>
+										<input type="text" name='prioridade-2' class="form-control" value="" id="prioridade-2">
+									</div>
+									<div class="form-group">
+										<label for="nome-solicitante">Função</label>
+										<input type="text" name='prioridade-3' class="form-control" value="" id="prioridade-3">
+									</div>
+									<div class="form-group">
+										<label for="nome-solicitante">Login</label>
+										<input type="text" name='prioridade-1' class="form-control" value="" id="prioridade-1">
+									</div>
+									Último Acesso: 02/09/2015
+
+										<div class="checkbox">
+											<label><input type="checkbox" value="">Usuário Ativo</label>
+										</div>
+
+										<div class="checkbox">
+											<label><input type="checkbox" value="">Usuário Administrador</label>
+										</div>
+
+
+										<div class="checkbox">
+											<label><input type="checkbox" value="">Resetar a Senha</label>
+										</div>
+									<div class="form-group">
+		                    			<input name="submit-usuario" type="submit" class="btn btn-primary" value="Salvar"/>
+		            				</div>
+								<!-- </form> -->
+		  					</div> <!-- /Form-Group -->
+		  				</div> <!-- /Panel-Body -->
+					</div> <!-- /Panel -->
+				</div> <!-- /Col -->
+				<div class="col-md-3">
+					<div class="panel panel-default">
+		  				<div class="panel-body" style="height: 500px;">
 							<div class="form-group">
-								<label for="nome-solicitante">Setor</label>
-								<input type="text" name='prioridade-2' class="form-control" value="" id="prioridade-2">
-							</div>
-							<div class="form-group">
-								<label for="nome-solicitante">Função</label>
-								<input type="text" name='prioridade-3' class="form-control" value="" id="prioridade-3">
-							</div>
-							<div class="form-group">
-								<label for="nome-solicitante">Login</label>
-								<input type="text" name='prioridade-1' class="form-control" value="" id="prioridade-1">
-							</div>
-							Último Acesso: 02/09/2015
+								<!-- <form role="form" method="post" action="parametros.php"> -->
 
-								<div class="checkbox">
-									<label><input type="checkbox" value="">Usuário Ativo</label>
-								</div>
-
-								<div class="checkbox">
-									<label><input type="checkbox" value="">Usuário Administrador</label>
-								</div>
-
-
-								<div class="checkbox">
-									<label><input type="checkbox" value="">Resetar a Senha</label>
-								</div>
-							<div class="form-group">
-                    			<input name="submit-prioridade" type="submit" class="btn btn-primary" value="Salvar"/>
-            				</div>
-						</form>
-					</div>
-  				</div> <!-- panel-body -->
-			</div> <!-- panel -->
-		</div> <!-- col-md-2 -->
-
-		<div class="col-md-3">
-			<div class="panel panel-default">
-  				<div class="panel-body">
-
-					<div class="form-group">
-						<form role="form" method="post" action="parametros.php">
-
-							<label style="margin-bottom:-5px;">Permissões:</label>
-							<div class="checkbox"><label><input type="checkbox" value="">Abrir Chamados</label></div>
-							<div class="checkbox"><label><input type="checkbox" value="">Responder Chamados</label></div>
-							<div class="checkbox"><label><input type="checkbox" value="">Alterar Chamados</label></div>
-							<div class="checkbox"><label><input type="checkbox" value="">Fechar Chamados</label></div>
-							<div class="checkbox"><label><input type="checkbox" value="">Excluir Chamados</label></div>
-							
-							<label style="margin-top: 10px; margin-bottom:-5px;">Visualizações:</label>
-							<div class="checkbox"><label><input type="checkbox" value="">Visualizar os seus Chamados</label></div>
-							<div class="checkbox"><label><input type="checkbox" value="">Visualizar todos os Chamados</label></div>
-							
-							<label style="margin-top: 10px; margin-bottom:-5px;">Funções de Administrador:</label>
-							<div class="checkbox"><label><input type="checkbox" value="">Cadastro de Usuários</label></div>
-							<div class="checkbox"><label><input type="checkbox" value="">Cadastro de Setores</label></div>
-							<div class="checkbox"><label><input type="checkbox" value="">Cadastro de Locais</label></div>
-							<div class="checkbox"><label><input type="checkbox" value="">Cadastro de Funções</label></div>
-							<div class="checkbox"><label><input type="checkbox" value="">Parâmetros SIGOI</label></div>
-							
-							
-							<div class="form-group">
-                    			<input name="submit-prioridade" type="submit" class="btn btn-primary" value="Salvar"/>
-            				</div>
-						</form>
-					</div>
-  				</div> <!-- panel-body -->
-			</div> <!-- panel -->
-		</div> <!-- col-md-2 -->
+									<label style="margin-bottom:-5px;">Permissões:</label>
+									<div class="checkbox"><label><input type="checkbox" value="">Abrir Chamados</label></div>
+									<div class="checkbox"><label><input type="checkbox" value="">Responder Chamados</label></div>
+									<div class="checkbox"><label><input type="checkbox" value="">Alterar Chamados</label></div>
+									<div class="checkbox"><label><input type="checkbox" value="">Fechar Chamados</label></div>
+									<div class="checkbox"><label><input type="checkbox" value="">Excluir Chamados</label></div>
+									
+									<label style="margin-top: 10px; margin-bottom:-5px;">Visualizações:</label>
+									<div class="checkbox"><label><input type="checkbox" value="">Visualizar os seus Chamados</label></div>
+									<div class="checkbox"><label><input type="checkbox" value="">Visualizar todos os Chamados</label></div>
+									
+									<label style="margin-top: 10px; margin-bottom:-5px;">Funções de Administrador:</label>
+									<div class="checkbox"><label><input type="checkbox" value="">Cadastro de Usuários</label></div>
+									<div class="checkbox"><label><input type="checkbox" value="">Cadastro de Setores</label></div>
+									<div class="checkbox"><label><input type="checkbox" value="">Cadastro de Locais</label></div>
+									<div class="checkbox"><label><input type="checkbox" value="">Cadastro de Funções</label></div>
+									<div class="checkbox"><label><input type="checkbox" value="">Parâmetros SIGOI</label></div>
+									<!-- <div class="form-group">
+		                    			<input name="submit-prioridade" type="submit" class="btn btn-primary" value="Salvar"/>
+		            				</div> -->
+								<!-- </form> -->
+							</div> <!-- /Form-Group -->
+		  				</div> <!-- /Panel-Body -->
+					</div> <!-- /Panel -->
+				</div> <!-- /Col -->
 
 
-			
+			</form>
+
 		</div> <!-- /Row -->
 	</div> <!-- /Container-Fluid -->
 

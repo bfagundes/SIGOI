@@ -9,7 +9,7 @@ $page = "lista_usuario.php";
 $modalInsert = "insert-usuario";
 //$modalUpdate = "update-funcao";
 //$inputFuncao = "inputFuncao";
-//$dataId = "idFuncao";
+$dataId = "idUsuario";
 //$duplicate = false;
 $sqlTabUsuario = "usuario";
 $sqlJoin = "INNER JOIN setor on (usuario.idsetor = setor.id)";
@@ -60,7 +60,7 @@ $usuarios = db_select("SELECT USUARIO.id AS id, USUARIO.nome AS nome, USUARIO.lo
 				<!--  Barra de Navegação: Esquerda -->
 				<ul class="nav navbar-nav">
 					<li class="nav nav-btn"><a href="index.php">Sair</a></li>
-					<li class="nav nav-btn"><a href="cadastro_usuario.php">Incluir Usuario</a></li>
+					<li class="nav nav-btn"><a href="cadastro_usuario.php?id=0">Incluir Usuario</a></li>
 				</ul>
 				<!-- Barra de Navegação: Direita -->
 				<ul class="nav navbar-nav navbar-right">
@@ -87,7 +87,7 @@ $usuarios = db_select("SELECT USUARIO.id AS id, USUARIO.nome AS nome, USUARIO.lo
 				<tbody>
 					<?php 
 					for ($i = 0; $i < count($usuarios); $i++) {
-						echo "<tr>";
+						echo "<tr data-id=\"".$usuarios[$i]['id']."\">";
 						echo "<td></td>";
 						echo "<td>".$usuarios[$i]['login']."</td>";
 						echo "<td>".$usuarios[$i]['nome']."</td>";
@@ -102,3 +102,12 @@ $usuarios = db_select("SELECT USUARIO.id AS id, USUARIO.nome AS nome, USUARIO.lo
 
 </body>
 </html>
+
+<script type="text/javascript">
+	jQuery( function($) {
+		$('tr').addClass('clickable').click(function() {
+			var id = $(this).closest('tr').data('id');
+			window.location = "cadastro_usuario.php?id=" + id;
+		});
+	});
+</script>
