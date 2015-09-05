@@ -3,17 +3,38 @@ include "conexao.php";
 
 // variaveis
 $page = "lista_usuario.php";
-//$btnUpdate = "btnUpdate";
-//$btnInsert = "btnInsert";
-//$btnDelete = "btnDelete";
-$modalInsert = "insert-usuario";
-//$modalUpdate = "update-funcao";
-//$inputFuncao = "inputFuncao";
+$btnUpdate = "btnUpdate";
+$btnInsert = "btnInsert";
+$btnDelete = "btnDelete";
+$inputNome = "inputNome";
+$inputSetor = "inputSetor";
+$inputFuncao = "inputFuncao";
+$inputLogin = "inputLogin";
 $dataId = "idUsuario";
 //$duplicate = false;
 $sqlTabUsuario = "usuario";
 $sqlJoin = "INNER JOIN setor on (usuario.idsetor = setor.id)";
 $sqlOrder = "ORDER BY LOWER(USUARIO.nome)";
+$sqlTabSetor = "setor";
+$sqlTabFuncao = "funcao";
+
+// altera setores no banco
+if(isset($_POST[$btnUpdate])){
+	// buscando o ID do setor selecionado
+	$setorSelected = $_POST[$inputSetor];
+	$setorSelected = db_select("SELECT id from ".$sqlTabSetor." WHERE nome =".db_quote($setorSelected));
+	$setorSelected = $setorSelected[0]['id'];
+	// buscando o ID da funcao selecionada
+	$funcaoSelected = $_POST[$inputFuncao];
+	$funcaoSelected = db_select("SELECT id from ".$sqlTabFuncao." WHERE nome =".db_quote($funcaoSelected));
+	$funcaoSelected = $funcaoSelected[0]['id'];
+	// executando a query
+	$result = db_query("UPDATE ".$sqlTabUsuario." SET nome='Teste', idSetor=2, idFuncao=4, login='teste', senha=null, ativo=true, admin=false, resetarSenha=false, ultimoLogin=null WHERE id = ".$_POST['idUsuario']);
+	if($result === false){
+		$error = pg_result_error($result);
+	}
+	//header("Refresh:0");
+}
 
 // busca a lista de funcoes no banco
 $usuarios = db_select("SELECT USUARIO.id AS id, USUARIO.nome AS nome, USUARIO.login AS login, SETOR.nome as setor FROM ".$sqlTabUsuario." ".$sqlJoin." ".$sqlOrder);

@@ -11,8 +11,10 @@ $modalUpdate = "update-funcao";
 $inputFuncao = "inputFuncao";
 $dataId = "idFuncao";
 $duplicate = false;
+$blocked = false;
 $sqlTabFuncao = "funcao";
 $sqlOrder = "ORDER BY LOWER(nome)";
+$sqlTabUsuario = "usuario";
 
 // busca a lista de funcoes no banco
 $funcoes = db_select("SELECT * FROM ".$sqlTabFuncao." ".$sqlOrder);
@@ -28,11 +30,22 @@ if(isset($_POST[$btnUpdate])){
 
 // exclui funcoes do banco
 if(isset($_POST[$btnDelete])){
-	$result = db_query("DELETE from ".$sqlTabFuncao." WHERE id = ".db_quote($_POST[$dataId]));
-	if($result === false) {
-		$error = pg_result_error($result);
+	// testa se não existe dependências
+	$blocked = false;
+	$funcoesBlocked = db_select("SELECT DISTINCT idfuncao FROM ".$sqlTabUsuario);
+	for ($i = 0; $i < count($funcoesBlocked); $i++){
+		if(strcasecmp($_POST[$dataId], $funcoesBlocked[$i]['idfuncao']) == 0){
+			$blocked = true;
+		}
 	}
-	header("Refresh:0");
+
+	if($blocked === false){
+		$result = db_query("DELETE from ".$sqlTabFuncao." WHERE id = ".db_quote($_POST[$dataId]));
+		if($result === false) {
+			$error = pg_result_error($result);
+		}
+		header("Refresh:0");
+	}
 }
 
 // insere funcoes no banco
@@ -116,6 +129,16 @@ if(isset($_POST[$btnInsert])){
 				<div class="alert alert-danger alert-dismissible" role="alert">
 					<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 					<strong>Atenção!</strong> Essa função já existe no cadastro.
+				</div>
+			</div>
+			<?php } ?>
+
+			<!-- Mensagem de Erro ao tentar deletar uma funcao com dependências -->
+			<?php if($blocked === true){ ?>
+			<div class="col-md-10 col-md-offset-1">
+				<div class="alert alert-danger alert-dismissible" role="alert">
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<strong>Atenção!</strong> Essa função está vinculada a um ou mais usuários. Não é possível efetuar a exclusão.
 				</div>
 			</div>
 			<?php } ?>

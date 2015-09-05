@@ -19,6 +19,7 @@ $sqlJoin = "INNER JOIN local on (setor.idlocal = local.id)";
 $sqlOrderSetor = "ORDER BY LOWER(SETOR.nome)";
 $sqlTabLocal = "local";
 $sqlOrderLocal = "ORDER BY LOWER(nome)";
+$sqlTabUsuario = "usuario";
 
 // busca a lista de locais e setores no banco
 $setores = db_select("SELECT SETOR.id AS id, SETOR.nome AS setor, LOCAL.nome AS local FROM ".$sqlTabSetor." ".$sqlJoin." ".$sqlOrderSetor);
@@ -26,7 +27,7 @@ $locais = db_select("SELECT * FROM ".$sqlTabLocal." ".$sqlOrderLocal);
 
 // altera setores no banco
 if(isset($_POST[$btnUpdate])){
-	// buscando o ID do local selecionado
+	// buscando o ID do setor selecionado
 	$localSelected = $_POST[$inputLocal];
 	$localSelected = db_select("SELECT id from ".$sqlTabLocal." WHERE nome =".db_quote($localSelected));
 	$localSelected = $localSelected[0]['id'];
@@ -42,13 +43,12 @@ if(isset($_POST[$btnUpdate])){
 if(isset($_POST[$btnDelete])){
 	// testa se não existe dependências
 	$blocked = false;
-	//$locaisBlocked = db_select("SELECT DISTINCT idLocal FROM ".$tabSetor);
-	//for ($i = 0; $i < count($locaisBlocked); $i++){
-		//if(strcasecmp($_POST['idLocal'], $locaisBlocked[$i]['idlocal']) == 0){
-			//$blocked = true;
-			//$blockedError = "Yes";
-		//}
-	//}
+	$setoresBlocked = db_select("SELECT DISTINCT idSetor FROM ".$sqlTabUsuario);
+	for ($i = 0; $i < count($setoresBlocked); $i++){
+		if(strcasecmp($_POST[$dataId], $setoresBlocked[$i]['idsetor']) == 0){
+			$blocked = true;
+		}
+	}
 
 	// se não existe deleta o setor
 	if($blocked === false){
@@ -60,6 +60,7 @@ if(isset($_POST[$btnDelete])){
 	}
 }
 
+// insere setores no banco
 if(isset($_POST[$btnInsert])){
 	// testando se já não existe uma entrada com esses valores
 	$duplicate = false;
@@ -153,12 +154,22 @@ if(isset($_POST[$btnInsert])){
 			</div>
 			<?php } ?>
 
-			<!-- Mensagem de Erro ao deixae de selecionar um local -->
+			<!-- Mensagem de Erro ao deixar de selecionar um local -->
 			<?php if($missedReqField === true){ ?>
 			<div class="col-md-10 col-md-offset-1">
 				<div class="alert alert-danger alert-dismissible" role="alert">
 					<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 					<strong>Atenção!</strong> Você não selecionou um local.
+				</div>
+			</div>
+			<?php } ?>
+
+			<!-- Mensagem de Erro ao tentar deletar um setor com dependências -->
+			<?php if($blocked === true){ ?>
+			<div class="col-md-10 col-md-offset-1">
+				<div class="alert alert-danger alert-dismissible" role="alert">
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<strong>Atenção!</strong> Esse setor está vinculado a um ou mais usuários. Não é possível efetuar a exclusão.
 				</div>
 			</div>
 			<?php } ?>
