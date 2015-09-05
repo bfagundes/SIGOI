@@ -11,14 +11,14 @@ $inputSetor = "inputSetor";
 $inputFuncao = "inputFuncao";
 $inputLogin = "inputLogin";
 $dataId = "idUsuario";
-//$duplicate = false;
+$duplicate = false;
 $sqlTabUsuario = "usuario";
 $sqlJoin = "INNER JOIN setor on (usuario.idsetor = setor.id)";
 $sqlOrder = "ORDER BY LOWER(USUARIO.nome)";
 $sqlTabSetor = "setor";
 $sqlTabFuncao = "funcao";
 
-// altera setores no banco
+// altera usuarios no banco
 if(isset($_POST[$btnUpdate])){
 	// buscando o ID do setor selecionado
 	$setorSelected = $_POST[$inputSetor];
@@ -28,12 +28,29 @@ if(isset($_POST[$btnUpdate])){
 	$funcaoSelected = $_POST[$inputFuncao];
 	$funcaoSelected = db_select("SELECT id from ".$sqlTabFuncao." WHERE nome =".db_quote($funcaoSelected));
 	$funcaoSelected = $funcaoSelected[0]['id'];
+	// pegando os valores dos checkboxes
+	$ativo="false"; 
+	$admin="false"; 
+	$resetarSenha="false";
+	if(isset($_POST['ckAtivo']) && $_POST['ckAtivo'] == 'on'){ $ativo = "true"; }
+	if(isset($_POST['ckAdmin']) && $_POST['ckAdmin'] == 'on'){ $admin = "true"; }
+	if(isset($_POST['ckResetarSenha']) && $_POST['ckResetarSenha'] == 'on'){ $resetarSenha = "true"; }
+
 	// executando a query
-	$result = db_query("UPDATE ".$sqlTabUsuario." SET nome='Teste', idSetor=2, idFuncao=4, login='teste', senha=null, ativo=true, admin=false, resetarSenha=false, ultimoLogin=null WHERE id = ".$_POST['idUsuario']);
+	$result = db_query("UPDATE ".$sqlTabUsuario.
+		" SET nome=".db_quote($_POST['inputNome']).
+		", idSetor=".$setorSelected.
+		", idFuncao=".$funcaoSelected.
+		", login=".db_quote($_POST['inputLogin']).
+		", senha=null".
+		", ativo=".$ativo.
+		", admin=".$admin.
+		", resetarSenha=".$resetarSenha.
+		", ultimoLogin=null".
+		" WHERE id = ".$_POST['idUsuario']);
 	if($result === false){
 		$error = pg_result_error($result);
 	}
-	//header("Refresh:0");
 }
 
 // busca a lista de funcoes no banco

@@ -126,15 +126,15 @@ $usrFuncao = db_select("SELECT nome from ".$sqlTabFuncao." WHERE id = ".$usuario
 										Último Acesso: 02/09/2015
 
 										<div class="checkbox">
-											<label><input type="checkbox" <?php if($usuarios[0]['ativo'] === 't'){echo "checked";} ?>>Usuário Ativo</label>
+											<label><input type="checkbox" name="ckAtivo" <?php if($usuarios[0]['ativo'] === 't'){echo "checked";} ?>>Usuário Ativo</label>
 										</div>
 
 										<div class="checkbox">
-											<label><input type="checkbox" <?php if($usuarios[0]['admin'] === 't'){echo "checked";} ?>>Usuário Administrador</label>
+											<label><input type="checkbox" name="ckAdmin" <?php if($usuarios[0]['admin'] === 't'){echo "checked";} ?>>Usuário Administrador</label>
 										</div>
 
 										<div class="checkbox">
-											<label><input type="checkbox" <?php if($usuarios[0]['resetarsenha'] === 't'){echo "checked";} ?>>Resetar a Senha</label>
+											<label><input type="checkbox" name="ckResetarSenha" <?php if($usuarios[0]['resetarsenha'] === 't'){echo "checked";} ?>>Resetar a Senha</label>
 										</div>
 			  					</div> <!-- /Form-Group -->
 			  				</div> <!-- /Panel-Body -->
