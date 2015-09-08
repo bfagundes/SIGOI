@@ -177,7 +177,7 @@ if(isset($_POST[$btnInsert])){
 						<div class="form-group">
 							<label for="funcao-heading">Função</label>
 							<input type="hidden" <?php echo(" name=\"".$dataId."\""); ?> <?php echo(" id=\"".$dataId."\""); ?> value=""/>
-							<input type="text" name=<?php echo("\"".$inputFuncao."\""); ?> class="form-control" value="" <?php echo(" id=\"".$inputFuncao."\""); ?>>
+							<input type="text" name=<?php echo("\"".$inputFuncao."\""); ?> class="form-control" value="" <?php echo(" id=\"".$inputFuncao."\""); ?> required>
 						</div>
 						<div class="form-group">
 							<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
@@ -202,7 +202,7 @@ if(isset($_POST[$btnInsert])){
 					<form role="form" method="post" <?php echo(" action=\"".$page."\""); ?>>
 						<div class="form-group">
 							<label for="funcao-heading">Função</label>
-							<input type="text" <?php echo(" name=\"".$inputFuncao."\""); ?> class="form-control" value="" <?php echo(" id=\"".$inputFuncao."\""); ?>>
+							<input type="text" <?php echo(" name=\"".$inputFuncao."\""); ?> class="form-control" value="" <?php echo(" id=\"".$inputFuncao."\""); ?> required>
 						</div>
 						<div class="form-group">
 							<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>

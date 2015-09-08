@@ -17,6 +17,8 @@ $sqlJoin = "INNER JOIN setor on (usuario.idsetor = setor.id)";
 $sqlOrder = "ORDER BY LOWER(USUARIO.nome)";
 $sqlTabSetor = "setor";
 $sqlTabFuncao = "funcao";
+$defaultPassword = 123;
+$hashedPassword;
 
 // altera usuarios no banco
 if(isset($_POST[$btnUpdate])){
@@ -34,7 +36,11 @@ if(isset($_POST[$btnUpdate])){
 	$resetarSenha="false";
 	if(isset($_POST['ckAtivo']) && $_POST['ckAtivo'] == 'on'){ $ativo = "true"; }
 	if(isset($_POST['ckAdmin']) && $_POST['ckAdmin'] == 'on'){ $admin = "true"; }
-	if(isset($_POST['ckResetarSenha']) && $_POST['ckResetarSenha'] == 'on'){ $resetarSenha = "true"; }
+	
+	if(isset($_POST['ckResetarSenha']) && $_POST['ckResetarSenha'] == 'on'){
+		$hashedPassword = password_hash($defaultPassword, PASSWORD_DEFAULT);
+		$resetarSenha = "true"; 
+	}
 
 	// executando a query
 	$result = db_query("UPDATE ".$sqlTabUsuario.
@@ -42,7 +48,7 @@ if(isset($_POST[$btnUpdate])){
 		", idSetor=".$setorSelected.
 		", idFuncao=".$funcaoSelected.
 		", login=".db_quote($_POST['inputLogin']).
-		", senha=null".
+		", senha=".db_quote($hashedPassword).
 		", ativo=".$ativo.
 		", admin=".$admin.
 		", resetarSenha=".$resetarSenha.
@@ -50,6 +56,57 @@ if(isset($_POST[$btnUpdate])){
 		" WHERE id = ".$_POST['idUsuario']);
 	if($result === false){
 		$error = pg_result_error($result);
+	}
+}
+
+// insere usuarios no banco
+if(isset($_POST[$btnInsert])){
+	// testando se já não existe um login com esses dados
+	$duplicate = false;
+	$usuarios = db_select("SELECT login from ".$sqlTabUsuario);
+	for ($i = 0; $i < count($usuarios); $i++) {
+		if((strcasecmp($usuarios[$i]['login'], $_POST[$inputLogin]) == 0)){
+			$duplicate = true;
+		}
+	}
+
+	// se não existe insere no banco
+	if($duplicate === false){
+		// buscando o ID do setor selecionado
+		$setorSelected = $_POST[$inputSetor];
+		$setorSelected = db_select("SELECT id from ".$sqlTabSetor." WHERE nome =".db_quote($setorSelected));
+		$setorSelected = $setorSelected[0]['id'];
+		// buscando o ID da funcao selecionada
+		$funcaoSelected = $_POST[$inputFuncao];
+		$funcaoSelected = db_select("SELECT id from ".$sqlTabFuncao." WHERE nome =".db_quote($funcaoSelected));
+		$funcaoSelected = $funcaoSelected[0]['id'];
+		// pegando os valores dos checkboxes
+		$ativo="false"; 
+		$admin="false"; 
+		$resetarSenha="false";
+		if(isset($_POST['ckAtivo']) && $_POST['ckAtivo'] == 'on'){ $ativo = "true"; }
+		if(isset($_POST['ckAdmin']) && $_POST['ckAdmin'] == 'on'){ $admin = "true"; }
+		
+		if(isset($_POST['ckResetarSenha']) && $_POST['ckResetarSenha'] == 'on'){
+			$hashedPassword = password_hash($defaultPassword, PASSWORD_DEFAULT);
+			$resetarSenha = "true"; 
+		}
+
+		// executa a query	
+		$result = db_query("INSERT INTO ".$sqlTabUsuario.
+			" (nome, idSetor, idFuncao, login, senha, ativo, admin, resetarSenha, ultimoLogin) VALUES".
+			" (".db_quote($_POST['inputNome']).
+			", ".$setorSelected.
+			", ".$funcaoSelected.
+			", ".db_quote($_POST['inputLogin']).
+			", ".db_quote($hashedPassword).
+			", ".$ativo.
+			", ".$admin.
+			", ".$resetarSenha.
+			", null)");
+		if($result === false) {
+			$error = pg_result_error($result);
+		}
 	}
 }
 

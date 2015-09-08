@@ -212,7 +212,7 @@ if(isset($_POST[$btnInsert])){
 						<div class="form-group">
 							<label for="setor-heading">Setor</label>
 							<input type="hidden" <?php echo(" name=\"".$dataId."\""); ?> <?php echo(" id=\"".$dataId."\""); ?> value=""/>
-							<input type="text" <?php echo(" name=\"".$inputSetor."\""); ?> class="form-control" value="" <?php echo(" id=\"".$inputSetor."\""); ?>>
+							<input type="text" <?php echo(" name=\"".$inputSetor."\""); ?> class="form-control" value="" <?php echo(" id=\"".$inputSetor."\""); ?> required>
 						</div>
 						<div class="btn-group" role="group">
 							<div class="form-group">
@@ -248,7 +248,7 @@ if(isset($_POST[$btnInsert])){
 					<form role="form" method="post" <?php echo(" action=\"".$page."\""); ?>>
 						<div class="form-group">
 							<label for="setor-heading">Setor</label>
-							<input type="text" <?php echo(" name=\"".$inputSetor."\""); ?> class="form-control" value="" <?php echo(" id=\"".$inputSetor."\""); ?>>
+							<input type="text" <?php echo(" name=\"".$inputSetor."\""); ?> class="form-control" value="" <?php echo(" id=\"".$inputSetor."\""); ?> required>
 						</div>
 						<div class="btn-group" role="group">
 							<div class="form-group">

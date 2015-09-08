@@ -178,7 +178,7 @@ if(isset($_POST[$btnInsert])){
 						<div class="form-group">
 							<label for="local-heading">Função</label>
 							<input type="hidden" <?php echo(" name=\"".$dataId."\""); ?> <?php echo(" id=\"".$dataId."\""); ?> value=""/>
-							<input type="text" name=<?php echo("\"".$inputLocal."\""); ?> class="form-control" value="" <?php echo(" id=\"".$inputLocal."\""); ?>>
+							<input type="text" name=<?php echo("\"".$inputLocal."\""); ?> class="form-control" value="" <?php echo(" id=\"".$inputLocal."\""); ?> required>
 						</div>
 						<div class="form-group">
 							<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
@@ -203,7 +203,7 @@ if(isset($_POST[$btnInsert])){
 					<form role="form" method="post" <?php echo(" action=\"".$page."\""); ?>>
 						<div class="form-group">
 							<label for="local-heading">Local</label>
-							<input type="text" <?php echo(" name=\"".$inputLocal."\""); ?> class="form-control" value="" <?php echo(" id=\"".$inputLocal."\""); ?>>
+							<input type="text" <?php echo(" name=\"".$inputLocal."\""); ?> class="form-control" value="" <?php echo(" id=\"".$inputLocal."\""); ?> required>
 						</div>
 						<div class="form-group">
 							<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>

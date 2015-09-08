@@ -17,16 +17,22 @@ $sqlTabSetor = "setor";
 $sqlTabFuncao = "funcao";
 $sqlOrder = "ORDER BY LOWER(nome)";
 
-// busca o usuario no banco
-$usuarios = db_select("SELECT * FROM ".$sqlTabUsuario." WHERE id = ".$dataId);
+// evita buscas se estiver no modo 'incluir_usuario'
+if($dataId > 0){
+	// busca o usuario no banco
+	$usuarios = db_select("SELECT * FROM ".$sqlTabUsuario." WHERE id = ".$dataId);
 
+	// busca o setor e a funcao do usuario no banco
+	$usrSetor = db_select("SELECT nome from ".$sqlTabSetor." WHERE id = ".$usuarios[0]['idsetor']);
+	$usrFuncao = db_select("SELECT nome from ".$sqlTabFuncao." WHERE id = ".$usuarios[0]['idfuncao']);
+}else{
+	$usuarios = array(0 => array("nome" => "", "login" => "", "ativo" => "t", "admin" => "f", "resetarsenha" => "t"));
+	$usrSetor = array(0 => array("nome" => ""));
+	$usrFuncao = array(0 => array("nome" => ""));
+}
 // busca a lista de setores e funcoes
 $setores = db_select("SELECT * FROM ".$sqlTabSetor." ".$sqlOrder);
 $funcoes = db_select("SELECT * FROM ".$sqlTabFuncao." ".$sqlOrder);
-
-// busca o setor e a funcao do usuario no banco
-$usrSetor = db_select("SELECT nome from ".$sqlTabSetor." WHERE id = ".$usuarios[0]['idsetor']);
-$usrFuncao = db_select("SELECT nome from ".$sqlTabFuncao." WHERE id = ".$usuarios[0]['idfuncao']);
 
 ?>
 
@@ -93,13 +99,14 @@ $usrFuncao = db_select("SELECT nome from ".$sqlTabFuncao." WHERE id = ".$usuario
 										</div>
 										<div class="form-group">
 											<label for="usuario-nome">Nome</label>
-											<input type="text" name=<?php echo("\"".$inputNome."\""); ?> class="form-control" <?php echo(" value=\"".$usuarios[0]['nome']."\""); ?>>
+											<input type="text" name=<?php echo("\"".$inputNome."\""); ?> class="form-control" <?php echo(" value=\"".$usuarios[0]['nome']."\""); ?> required>
 										</div>
 										<div class="btn-group" role="group">
 											<div class="form-group">
 												<label for="usuario-setor">Setor</label>
-												<select <?php echo(" id=\"".$inputSetor."\""); ?> <?php echo(" name=\"".$inputSetor."\""); ?> class="selectpicker" data-width="100%">
+												<select <?php echo(" id=\"".$inputSetor."\""); ?> <?php echo(" name=\"".$inputSetor."\""); ?> class="selectpicker" title="Selecione um Setor" data-width="100%" required>
 													<?php
+													if($dataId <= 0){ echo "<option></option>"; }
 													for($i = 0; $i <count($setores); $i++){
 														echo "<option>".$setores[$i]['nome']."</option>";
 													}
@@ -110,8 +117,9 @@ $usrFuncao = db_select("SELECT nome from ".$sqlTabFuncao." WHERE id = ".$usuario
 										<div class="btn-group" role="group">
 											<div class="form-group">
 												<label for="usuario-funcao">Funcao</label>
-												<select <?php echo(" id=\"".$inputFuncao."\""); ?> <?php echo(" name=\"".$inputFuncao."\""); ?> class="selectpicker" data-width="100%">
+												<select <?php echo(" id=\"".$inputFuncao."\""); ?> <?php echo(" name=\"".$inputFuncao."\""); ?> class="selectpicker" title="Selecione uma Função" data-width="100%" required>
 													<?php
+													if($dataId <= 0){ echo "<option></option>"; }
 													for($i = 0; $i <count($funcoes); $i++){
 														echo "<option>".$funcoes[$i]['nome']."</option>";
 													}
@@ -123,7 +131,7 @@ $usrFuncao = db_select("SELECT nome from ".$sqlTabFuncao." WHERE id = ".$usuario
 											<label for="usuario-login">Login</label>
 											<input type="text" name=<?php echo("\"".$inputLogin."\""); ?> class="form-control" <?php echo(" value=\"".$usuarios[0]['login']."\""); ?>>
 										</div>
-										Último Acesso: 02/09/2015
+										Último Acesso: 20/09/1835
 
 										<div class="checkbox">
 											<label><input type="checkbox" name="ckAtivo" <?php if($usuarios[0]['ativo'] === 't'){echo "checked";} ?>>Usuário Ativo</label>
@@ -170,18 +178,6 @@ $usrFuncao = db_select("SELECT nome from ".$sqlTabFuncao." WHERE id = ".$usuario
 	</form>
 
 	<script type="text/javascript">
-	    //$('tr').on('click', function (e) {
-		    //e.preventDefault();
-		    // pegando os valores dos parametros
-		    //var id = $(this).closest('tr').data('id');
-		    //var nome = $(this).closest('tr').data('nome');
-		    //var local = $(this).closest('tr').data('local');
-		    // e setando eles dentro do modal
-		    //$("#update-setor #idSetor").val(id);
-		    //$("#update-setor #inputSetor").val(nome);
-		    //$("#update-setor #inputLocal").selectpicker('val', local);
-		//});
-
 	    // altera o estilo do selectpicker
 		$('.selectpicker').selectpicker();
 		$("#inputSetor").selectpicker('val', <?php echo '\''.$usrSetor[0]['nome'].'\''; ?> );
