@@ -1,3 +1,10 @@
+<?php
+include "conexao.php";
+
+// variaveis
+$page = "index.php";
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
