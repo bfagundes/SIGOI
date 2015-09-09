@@ -11,3 +11,8 @@ div#idlogin {
 	top: 50%;
 	transform: translateY(100%);
 }
+
+.login-error {
+	margin-top: 150px;
+	margin-bottom: -200px;
+}

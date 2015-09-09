@@ -3,9 +3,57 @@ include "conexao.php";
 
 // variaveis
 $page = "login.php";
-$btnUpdate = "btnLogin";
+$btnLogin = "btnLogin";
 $inputUser = "inputUser";
 $inputSenha = "inputSenha";
+$sqlTabUsuario = "usuario";
+$loginError = false;
+
+if(isset($_POST[$btnLogin])){
+	// iniciando a sessao
+	session_start();
+
+	// buscando a senha no banco
+	$realPass = db_select("SELECT senha from ".$sqlTabUsuario." WHERE login = ".db_quote($_POST[$inputUser]));
+	
+	// se o usuario não existe
+	if($realPass == null){
+		$loginError = true;
+	} else {
+		// compara as senhas
+		if(password_verify($_POST[$inputSenha], $realPass[0]['senha']) === true){
+			//senha confere, autentica o usuario
+		}else{
+			$loginError = true;
+		}
+	}
+
+
+	//echo 'true';
+	//echo $realPass[0]['senha']." vs ".$pass;
+}
+// $username = mysql_real_escape_string($username);
+// $query = "SELECT password, salt
+//         FROM users
+//         WHERE username = '$username';";
+// $result = mysql_query($query);
+// if(mysql_num_rows($result) < 1) //no such user exists
+// {
+//     header('Location: login_form.php');
+//     die();
+// }
+// $userData = mysql_fetch_array($result, MYSQL_ASSOC);
+// $hash = hash('sha256', $userData['salt'] . hash('sha256', $password) );
+// if($hash != $userData['password']) //incorrect password
+// {
+//     header('Location: login_form.php');
+//     die();
+// }
+// else
+// {
+//     validateUser(); //sets the session data for this user
+// }
+//redirect to another page or display "login success" message
 
 ?>
 
@@ -55,20 +103,31 @@ $inputSenha = "inputSenha";
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-3 col-md-offset-4">
+				<!-- Mensagem de erro: Usuario nao existe -->
+				<?php if($loginError === true){ ?>
+				<div class="col-md-12">
+					<div class="alert alert-danger alert-dismissible login-error" role="alert">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<strong>Atenção!</strong> Usuário ou senha não cadastrados.
+					</div>
+				</div>
+				<?php } ?>
+
+				<!-- Painel de Login -->
 				<div class="panel panel-default" id="idlogin">
 					<div class="panel-heading"> <strong class="brand">SIGOI: Login</strong></div>
 					<div class="panel-body">
-						<form class="form-horizontal" role="form">
+						<form class="form-horizontal" role="form" name="login" <?php echo(" action=\"".$page."\""); ?> method="post">
 							<div class="form-group">
 								<label <?php echo(" for=\"".$inputUser."\""); ?> class="col-sm-2 control-label">Usuário:</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" <?php echo(" id=\"".$inputUser."\""); ?> placeholder="Usuário" required="">
+									<input type="text" class="form-control" <?php echo(" name=\"".$inputUser."\""); ?> placeholder="Usuário" required="">
 								</div>
 							</div>
 							<div class="form-group">
 								<label <?php echo(" for=\"".$inputSenha."\""); ?> class="col-sm-2 control-label">Senha:</label>
 								<div class="col-sm-10">
-									<input type="password" class="form-control" <?php echo(" id=\"".$inputSenha."\""); ?> placeholder="Senha" required="">
+									<input type="password" class="form-control" <?php echo(" name=\"".$inputSenha."\""); ?> placeholder="Senha" required="">
 								</div>
 							</div>
 							<!-- <div class="form-group">
@@ -81,7 +140,7 @@ $inputSenha = "inputSenha";
 								</div> -->
 								<div class="form-group last">
 									<div class="col-sm-offset-2 col-sm-9">
-										<button type="submit" class="btn btn-success btn-sm">Login</button>
+										<button <?php echo(" name=\"".$btnLogin."\""); ?> type="submit" class="btn btn-success btn-sm">Login</button>
 										<button type="reset" class="btn btn-default btn-sm">Limpar</button>
 									</div>
 								</div>
