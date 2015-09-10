@@ -1,18 +1,25 @@
 <?php
 include "conexao.php";
+include "sessao.php";
 
 // variaveis
 $page = "login.php";
 $btnLogin = "btnLogin";
+$btnResetPassword = "btnResetPassword";
 $inputUser = "inputUser";
 $inputSenha = "inputSenha";
+$inputSenha1 = "inputSenha1";
+$inputSenha2 = "inputSenha2";
 $sqlTabUsuario = "usuario";
 $loginError = false;
+$resetError = false;
+$newPassword = false;
+
+if(isset($_GET['reset'])) {
+	$newPassword = true;
+}
 
 if(isset($_POST[$btnLogin])){
-	// iniciando a sessao
-	session_start();
-
 	// buscando a senha no banco
 	$realPass = db_select("SELECT senha from ".$sqlTabUsuario." WHERE login = ".db_quote($_POST[$inputUser]));
 	
@@ -22,38 +29,42 @@ if(isset($_POST[$btnLogin])){
 	} else {
 		// compara as senhas
 		if(password_verify($_POST[$inputSenha], $realPass[0]['senha']) === true){
-			//senha confere, autentica o usuario
+			// testa se esta marcado para resetar a senha
+			$resetarSenha = db_select("SELECT resetarsenha from ".$sqlTabUsuario." WHERE login = ".db_quote($_POST[$inputUser]));
+			if($resetarSenha[0]['resetarsenha'] === 't'){
+				$newPassword = true;
+			}else{
+				// autentica o usuario
+				session_start();
+				session_login();
+				// redireciona pra página inicial
+				header('Location: index.php');
+    			die();
+			}
 		}else{
 			$loginError = true;
 		}
 	}
-
-
-	//echo 'true';
-	//echo $realPass[0]['senha']." vs ".$pass;
 }
-// $username = mysql_real_escape_string($username);
-// $query = "SELECT password, salt
-//         FROM users
-//         WHERE username = '$username';";
-// $result = mysql_query($query);
-// if(mysql_num_rows($result) < 1) //no such user exists
-// {
-//     header('Location: login_form.php');
-//     die();
-// }
-// $userData = mysql_fetch_array($result, MYSQL_ASSOC);
-// $hash = hash('sha256', $userData['salt'] . hash('sha256', $password) );
-// if($hash != $userData['password']) //incorrect password
-// {
-//     header('Location: login_form.php');
-//     die();
-// }
-// else
-// {
-//     validateUser(); //sets the session data for this user
-// }
-//redirect to another page or display "login success" message
+
+if(isset($_POST[$btnResetPassword])){
+	// testando se as senhas digitadas são iguais
+	if(strcasecmp($_POST[$inputSenha1], $_POST[$inputSenha2]) == 0){
+		// altera a senha no banco
+		$hashedPassword = password_hash($_POST[$inputSenha1], PASSWORD_DEFAULT);
+		$result = db_query("UPDATE ".$sqlTabUsuario." SET senha =".db_quote($hashedPassword).", resetarsenha=false WHERE login = ".db_quote($_POST[$inputUser]));
+
+		// autentica o usuario no sistema
+		session_start();
+		session_login();
+
+		// redireciona pra página inicial
+		header('Location: index.php');
+    	die();
+	}else{
+		$resetError = true;
+	}
+}
 
 ?>
 
@@ -113,6 +124,7 @@ if(isset($_POST[$btnLogin])){
 				</div>
 				<?php } ?>
 
+				<?php if($newPassword === false){ ?>
 				<!-- Painel de Login -->
 				<div class="panel panel-default" id="idlogin">
 					<div class="panel-heading"> <strong class="brand">SIGOI: Login</strong></div>
@@ -138,16 +150,51 @@ if(isset($_POST[$btnLogin])){
 										</div>
 									</div>
 								</div> -->
-								<div class="form-group last">
-									<div class="col-sm-offset-2 col-sm-9">
-										<button <?php echo(" name=\"".$btnLogin."\""); ?> type="submit" class="btn btn-success btn-sm">Login</button>
-										<button type="reset" class="btn btn-default btn-sm">Limpar</button>
-									</div>
+							<div class="form-group last">
+								<div class="col-sm-offset-2 col-sm-9">
+									<button <?php echo(" name=\"".$btnLogin."\""); ?> type="submit" class="btn btn-success btn-sm">Login</button>
 								</div>
+							</div>
 						</form> 
 					</div> <!-- /panel -->
-					<!-- <div class="panel-footer">Not Registered? <a href="#" class="">Register here</a></div> -->
 				</div> <!-- /panel-default -->
+				<?php } else { ?>
+				<?php if($resetError === true){ ?>
+				<div class="col-md-12">
+					<div class="alert alert-danger alert-dismissible login-error" role="alert">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<strong>Atenção!</strong> As senhas digitadas não conferem.
+					</div>
+				</div>
+				<?php } ?>
+				<!-- Painel de Troca de Senha -->
+				<div class="panel panel-default" id="idlogin">
+					<div class="panel-heading"> <strong class="brand">SIGOI: Alteração de Senha</strong></div>
+					<div class="panel-body">
+						<form class="form-horizontal" role="form" name="login" <?php echo(" action=\"".$page."?reset=1\""); ?> method="post">
+							<div class="form-group">
+								<label <?php echo(" for=\"".$inputSenha1."\""); ?> class="col-sm-2 control-label">Senha:</label>
+								<div class="col-sm-10">
+									<input type="hidden" class="form-control" <?php echo(" name=\"".$inputUser."\""); ?> <?php echo(" value=\"".$_POST[$inputUser]."\""); ?>>
+									<input type="password" class="form-control" <?php echo(" name=\"".$inputSenha1."\""); ?> placeholder="Senha" required="">
+								</div>
+							</div>
+							<div class="form-group">
+								<label <?php echo(" for=\"".$inputSenha2."\""); ?> class="col-sm-2 control-label">Confirmar:</label>
+								<div class="col-sm-10">
+									<input type="password" class="form-control" <?php echo(" name=\"".$inputSenha2."\""); ?> placeholder="Senha" required="">
+								</div>
+							</div>
+							<div class="form-group last">
+								<div class="col-sm-offset-2 col-sm-9">
+									<button <?php echo(" name=\"".$btnResetPassword."\""); ?> type="submit" class="btn btn-success btn-sm">Confirmar</button>
+								</div>
+							</div>
+						</form> 
+					</div> <!-- /panel -->
+				</div> <!-- /panel-default -->
+				<?php } ?>
+
 			</div> <!-- /col-md-4 -->
 		</div> <!-- /Row -->
 	</div> <!-- /Container-Fluid -->

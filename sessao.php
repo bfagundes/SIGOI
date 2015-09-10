@@ -4,7 +4,7 @@
 function session_login(){
 	session_regenerate_id ();
 	$_SESSION['valid'] = 1;
-	$_SESSION['userid'] = $userid;
+	//$_SESSION['userid'] = $userid;
 }
 
 /** Destroi todas as variaveies e, em seguida, a sessao em si */

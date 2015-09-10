@@ -39,6 +39,7 @@ if(isset($_POST[$btnUpdate])){
 	
 	if(isset($_POST['ckResetarSenha']) && $_POST['ckResetarSenha'] == 'on'){
 		$hashedPassword = password_hash($defaultPassword, PASSWORD_DEFAULT);
+		$result = db_query("UPDATE ".$sqlTabUsuario." SET senha =".db_quote($hashedPassword)." WHERE id = ".$_POST['idUsuario']);
 		$resetarSenha = "true"; 
 	}
 
@@ -48,7 +49,6 @@ if(isset($_POST[$btnUpdate])){
 		", idSetor=".$setorSelected.
 		", idFuncao=".$funcaoSelected.
 		", login=".db_quote($_POST['inputLogin']).
-		", senha=".db_quote($hashedPassword).
 		", ativo=".$ativo.
 		", admin=".$admin.
 		", resetarSenha=".$resetarSenha.
