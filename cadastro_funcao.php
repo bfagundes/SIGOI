@@ -80,28 +80,19 @@ require_once('./includes/header.php');
 require_once('./includes/navbar_default.php');
 ?>
 
-	<!-- Conteúdo -->
 	<div class="container-fluid">
 		<div class="row">
 			<!-- Mensagem de Erro ao cadastrar funcao duplicada -->
-			<?php if($duplicate === true){ ?>
-			<div class="col-md-10 col-md-offset-1">
-				<div class="alert alert-danger alert-dismissible" role="alert">
-					<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<strong>Atenção!</strong> Essa função já existe no cadastro.
-				</div>
-			</div>
-			<?php } ?>
+			<?php if($duplicate === true){
+				$errorMessage="<strong>Atenção!</strong> Essa função já existe no cadastro.";
+				require('./includes/alert_error.php');
+			} ?>
 
 			<!-- Mensagem de Erro ao tentar deletar uma funcao com dependências -->
-			<?php if($blocked === true){ ?>
-			<div class="col-md-10 col-md-offset-1">
-				<div class="alert alert-danger alert-dismissible" role="alert">
-					<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<strong>Atenção!</strong> Essa função está vinculada a um ou mais usuários. Não é possível efetuar a exclusão.
-				</div>
-			</div>
-			<?php } ?>
+			<?php if($blocked === true){
+				$errorMessage="<strong>Atenção!</strong> Essa função está vinculada a um ou mais usuários. Não é possível efetuar a exclusão."; 
+				require('./includes/alert_error.php');
+			} ?>
 				
 			<!-- Tabela com a lista de funções -->
 			<table class="table table-condensed table-hover">
