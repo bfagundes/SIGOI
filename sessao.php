@@ -1,10 +1,10 @@
 <?php
 
 /** Autentica um uasuario a uma sessao */
-function session_login(){
+function session_login($username){
 	session_regenerate_id ();
 	$_SESSION['valid'] = 1;
-	//$_SESSION['userid'] = $userid;
+	$_SESSION['username'] = $username;
 }
 
 /** Destroi todas as variaveies e, em seguida, a sessao em si */

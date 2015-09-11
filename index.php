@@ -1,5 +1,8 @@
 <?php
 include "conexao.php";
+include "sessao.php";
+
+session_start();
 
 // variaveis
 $page = "index.php";
@@ -207,6 +210,12 @@ $page = "index.php";
 			</tbody>
 		</table>
 	</div>
+
+	<footer class="footer">
+      <div class="container-fluid">
+        <p class="footer-right"><?php echo "Usuário: ".$_SESSION['username']." -- "; ?> <a href="logout.php">Logout</a>
+      </div>
+    </footer>
 
 </body>
 </html>

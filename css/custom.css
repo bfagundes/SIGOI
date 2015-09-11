@@ -16,3 +16,19 @@ div#idlogin {
 	margin-top: 150px;
 	margin-bottom: -200px;
 }
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 40px;
+  background-color: #f5f5f5;
+}
+
+.footer-right{
+	padding-top: 10px;
+	padding-right: 10px;
+	text-transform: uppercase;
+	text-align: right;
+}

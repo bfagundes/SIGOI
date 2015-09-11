@@ -36,7 +36,7 @@ if(isset($_POST[$btnLogin])){
 			}else{
 				// autentica o usuario
 				session_start();
-				session_login();
+				session_login($_POST[$inputUser]);
 				// redireciona pra página inicial
 				header('Location: index.php');
     			die();
@@ -56,7 +56,7 @@ if(isset($_POST[$btnResetPassword])){
 
 		// autentica o usuario no sistema
 		session_start();
-		session_login();
+		session_login($_POST[$inputUser]);
 
 		// redireciona pra página inicial
 		header('Location: index.php');
