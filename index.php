@@ -17,9 +17,7 @@ $pageUrl = "index.php";
 require_once('./includes/header.php');
 require_once('./includes/navbar_index.php');
 ?>
-
 	<div class="container-fluid">
-
 		<!-- Tabela de Chamados Abertos -->
 		<table class="table table-condensed table-hover">
 			<thead>

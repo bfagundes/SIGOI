@@ -89,7 +89,6 @@ $navOptions = "<li class=\"nav nav-btn\" data-toggle=\"modal\" data-target=\"#$m
 require_once('./includes/header.php');
 require_once('./includes/navbar_default.php');
 ?>
-
 	<div class="container-fluid">
 		<div class="row">
 			<!-- Mensagem de Erro ao cadastrar funcao duplicada -->
