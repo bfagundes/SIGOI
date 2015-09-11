@@ -1,16 +1,15 @@
 <?php
-include "./functions/conexao.php";
-include "./functions/sessao.php";
-
 session_start();
 
 // variaveis
 $pageTitle = "SIGOI";
 $pageUrl = "index.php";
 
-// Header
+// Includes
+include ("./functions/conexao.php");
+include ("./functions/sessao.php");
 require_once('./includes/header.php');
-require_once('./includes/navbar.php');
+require_once('./includes/navbar_index.php');
 ?>
 
 	<div class="container-fluid">

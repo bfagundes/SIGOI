@@ -1,8 +1,12 @@
 <?php
-include "./functions/conexao.php"; 
+session_start();
+
+// Includes
+include "./functions/conexao.php";
 
 // variaveis
-$page = "cadastro_funcao.php";
+$pageTitle = "Cadastro de Funções";
+$pageUrl = "cadastro_funcao.php";
 $btnUpdate = "btnUpdate";
 $btnInsert = "btnInsert";
 $btnDelete = "btnDelete";
@@ -69,56 +73,12 @@ if(isset($_POST[$btnInsert])){
 		header("Refresh:0");	
 	}
 }
-?>
- 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Cadastro de Funções</title>
- 
-    <!-- CSS Styles -->
-	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="css/bootstrap-datepicker.css">
-	<link rel="stylesheet" type="text/css" href="css/bootstrap-select.min.css" />
-	<link rel="stylesheet" type="text/css" href="css/custom.css">
- 
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-</head>
-<body>
-    <!-- jQuery & JavaScript -->
-	<!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> -->
-	<script type="text/javascript" src="js/jquery1-11-3.min.js"></script>
-	<script type="text/javascript" src="js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="js/bootstrap-datepicker.js"></script>
-	<script type="text/javascript" src="js/bootstrap-select.min.js"></script>
-	<script type="text/javascript" src="js/custom.js"></script>	
 
-	<!-- Barra de Navegação -->
-	<nav class="navbar navbar-default">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<a class="navbar-brand" href="index.php">SIGOI</a>
-			</div>
-			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-				<!--  Barra de Navegação: Esquerda -->
-				<ul class="nav navbar-nav">
-					<li class="nav nav-btn"><a href="index.php">Sair</a></li>
-					<li class="nav nav-btn" data-toggle="modal" <?php echo(" data-target=\"#".$modalInsert."\""); ?>><a href="#">Incluir Funcao</a></li>
-				</ul>
-				<!-- Barra de Navegação: Direita -->
-				<ul class="nav navbar-nav navbar-right">
-				</ul>
-			</div>
-		</div>
-	</nav>
+// Includes
+$navOptions = "<li class=\"nav nav-btn\" data-toggle=\"modal\" data-target=\"#$modalInsert\"><a href=\"#\">Incluir Funcao</a></li>";
+require_once('./includes/header.php');
+require_once('./includes/navbar_default.php');
+?>
 
 	<!-- Conteúdo -->
 	<div class="container-fluid">
@@ -173,7 +133,7 @@ if(isset($_POST[$btnInsert])){
 					<h4 class="modal-title">Editar Função</h4>
 				</div>
 				<div class="modal-body">
-					<form role="form" method="post" <?php echo(" action=\"".$page."\""); ?>>
+					<form role="form" method="post" <?php echo(" action=\"".$pageUrl."\""); ?>>
 						<div class="form-group">
 							<label for="funcao-heading">Função</label>
 							<input type="hidden" <?php echo(" name=\"".$dataId."\""); ?> <?php echo(" id=\"".$dataId."\""); ?> value=""/>
@@ -199,7 +159,7 @@ if(isset($_POST[$btnInsert])){
 					<h4 class="modal-title">Incluir Função</h4>
 				</div>
 				<div class="modal-body">
-					<form role="form" method="post" <?php echo(" action=\"".$page."\""); ?>>
+					<form role="form" method="post" <?php echo(" action=\"".$pageUrl."\""); ?>>
 						<div class="form-group">
 							<label for="funcao-heading">Função</label>
 							<input type="text" <?php echo(" name=\"".$inputFuncao."\""); ?> class="form-control" value="" <?php echo(" id=\"".$inputFuncao."\""); ?> required>
@@ -213,6 +173,9 @@ if(isset($_POST[$btnInsert])){
 			</div>
 		</div>
 	</div>
+
+	<!-- Footer -->
+	<?php require_once('./includes/footer.php'); ?>
 
 	<!-- Scripts -->
 	<script type="text/javascript">
