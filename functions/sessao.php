@@ -1,6 +1,6 @@
 <?php
 
-/** Autentica um uasuario a uma sessao */
+/** Autentica um usuario a uma sessao */
 function session_login($username){
 	session_regenerate_id ();
 	$_SESSION['valid'] = 1;

@@ -1,20 +1,26 @@
 <?php
+include ("./functions/conexao.php");
+include ("./functions/sessao.php");
 session_start();
+
+// Testa se o usuario está logado
+if(session_isValid() === false){
+	header('Location: login.php');
+	die();
+}
 
 // variaveis
 $pageTitle = "SIGOI";
 $pageUrl = "index.php";
 
-// Includes
-include ("./functions/conexao.php");
-include ("./functions/sessao.php");
+// Header
 require_once('./includes/header.php');
 require_once('./includes/navbar_index.php');
 ?>
 
 	<div class="container-fluid">
 
-		<!-- ----- Tabela de Chamados Abertos ------ -->
+		<!-- Tabela de Chamados Abertos -->
 		<table class="table table-condensed table-hover">
 			<thead>
 				<tr>
@@ -67,7 +73,7 @@ require_once('./includes/navbar_index.php');
 			</tbody>
 		</table>
 
-		<!-- ----- Tabela de Chamados Pendentes ------ -->
+		<!-- Tabela de Chamados Pendentes -->
 		<table class="table table-condensed table-hover">
 			<thead>
 				<tr>

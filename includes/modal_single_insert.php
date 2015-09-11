@@ -9,7 +9,7 @@
 				<form role="form" method="post" <?php echo(" action=\"".$pageUrl."\""); ?>>
 					<div class="form-group">
 						<label for="funcao-heading">Função</label>
-						<input type="text" <?php echo(" name=\"".$inputName1."\""); ?> class="form-control" value="" <?php echo(" id=\"".$inputName1."\""); ?> required>
+						<input type="text" <?php echo(" name=\"".$inputName1."\" id=\"".$inputName1."\""); ?> class="form-control" value="" required>
 					</div>
 					<div class="form-group">
 						<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>

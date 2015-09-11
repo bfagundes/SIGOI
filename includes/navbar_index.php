@@ -3,9 +3,6 @@
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
 				<span class="sr-only">Toggle navigation</span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
 			</button>
 			<a class="navbar-brand" href="index.php">SIGOI</a>
 		</div>
@@ -42,7 +39,7 @@
 					</ul>
 				</li>
 			</ul>
-			<!-- ----- Barra de Navegação: Direita ------ -->
+			<!-- Barra de Navegação: Direita -->
 			<ul class="nav navbar-nav navbar-right">
 				<form class="navbar-form navbar-left" role="search">
 					<div class="input-group">

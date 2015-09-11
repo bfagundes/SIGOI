@@ -9,8 +9,8 @@
 				<form role="form" method="post" <?php echo(" action=\"".$pageUrl."\""); ?>>
 					<div class="form-group">
 						<label for="funcao-heading">Função</label>
-						<input type="hidden" <?php echo(" name=\"".$dataId."\""); ?> <?php echo(" id=\"".$dataId."\""); ?> value=""/>
-						<input type="text" name=<?php echo("\"".$inputName1."\""); ?> class="form-control" value="" <?php echo(" id=\"".$inputName1."\""); ?> required>
+						<input type="hidden" <?php echo(" name=\"".$dataId."\" id=\"".$dataId."\""); ?> value=""/>
+						<input type="text" name=<?php echo("\"".$inputName1."\" id=\"".$inputName1."\""); ?> class="form-control" value="" required>
 					</div>
 					<div class="form-group">
 						<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>

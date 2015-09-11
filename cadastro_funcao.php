@@ -1,8 +1,13 @@
 <?php
+include ("./functions/conexao.php");
+include ("./functions/sessao.php");
 session_start();
 
-// Includes
-include "./functions/conexao.php";
+// Testa se o usuario está logado
+if(session_isValid() === false){
+	header('Location: login.php');
+	die();
+}
 
 // variaveis
 $pageTitle = "Cadastro de Funções";
@@ -74,7 +79,12 @@ if(isset($_POST[$btnInsert])){
 	}
 }
 
-// Includes
+// Modals
+$inputName1 = $inputFuncao;
+include('./includes/modal_single_insert.php');
+include('./includes/modal_single_update.php');
+
+// Header
 $navOptions = "<li class=\"nav nav-btn\" data-toggle=\"modal\" data-target=\"#$modalInsert\"><a href=\"#\">Incluir Funcao</a></li>";
 require_once('./includes/header.php');
 require_once('./includes/navbar_default.php');
@@ -112,56 +122,6 @@ require_once('./includes/navbar_default.php');
 					} ?>
 				</tbody>
 			</table>
-		</div> <!-- /Row -->
-	</div> <!-- /Container-Fluid -->
-
-	<!-- Modal update-funcao -->
-	<div class="modal fade" <?php echo(" id=\"".$modalUpdate."\""); ?> tabindex="-1" role="dialog">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title">Editar Função</h4>
-				</div>
-				<div class="modal-body">
-					<form role="form" method="post" <?php echo(" action=\"".$pageUrl."\""); ?>>
-						<div class="form-group">
-							<label for="funcao-heading">Função</label>
-							<input type="hidden" <?php echo(" name=\"".$dataId."\""); ?> <?php echo(" id=\"".$dataId."\""); ?> value=""/>
-							<input type="text" name=<?php echo("\"".$inputFuncao."\""); ?> class="form-control" value="" <?php echo(" id=\"".$inputFuncao."\""); ?> required>
-						</div>
-						<div class="form-group">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                			<input <?php echo(" name=\"".$btnUpdate."\""); ?> type="submit" class="btn btn-primary" value="Salvar"/>
-                			<input <?php echo(" name=\"".$btnDelete."\""); ?> type="submit" class="btn btn-danger" value="Delete" onclick="return confirm('Você tem certeza?');"/>
-        				</div>
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<!-- Modal insert-funcao -->
-	<div class="modal fade" <?php echo(" id=\"".$modalInsert."\""); ?> tabindex="-1" role="dialog">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title">Incluir Função</h4>
-				</div>
-				<div class="modal-body">
-					<form role="form" method="post" <?php echo(" action=\"".$pageUrl."\""); ?>>
-						<div class="form-group">
-							<label for="funcao-heading">Função</label>
-							<input type="text" <?php echo(" name=\"".$inputFuncao."\""); ?> class="form-control" value="" <?php echo(" id=\"".$inputFuncao."\""); ?> required>
-						</div>
-						<div class="form-group">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                			<input <?php echo(" name=\"".$btnInsert."\""); ?> type="submit" class="btn btn-primary" value="Salvar"/>
-        				</div>
-					</form>
-				</div>
-			</div>
 		</div>
 	</div>
 
