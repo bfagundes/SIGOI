@@ -1,5 +1,5 @@
 <?php
-include "conexao.php"; 
+include "./functions/conexao.php";
 
 // variaveis
 $page = "lista_usuario.php";

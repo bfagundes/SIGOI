@@ -3,7 +3,7 @@
 <head>
 	<!-- PHP Includes -->
 	<?php 
-		include "conexao.php"; 
+		include "./functions/conexao.php"; 
 
 		$tabPrioridade = "prioridade";
 		$tabTipo = "tipo";

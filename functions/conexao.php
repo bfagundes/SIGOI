@@ -4,7 +4,7 @@
 		static $connection;
 
 		// Pega os dados do arquivo de configuração
-		$config = parse_ini_file('config.ini'); 
+		$config = parse_ini_file('./config/config.ini'); 
 
 		// tenta conectar
   		$db_handle = pg_pconnect("host=".$config['host']." dbname=".$config['db']." user=".$config['username']." password=".$config['password']);

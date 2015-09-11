@@ -1,5 +1,5 @@
 <?php
-include "conexao.php"; 
+include "./functions/conexao.php";
 
 // variaveis
 $page = "cadastro_setor.php";

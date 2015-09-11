@@ -1,6 +1,6 @@
 <?php
-include "conexao.php";
-include "sessao.php";
+include "./functions/conexao.php";
+include "./functions/sessao.php";
 
 session_start();
 session_logout();
