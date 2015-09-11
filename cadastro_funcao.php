@@ -37,7 +37,7 @@ if(isset($_POST[$btnUpdate])){
 	header("Refresh:0");
 }
 
-// exclui funcoes do banco
+// deleta funcoes do banco
 if(isset($_POST[$btnDelete])){
 	// testa se não existe dependências
 	$blocked = false;
@@ -48,6 +48,7 @@ if(isset($_POST[$btnDelete])){
 		}
 	}
 
+	// executa a exclusao
 	if($blocked === false){
 		$result = db_query("DELETE from ".$sqlTabFuncao." WHERE id = ".db_quote($_POST[$dataId]));
 		if($result === false) {
@@ -67,13 +68,13 @@ if(isset($_POST[$btnInsert])){
 		}
 	}
 
-	// se não existe insere no banco
+	// executa a inclusao
 	if($duplicate === false){
 		$result = db_query("INSERT INTO ".$sqlTabFuncao." (nome) VALUES (".db_quote($_POST[$inputFuncao]).")");
 		if($result === false) {
 			$error = pg_result_error($result);
 		}
-		// atualiza o array com a lista de funcoes
+		// atualiza a lista de funcoes
 		$funcoes = db_select("SELECT * FROM ".$sqlTabFuncao." ".$sqlOrder);
 		header("Refresh:0");	
 	}
@@ -91,13 +92,13 @@ require_once('./includes/navbar_default.php');
 ?>
 	<div class="container-fluid">
 		<div class="row">
-			<!-- Mensagem de Erro ao cadastrar funcao duplicada -->
+			<!-- Mensagem de erro ao cadastrar uma funcao duplicada -->
 			<?php if($duplicate === true){
 				$errorMessage="<strong>Atenção!</strong> Essa função já existe no cadastro.";
 				require('./includes/alert_error.php');
 			} ?>
 
-			<!-- Mensagem de Erro ao tentar deletar uma funcao com dependências -->
+			<!-- Mensagem de erro ao tentar deletar uma funcao com dependências -->
 			<?php if($blocked === true){
 				$errorMessage="<strong>Atenção!</strong> Essa função está vinculada a um ou mais usuários. Não é possível efetuar a exclusão."; 
 				require('./includes/alert_error.php');
