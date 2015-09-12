@@ -110,6 +110,7 @@ include('./includes/modal_double_insert.php');
 include('./includes/modal_double_update.php');
 
 // Header
+$navBackUrl = "index.php";
 $navOptions = "<li class=\"nav nav-btn\" data-toggle=\"modal\" data-target=\"#$modalInsert\"><a href=\"#\">Incluir Setor</a></li>";
 require_once('./includes/header.php');
 require_once('./includes/navbar_default.php');
