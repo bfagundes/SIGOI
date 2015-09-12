@@ -45,7 +45,7 @@ if(isset($_POST[$btnUpdate])){
 	if($result === false){
 		$error = pg_result_error($result);
 	}
-	header("Refresh:0");
+	header('Location: cadastro_setor.php');
 }
 
 // exclui setores do banco
@@ -65,7 +65,7 @@ if(isset($_POST[$btnDelete])){
 		if($result === false) {
 			$error = pg_result_error($result);
 		}
-		header("Refresh:0");	
+		header('Location: cadastro_setor.php');	
 	}
 }
 
@@ -95,7 +95,7 @@ if(isset($_POST[$btnInsert])){
 			}
 			// atualiza a lista de setores
 			$setores = db_select("SELECT SETOR.id AS id, SETOR.nome AS setor, LOCAL.nome AS local FROM ".$sqlTabSetor." ".$sqlJoin." ".$sqlOrderSetor);
-			header("Refresh:0");	
+			header('Location: cadastro_setor.php');
 		}
 	}
 }

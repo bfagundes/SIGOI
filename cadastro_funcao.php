@@ -34,7 +34,7 @@ if(isset($_POST[$btnUpdate])){
 	if($result === false) {
 		$error = pg_result_error($result);
 	}
-	header("Refresh:0");
+	header('Location: cadastro_funcao.php');
 }
 
 // deleta funcoes do banco
@@ -54,7 +54,7 @@ if(isset($_POST[$btnDelete])){
 		if($result === false) {
 			$error = pg_result_error($result);
 		}
-		header("Refresh:0");
+		header('Location: cadastro_funcao.php');
 	}
 }
 
@@ -76,7 +76,7 @@ if(isset($_POST[$btnInsert])){
 		}
 		// atualiza a lista de funcoes
 		$funcoes = db_select("SELECT * FROM ".$sqlTabFuncao." ".$sqlOrder);
-		header("Refresh:0");	
+		header('Location: cadastro_funcao.php');
 	}
 }
 

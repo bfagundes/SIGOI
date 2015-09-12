@@ -1,142 +1,77 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<!-- PHP Includes -->
-	<?php 
-		include "./functions/conexao.php"; 
+<?php
+include ("./functions/conexao.php");
+include ("./functions/sessao.php");
+session_start();
 
-		$tabPrioridade = "prioridade";
-		$tabTipo = "tipo";
-		$tabSituacao = "situacao";
-		$tabRespPadrao = "respostaPadrao";
+// Testa se o usuario está logado
+if(session_isValid() === false){
+	header('Location: login.php');
+	die();
+}
 
-		if(isset($_POST['submit-prioridade'])){
-			$result = db_query("UPDATE ".$tabPrioridade." SET nome = ".db_quote($_POST['prioridade-1'])." WHERE id = 1");
-			$result = db_query("UPDATE ".$tabPrioridade." SET nome = ".db_quote($_POST['prioridade-2'])." WHERE id = 2");
-			$result = db_query("UPDATE ".$tabPrioridade." SET nome = ".db_quote($_POST['prioridade-3'])." WHERE id = 3");
-			$result = db_query("UPDATE ".$tabPrioridade." SET nome = ".db_quote($_POST['prioridade-4'])." WHERE id = 4");
-			$result = db_query("UPDATE ".$tabPrioridade." SET nome = ".db_quote($_POST['prioridade-5'])." WHERE id = 5");
-			if($result === false) {
-				$error = pg_result_error($result);
-			}
-		}
+// variaveis
+$pageTitle = "Parâmetros SIGOI";
+$pageUrl = "parametros.php";
+$sqlTabPrioridade = "prioridade";
+$sqlTabSituacao = "situacao";
+$sqlTabTipo = "tipo";
+$sqlTabResPadrao = "respostaPadrao";
+$sqlOrderPrioridade = "ORDER BY id";
+$sqlOrderSituacao = "ORDER BY LOWER(nome)";
+$sqlOrderTipo = "ORDER BY LOWER(nome)";
+$sqlOrderResPadrao = "ORDER by LOWER(titulo)";
 
-		if(isset($_POST['submit-tipo'])){
-			$result = db_query("UPDATE ".$tabTipo." SET nome = ".db_quote($_POST['tipo-1'])." WHERE id = 1");
-			$result = db_query("UPDATE ".$tabTipo." SET nome = ".db_quote($_POST['tipo-2'])." WHERE id = 2");
-			$result = db_query("UPDATE ".$tabTipo." SET nome = ".db_quote($_POST['tipo-3'])." WHERE id = 3");
-			$result = db_query("UPDATE ".$tabTipo." SET nome = ".db_quote($_POST['tipo-4'])." WHERE id = 4");
-			$result = db_query("UPDATE ".$tabTipo." SET nome = ".db_quote($_POST['tipo-5'])." WHERE id = 5");
-			if($result === false) {
-				$error = pg_result_error($result);
-			}
-		}
+// variaveis: respostas padrao
+// $modalUpdateResPadrao = "update-respadrao";
+// $inputResPadrao = "InputRespadrao";
+// $inputResPadraoTitulo = "Titulo";
+// $inputResPadraoTexto = "Texto";
+// $resPadraoId = "idRespadrao";
+// $btnUpdateResPadrao = "btnUpdateRespadrao";
 
-		if(isset($_POST['submit-situacao'])){
-			$result = db_query("UPDATE ".$tabSituacao." SET nome = ".db_quote($_POST['situacao-1'])." WHERE id = 1");
-			$result = db_query("UPDATE ".$tabSituacao." SET nome = ".db_quote($_POST['situacao-2'])." WHERE id = 2");
-			$result = db_query("UPDATE ".$tabSituacao." SET nome = ".db_quote($_POST['situacao-3'])." WHERE id = 3");
-			$result = db_query("UPDATE ".$tabSituacao." SET nome = ".db_quote($_POST['situacao-4'])." WHERE id = 4");
-			$result = db_query("UPDATE ".$tabSituacao." SET nome = ".db_quote($_POST['situacao-5'])." WHERE id = 5");
-			if($result === false) {
-				$error = pg_result_error($result);
-			}
-		}
+// buscando as listas no banco
+$prioridades = db_select("SELECT * FROM ".$sqlTabPrioridade." ".$sqlOrderPrioridade);
+$situacoes = db_select("SELECT * FROM ".$sqlTabSituacao." ".$sqlOrderSituacao);
+$tipos = db_select("SELECT * FROM ".$sqlTabTipo." ".$sqlOrderTipo);
+$respostasPadrao = db_select("SELECT * FROM ".$sqlTabResPadrao." ".$sqlOrderResPadrao); 
 
-		if(isset($_POST['submit-resp-padrao'])){
-			$result = db_query("UPDATE ".$tabRespPadrao." SET titulo = ".db_quote($_POST['titulo-1']).", texto = ".db_quote($_POST['texto-1'])." WHERE id = 1");
-			$result = db_query("UPDATE ".$tabRespPadrao." SET titulo = ".db_quote($_POST['titulo-2']).", texto = ".db_quote($_POST['texto-2'])." WHERE id = 2");
-			$result = db_query("UPDATE ".$tabRespPadrao." SET titulo = ".db_quote($_POST['titulo-3']).", texto = ".db_quote($_POST['texto-3'])." WHERE id = 3");
-			$result = db_query("UPDATE ".$tabRespPadrao." SET titulo = ".db_quote($_POST['titulo-4']).", texto = ".db_quote($_POST['texto-4'])." WHERE id = 4");
-			$result = db_query("UPDATE ".$tabRespPadrao." SET titulo = ".db_quote($_POST['titulo-5']).", texto = ".db_quote($_POST['texto-5'])." WHERE id = 5");
-			if($result === false) {
-				$error = pg_result_error($result);
-			}
-		}
-	?>
-
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<!-- The above 3 meta tags *must* come first in the head -->
-	<title>Parâmetros SIGOI</title>
-
-	<!-- CSS Styles -->
-	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="css/bootstrap-datepicker.css">
-	<link rel="stylesheet" type="text/css" href="css/bootstrap-select.min.css" />
-	<link rel="stylesheet" type="text/css" href="css/custom.css">
-
-	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-	<!--[if lt IE 9]>
-	<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-	<![endif]-->
-
-</head>
-<body>
-	<!-- jQuery -->
-	<!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> -->
-	<script type="text/javascript" src="js/jquery1-11-3.min.js"></script>
-	<script type="text/javascript" src="js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="js/bootstrap-datepicker.js"></script>
-	<script type="text/javascript" src="js/bootstrap-select.min.js"></script>
-	<script type="text/javascript" src="js/custom.js"></script>	
-
-	<!-- Barra de Navegação -->
-	<nav class="navbar navbar-default">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<a class="navbar-brand" href="index.php">SIGOI</a>
-			</div>
-
-			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-				<!-- Barra de Navegação: Esquerda -->
-				<ul class="nav navbar-nav">
-					<li><a href="index.php">Sair</a></li>
-					<!-- <li><a href="#">Salvar</a></li> -->
-				</ul>
-				<!-- Barra de Navegação: Direita -->
-				<ul class="nav navbar-nav navbar-right">
-				</ul>
-			</div>
-		</div>
-	</nav>
-
-	<!-- Conteúdo -->
+// Header
+$navBackUrl = "index.php";
+$navOptions = "";
+require_once('./includes/header.php');
+require_once('./includes/navbar_default.php');
+?>	
 	<div class="container-fluid">
 	<div class="row">
 
 		<div id="exTab2">	
 			<ul class="nav nav-tabs">
 				<li class="active"><a href="#1" data-toggle="tab"><span class="glyphicon glyphicon-alert"></span> Prioridades</a></li>
-				<li><a href="#3" data-toggle="tab"><span class="glyphicon glyphicon-alert"></span> Situações</a></li>
-				<li><a href="#2" data-toggle="tab"><span class="glyphicon glyphicon-alert"></span> Tipos</a></li>
+				<li><a href="#2" data-toggle="tab"><span class="glyphicon glyphicon-alert"></span> Situações</a></li>
+				<li><a href="#3" data-toggle="tab"><span class="glyphicon glyphicon-alert"></span> Tipos</a></li>
 				<li><a href="#4" data-toggle="tab"><span class="glyphicon glyphicon-align-justify"></span> Respostas Padrão</a></li>
 			</ul>
 
 			<div class="tab-content ">
 				<div class="tab-pane active" id="1">
-					Tab 1
+					<?php require('parametros/cadastro_prioridade.php'); ?>
 				</div>
 				<div class="tab-pane" id="2">
-					Tab 2
+					<?php require('parametros/cadastro_situacao.php'); ?>
 				</div>
 				<div class="tab-pane" id="3">
-					Tab 3
+					<?php require('parametros/cadastro_tipo.php'); ?>
 				</div>
 				<div class="tab-pane" id="4">
-					Tab 4
+					<?php require('parametros/cadastro_respadrao.php'); ?>
 				</div>
 			</div>
 		</div>
 
-		<div class="col-md-2">
+		<!-- <div class="col-md-2">
 			<div class="panel panel-default">
   				<div class="panel-body">
-					<!-- buscando a lista de prioridades no banco -->
-					<?php $prioridades = db_select("SELECT * FROM ".$tabPrioridade." ORDER by id"); ?>
+					
 					<div class="form-group">
 						<form role="form" method="post" action="parametros.php">
 							<div class="form-group">
@@ -163,16 +98,15 @@
                     			<input name="submit-prioridade" type="submit" class="btn btn-primary" value="Salvar"/>
             				</div>
 						</form>
-					</div>
-  				</div> <!-- panel-body -->
-			</div> <!-- panel -->
-		</div> <!-- col-md-2 -->
+					</div> -->
+  				<!-- </div> --> <!-- panel-body -->
+			<!-- </div> --> <!-- panel -->
+		<!-- </div> --> <!-- col-md-2 -->
 
-		<div class="col-md-2">
+<!-- 		<div class="col-md-2">
 			<div class="panel panel-default">
   				<div class="panel-body">
-  					<!-- buscando a lista de tipos no banco -->
-  					<?php $tipos = db_select("SELECT * FROM ".$tabTipo); ?>
+  					
 					<div class="form-group">
 						<form role="form" method="post" action="parametros.php">
 							<div class="form-group">
@@ -199,16 +133,15 @@
                     			<input name="submit-tipo" type="submit" class="btn btn-primary" value="Salvar"/>
             				</div>
 						</form>
-					</div>
-  				</div> <!-- panel-body -->
-			</div> <!-- panel -->
-		</div> <!-- col-md-2 -->
+					</div> -->
+  				<!-- </div> --> <!-- panel-body -->
+			<!-- </div> --> <!-- panel -->
+		<!-- </div> --> <!-- col-md-2 -->
 
-		<div class="col-md-2">
+<!-- 		<div class="col-md-2">
 			<div class="panel panel-default">
   				<div class="panel-body">
-					<!-- buscando a lista de situacoes no banco -->
-					<?php $situacoes = db_select("SELECT * FROM ".$tabSituacao); ?>
+					
 					<div class="form-group">
 						<form role="form" method="post" action="parametros.php">
 							<div class="form-group">
@@ -235,18 +168,17 @@
                     			<input name="submit-situacao" type="submit" class="btn btn-primary" value="Salvar"/>
             				</div>
 						</form>
-					</div>
-  				</div> <!-- panel-body -->
-			</div> <!-- panel -->
-		</div> <!-- col-md-2 -->
-	</div> <!-- Entire Row -->
+					</div> -->
+  				<!-- </div> --> <!-- panel-body -->
+			<!-- </div> --> <!-- panel -->
+		<!-- </div> --> <!-- col-md-2 -->
+	<!-- </div> --> <!-- Entire Row -->
 
-	<div class="row">
+<!-- 	<div class="row">
 		<div class="col-md-6">
 			<div class="panel panel-default">
   				<div class="panel-body">
-					<!-- buscando a lista de respostas padrao no banco -->
-					<?php $respostasPadrao = db_select("SELECT * FROM ".$tabRespPadrao); ?>
+					
 					<div class="form-group">
 						<form role="form" method="post" action="parametros.php">
 							<div class="col-md-3">
@@ -297,11 +229,35 @@
 								</div>
 							</div>
 						</form>
-					</div>
-  				</div> <!-- panel-body -->
-			</div> <!-- panel -->
-		</div> <!-- col-md-6 -->
+					</div> -->
+  				<!-- </div> --> <!-- panel-body -->
+			<!-- </div> --> <!-- panel -->
+		<!-- </div> --> <!-- col-md-6 -->
 	</div> <!-- Entire Row -->
 	</div> <!-- Container Fluid -->
+
+	<!-- Footer -->
+	<?php require_once('./includes/footer.php'); ?>
+
+	<script type="text/javascript">
+	 //    $('tr').on('click', function (e) {
+		//     e.preventDefault();
+		//     // pegando o id e o nome da funcao na linha clicada
+		//     var id = $(this).closest('tr').data('id');
+		//     var nome = $(this).closest('tr').data('raw');
+		//     // mandando isso pra dentro do modal
+		//     $("#update-prioridade #idPrioridade").val(id);
+		//     $("#update-prioridade #inputPrioridade").val(nome);
+		// });
+
+	 //    // seta o foco pro text field
+		// $("#insert-funcao").on('shown.bs.modal', function(){
+	 //        $(this).find('#inputFuncao').focus();
+	 //    });
+	 //    $("#update-funcao").on('shown.bs.modal', function(){
+	 //        $(this).find('#inputFuncao').focus();
+	 //    });
+	</script>
+
 </body>
 </html>

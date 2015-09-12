@@ -34,7 +34,7 @@ if(isset($_POST[$btnUpdate])){
 	if($result === false) {
 		$error = pg_result_error($result);
 	}
-	header("Refresh:0");
+	header('Location: cadastro_local.php');
 }
 
 // exclui locais do banco
@@ -54,7 +54,7 @@ if(isset($_POST[$btnDelete])){
 		if($result === false) {
 			$error = pg_result_error($result);
 		}
-		header("Refresh:0");	
+		header('Location: cadastro_local.php');
 	}
 }
 
@@ -76,7 +76,7 @@ if(isset($_POST[$btnInsert])){
 		}
 		// atualiza a lista de locais
 		$locais = db_select("SELECT * FROM ".$sqlTabLocal." ".$sqlOrder);
-		header("Refresh:0");	
+		header('Location: cadastro_local.php');
 	}
 }
 

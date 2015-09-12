@@ -23,26 +23,31 @@ $dataId = $_GET['id'];
 $duplicate = false;
 $missedReqField = false;
 $sqlTabUsuario = "usuario";
-// $sqlJoinUsuario = "INNER JOIN setor on (usuario.idsetor = setor.id)";
-// $sqlOrderUsuario = "ORDER BY LOWER(USUARIO.nome)";
 $sqlTabSetor = "setor";
 $sqlTabFuncao = "funcao";
 $sqlOrder = "ORDER BY LOWER(nome)";
 $defaultPassword = 123;
 $hashedPassword;
 
-
-
 // altera usuarios no banco
 if(isset($_POST[$btnUpdate])){
+	// verifica se os campos obrigatórios foram preenchidos
+	if(empty($_POST[$inputNome])){
+		$missedReqField = true;
+	}
+
 	// buscando o ID do setor selecionado
 	$setorSelected = $_POST[$inputSetor];
 	$setorSelected = db_select("SELECT id from ".$sqlTabSetor." WHERE nome =".db_quote($setorSelected));
-	$setorSelected = $setorSelected[0]['id'];
+	if($setorSelected == null){ $missedReqField = true; 
+	}else{ $setorSelected = $setorSelected[0]['id']; }
+	
 	// buscando o ID da funcao selecionada
 	$funcaoSelected = $_POST[$inputFuncao];
 	$funcaoSelected = db_select("SELECT id from ".$sqlTabFuncao." WHERE nome =".db_quote($funcaoSelected));
-	$funcaoSelected = $funcaoSelected[0]['id'];
+	if($funcaoSelected == null){ $missedReqField = true; 
+	}else{ $funcaoSelected = $funcaoSelected[0]['id']; }
+
 	// pegando os valores dos checkboxes
 	$ativo="false"; 
 	$admin="false"; 
@@ -57,18 +62,22 @@ if(isset($_POST[$btnUpdate])){
 	}
 
 	// executa a query
-	$result = db_query("UPDATE ".$sqlTabUsuario.
-		" SET nome=".db_quote($_POST['inputNome']).
-		", idSetor=".$setorSelected.
-		", idFuncao=".$funcaoSelected.
-		", login=".db_quote($_POST['inputLogin']).
-		", ativo=".$ativo.
-		", admin=".$admin.
-		", resetarSenha=".$resetarSenha.
-		", ultimoLogin=null".
-		" WHERE id = ".$_POST['idUsuario']);
-	if($result === false){
-		$error = pg_result_error($result);
+	if($missedReqField === false){
+		$result = db_query("UPDATE ".$sqlTabUsuario.
+			" SET nome=".db_quote($_POST['inputNome']).
+			", idSetor=".$setorSelected.
+			", idFuncao=".$funcaoSelected.
+			", login=".db_quote($_POST['inputLogin']).
+			", ativo=".$ativo.
+			", admin=".$admin.
+			", resetarSenha=".$resetarSenha.
+			", ultimoLogin=null".
+			" WHERE id = ".$_POST['idUsuario']);
+		if($result === false){
+			$error = pg_result_error($result);
+		}
+		header('Location: lista_usuario.php');
+		die();
 	}
 }
 
@@ -129,6 +138,8 @@ if(isset($_POST[$btnInsert])){
 			if($result === false) {
 				$error = pg_result_error($result);
 			}
+			header('Location: lista_usuario.php');
+			die();
 		}
 	}
 }
@@ -171,7 +182,6 @@ require_once('./includes/header.php');
 				require('./includes/alert_error.php');
 			} ?>
 			
-
 			<div class="col-md-3">
 				<div class="panel panel-default">
 					<div class="panel-body" style="height: 500px;">
