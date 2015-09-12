@@ -162,7 +162,6 @@ require_once('./includes/header.php');
 	<form role="form" method="post" <?php echo "action=\"".$pageUrl."\""; ?>>
 	<?php require_once('./includes/navbar_default.php'); ?>
 
-	<!-- Conteúdo -->
 	<div class="container-fluid">
 		<div class="row">
 
