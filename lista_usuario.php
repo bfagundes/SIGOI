@@ -1,173 +1,32 @@
 <?php
-include "./functions/conexao.php";
+include ("./functions/conexao.php");
+include ("./functions/sessao.php");
+session_start();
+
+// Testa se o usuario está logado
+if(session_isValid() === false){
+	header('Location: login.php');
+	die();
+}
 
 // variaveis
-$page = "lista_usuario.php";
-$btnUpdate = "btnUpdate";
-$btnInsert = "btnInsert";
-$btnDelete = "btnDelete";
-$inputNome = "inputNome";
-$inputSetor = "inputSetor";
-$inputFuncao = "inputFuncao";
-$inputLogin = "inputLogin";
-$dataId = "idUsuario";
-$duplicate = false;
+$pageTitle = "Cadastro de Usuários";
+$pageUrl = "lista_usuario.php";
 $sqlTabUsuario = "usuario";
 $sqlJoin = "INNER JOIN setor on (usuario.idsetor = setor.id)";
 $sqlOrder = "ORDER BY LOWER(USUARIO.nome)";
-$sqlTabSetor = "setor";
-$sqlTabFuncao = "funcao";
-$defaultPassword = 123;
-$hashedPassword;
 
-// altera usuarios no banco
-if(isset($_POST[$btnUpdate])){
-	// buscando o ID do setor selecionado
-	$setorSelected = $_POST[$inputSetor];
-	$setorSelected = db_select("SELECT id from ".$sqlTabSetor." WHERE nome =".db_quote($setorSelected));
-	$setorSelected = $setorSelected[0]['id'];
-	// buscando o ID da funcao selecionada
-	$funcaoSelected = $_POST[$inputFuncao];
-	$funcaoSelected = db_select("SELECT id from ".$sqlTabFuncao." WHERE nome =".db_quote($funcaoSelected));
-	$funcaoSelected = $funcaoSelected[0]['id'];
-	// pegando os valores dos checkboxes
-	$ativo="false"; 
-	$admin="false"; 
-	$resetarSenha="false";
-	if(isset($_POST['ckAtivo']) && $_POST['ckAtivo'] == 'on'){ $ativo = "true"; }
-	if(isset($_POST['ckAdmin']) && $_POST['ckAdmin'] == 'on'){ $admin = "true"; }
-	
-	if(isset($_POST['ckResetarSenha']) && $_POST['ckResetarSenha'] == 'on'){
-		$hashedPassword = password_hash($defaultPassword, PASSWORD_DEFAULT);
-		$result = db_query("UPDATE ".$sqlTabUsuario." SET senha =".db_quote($hashedPassword)." WHERE id = ".$_POST['idUsuario']);
-		$resetarSenha = "true"; 
-	}
-
-	// executando a query
-	$result = db_query("UPDATE ".$sqlTabUsuario.
-		" SET nome=".db_quote($_POST['inputNome']).
-		", idSetor=".$setorSelected.
-		", idFuncao=".$funcaoSelected.
-		", login=".db_quote($_POST['inputLogin']).
-		", ativo=".$ativo.
-		", admin=".$admin.
-		", resetarSenha=".$resetarSenha.
-		", ultimoLogin=null".
-		" WHERE id = ".$_POST['idUsuario']);
-	if($result === false){
-		$error = pg_result_error($result);
-	}
-}
-
-// insere usuarios no banco
-if(isset($_POST[$btnInsert])){
-	// testando se já não existe um login com esses dados
-	$duplicate = false;
-	$usuarios = db_select("SELECT login from ".$sqlTabUsuario);
-	for ($i = 0; $i < count($usuarios); $i++) {
-		if((strcasecmp($usuarios[$i]['login'], $_POST[$inputLogin]) == 0)){
-			$duplicate = true;
-		}
-	}
-
-	// se não existe insere no banco
-	if($duplicate === false){
-		// buscando o ID do setor selecionado
-		$setorSelected = $_POST[$inputSetor];
-		$setorSelected = db_select("SELECT id from ".$sqlTabSetor." WHERE nome =".db_quote($setorSelected));
-		$setorSelected = $setorSelected[0]['id'];
-		// buscando o ID da funcao selecionada
-		$funcaoSelected = $_POST[$inputFuncao];
-		$funcaoSelected = db_select("SELECT id from ".$sqlTabFuncao." WHERE nome =".db_quote($funcaoSelected));
-		$funcaoSelected = $funcaoSelected[0]['id'];
-		// pegando os valores dos checkboxes
-		$ativo="false"; 
-		$admin="false"; 
-		$resetarSenha="false";
-		if(isset($_POST['ckAtivo']) && $_POST['ckAtivo'] == 'on'){ $ativo = "true"; }
-		if(isset($_POST['ckAdmin']) && $_POST['ckAdmin'] == 'on'){ $admin = "true"; }
-		
-		if(isset($_POST['ckResetarSenha']) && $_POST['ckResetarSenha'] == 'on'){
-			$hashedPassword = password_hash($defaultPassword, PASSWORD_DEFAULT);
-			$resetarSenha = "true"; 
-		}
-
-		// executa a query	
-		$result = db_query("INSERT INTO ".$sqlTabUsuario.
-			" (nome, idSetor, idFuncao, login, senha, ativo, admin, resetarSenha, ultimoLogin) VALUES".
-			" (".db_quote($_POST['inputNome']).
-			", ".$setorSelected.
-			", ".$funcaoSelected.
-			", ".db_quote($_POST['inputLogin']).
-			", ".db_quote($hashedPassword).
-			", ".$ativo.
-			", ".$admin.
-			", ".$resetarSenha.
-			", null)");
-		if($result === false) {
-			$error = pg_result_error($result);
-		}
-	}
-}
-
-// busca a lista de funcoes no banco
+// busca a lista de usuarios no banco
 $usuarios = db_select("SELECT USUARIO.id AS id, USUARIO.nome AS nome, USUARIO.login AS login, SETOR.nome as setor FROM ".$sqlTabUsuario." ".$sqlJoin." ".$sqlOrder);
 
+// Header
+$navBackUrl = "index.php";
+$navOptions = "<li class=\"nav nav-btn\"><a href=\"cadastro_usuario.php?id=0\">Incluir Usuario</a></li>";
+require_once('./includes/header.php');
+require_once('./includes/navbar_default.php');
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Cadastro de Usuários</title>
- 
-    <!-- CSS Styles -->
-	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="css/bootstrap-datepicker.css">
-	<link rel="stylesheet" type="text/css" href="css/bootstrap-select.min.css" />
-	<link rel="stylesheet" type="text/css" href="css/custom.css">
- 
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-</head>
-<body>
-    <!-- jQuery & JavaScript -->
-	<!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> -->
-	<script type="text/javascript" src="js/jquery1-11-3.min.js"></script>
-	<script type="text/javascript" src="js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="js/bootstrap-datepicker.js"></script>
-	<script type="text/javascript" src="js/bootstrap-select.min.js"></script>
-	<script type="text/javascript" src="js/custom.js"></script>	
-
-	<!-- Barra de Navegação -->
-	<nav class="navbar navbar-default">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<a class="navbar-brand" href="index.php">SIGOI</a>
-			</div>
-			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-				<!--  Barra de Navegação: Esquerda -->
-				<ul class="nav navbar-nav">
-					<li class="nav nav-btn"><a href="index.php">Sair</a></li>
-					<li class="nav nav-btn"><a href="cadastro_usuario.php?id=0">Incluir Usuario</a></li>
-				</ul>
-				<!-- Barra de Navegação: Direita -->
-				<ul class="nav navbar-nav navbar-right">
-				</ul>
-			</div>
-		</div>
-	</nav>
-
-	<!-- Conteúdo -->
 	<div class="container-fluid">
 		<div class="row">
-
 			<!-- Tabela com a lista de usuarios -->
 			<table class="table table-condensed table-hover">
 				<thead>
@@ -192,17 +51,20 @@ $usuarios = db_select("SELECT USUARIO.id AS id, USUARIO.nome AS nome, USUARIO.lo
 					} ?>
 				</tbody>
 			</table>
-		</div> <!-- /Row -->
-	</div> <!-- /Container-Fluid -->
+		</div>
+	</div>
+
+	<!-- Footer -->
+	<?php require_once('./includes/footer.php'); ?>
+
+	<script type="text/javascript">
+		jQuery( function($) {
+			$('tr').addClass('clickable').click(function() {
+				var id = $(this).closest('tr').data('id');
+				window.location = "cadastro_usuario.php?id=" + id;
+			});
+		});
+	</script>
 
 </body>
 </html>
-
-<script type="text/javascript">
-	jQuery( function($) {
-		$('tr').addClass('clickable').click(function() {
-			var id = $(this).closest('tr').data('id');
-			window.location = "cadastro_usuario.php?id=" + id;
-		});
-	});
-</script>

@@ -87,6 +87,7 @@ include('./includes/modal_single_insert.php');
 include('./includes/modal_single_update.php');
 
 // Header
+$navBackUrl = "index.php";
 $navOptions = "<li class=\"nav nav-btn\" data-toggle=\"modal\" data-target=\"#$modalInsert\"><a href=\"#\">Incluir Local</a></li>";  
 require_once('./includes/header.php');
 require_once('./includes/navbar_default.php');
