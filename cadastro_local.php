@@ -82,6 +82,7 @@ if(isset($_POST[$btnInsert])){
 
 // Modals
 $inputName1 = $inputLocal;
+$inputTitle1 = "Local";
 include('./includes/modal_single_insert.php');
 include('./includes/modal_single_update.php');
 
@@ -92,14 +93,14 @@ require_once('./includes/navbar_default.php');
 ?>
 	<div class="container-fluid">
 		<div class="row">
-			<!-- Mensagem de erro ao cadastrar um local duplicado -->
-			<?php if($duplicate === true){
+			<?php
+			// Mensagem de erro ao cadastrar um local duplicado
+			if($duplicate === true){
 				$errorMessage="<strong>Atenção!</strong> Esse local já existe no cadastro.";
 				require('./includes/alert_error.php');
-			} ?>
-
-			<!-- Mensagem de erro ao tentar deletar um local com dependências -->
-			<?php if($blocked === true){
+			}
+			// Mensagem de erro ao tentar deletar um local com dependências
+			if($blocked === true){
 				$errorMessage="<strong>Atenção!</strong> Esse local está vinculado a um ou mais setores. Não é possível efetuar a exclusão."; 
 				require('./includes/alert_error.php');
 			} ?>
@@ -132,7 +133,7 @@ require_once('./includes/navbar_default.php');
 	<script type="text/javascript">
 	    $('tr').on('click', function (e) {
 		    e.preventDefault();
-		    // pegando o id e o nome da local na linha clicada
+		    // pegando o id e o nome do local na linha clicada
 		    var id = $(this).closest('tr').data('id');
 		    var nome = $(this).closest('tr').data('raw');
 		    // mandando isso pra dentro do modal
@@ -140,7 +141,7 @@ require_once('./includes/navbar_default.php');
 		    $("#update-local #inputLocal").val(nome);
 		});
 
-	    // seta o foco pro text field inputLocal
+	    // seta o foco pro text field
 		$("#insert-local").on('shown.bs.modal', function(){
 	        $(this).find('#inputLocal').focus();
 	    });

@@ -1,8 +1,17 @@
 <?php
-include "./functions/conexao.php";
+include ("./functions/conexao.php");
+include ("./functions/sessao.php");
+session_start();
+
+// Testa se o usuario está logado
+if(session_isValid() === false){
+	header('Location: login.php');
+	die();
+}
 
 // variaveis
-$page = "cadastro_setor.php";
+$pageTitle = "Cadastro de Setores";
+$pageUrl = "cadastro_setor.php";
 $btnUpdate = "btnUpdate";
 $btnInsert = "btnInsert";
 $btnDelete = "btnDelete";
@@ -50,7 +59,7 @@ if(isset($_POST[$btnDelete])){
 		}
 	}
 
-	// se não existe deleta o setor
+	// executa a exclusao
 	if($blocked === false){
 		$result = db_query("DELETE from ".$sqlTabSetor." WHERE id = ".db_quote($_POST[$dataId]));
 		if($result === false) {
@@ -62,7 +71,7 @@ if(isset($_POST[$btnDelete])){
 
 // insere setores no banco
 if(isset($_POST[$btnInsert])){
-	// testando se já não existe uma entrada com esses valores
+	// testando se já não existe uma entrada com esses valores (case insensitive)
 	$duplicate = false;
 	for ($i = 0; $i < count($setores); $i++) {
 		if((strcasecmp($setores[$i]['setor'], $_POST[$inputSetor]) == 0) && (strcasecmp($setores[$i]['local'], $_POST[$inputLocal]) == 0)){
@@ -70,7 +79,7 @@ if(isset($_POST[$btnInsert])){
 		}
 	}
 
-	// se não existe insere no banco
+	// executa a inclusao
 	if($duplicate === false){
 		// buscando o ID do local selecionado
 		$localSelected = $_POST[$inputLocal];
@@ -84,95 +93,45 @@ if(isset($_POST[$btnInsert])){
 			if($result === false) {
 				$error = pg_result_error($result);
 			}
-			// atualiza o array com a lista de setores
+			// atualiza a lista de setores
 			$setores = db_select("SELECT SETOR.id AS id, SETOR.nome AS setor, LOCAL.nome AS local FROM ".$sqlTabSetor." ".$sqlJoin." ".$sqlOrderSetor);
 			header("Refresh:0");	
 		}
 	}
 }
+
+// Modals
+$inputName1 = $inputSetor;
+$inputName2 = $inputLocal;
+$inputTitle1 = "Setor";
+$inputTitle2 = "Local";
+$array = $locais;
+include('./includes/modal_double_insert.php');
+include('./includes/modal_double_update.php');
+
+// Header
+$navOptions = "<li class=\"nav nav-btn\" data-toggle=\"modal\" data-target=\"#$modalInsert\"><a href=\"#\">Incluir Setor</a></li>";
+require_once('./includes/header.php');
+require_once('./includes/navbar_default.php');
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Cadastro de Setores</title>
- 
-    <!-- CSS Styles -->
-	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="css/bootstrap-datepicker.css">
-	<link rel="stylesheet" type="text/css" href="css/bootstrap-select.min.css" />
-	<link rel="stylesheet" type="text/css" href="css/custom.css">
- 
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-</head>
-<body>
-    <!-- jQuery & JavaScript -->
-	<!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> -->
-	<script type="text/javascript" src="js/jquery1-11-3.min.js"></script>
-	<script type="text/javascript" src="js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="js/bootstrap-datepicker.js"></script>
-	<script type="text/javascript" src="js/bootstrap-select.min.js"></script>
-	<script type="text/javascript" src="js/custom.js"></script>	
-
-	<!-- Barra de Navegação -->
-	<nav class="navbar navbar-default">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<a class="navbar-brand" href="index.php">SIGOI</a>
-			</div>
-			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-				<!--  Barra de Navegação: Esquerda -->
-				<ul class="nav navbar-nav">
-					<li class="nav nav-btn"><a href="index.php">Sair</a></li>
-					<li class="nav nav-btn" data-toggle="modal" <?php echo(" data-target=\"#".$modalInsert."\""); ?>><a href="#">Incluir Setor</a></li>
-				</ul>
-				<!-- Barra de Navegação: Direita -->
-				<ul class="nav navbar-nav navbar-right">
-				</ul>
-			</div>
-		</div>
-	</nav>
-
-	<!-- Conteúdo -->
 	<div class="container-fluid">
 		<div class="row">
-			<!-- Mensagem de Erro ao cadastrar setor duplicado -->
-			<?php if($duplicate === true){ ?>
-			<div class="col-md-10 col-md-offset-1">
-				<div class="alert alert-danger alert-dismissible" role="alert">
-					<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<strong>Atenção!</strong> Esse setor já existe no cadastro.
-				</div>
-			</div>
-			<?php } ?>
-
-			<!-- Mensagem de Erro ao deixar de selecionar um local -->
-			<?php if($missedReqField === true){ ?>
-			<div class="col-md-10 col-md-offset-1">
-				<div class="alert alert-danger alert-dismissible" role="alert">
-					<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<strong>Atenção!</strong> Você não selecionou um local.
-				</div>
-			</div>
-			<?php } ?>
-
-			<!-- Mensagem de Erro ao tentar deletar um setor com dependências -->
-			<?php if($blocked === true){ ?>
-			<div class="col-md-10 col-md-offset-1">
-				<div class="alert alert-danger alert-dismissible" role="alert">
-					<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<strong>Atenção!</strong> Esse setor está vinculado a um ou mais usuários. Não é possível efetuar a exclusão.
-				</div>
-			</div>
-			<?php } ?>
+			<?php
+			// Mensagem de erro ao cadastrar um setor duplicado
+			if($duplicate === true){
+				$errorMessage="<strong>Atenção!</strong> Esse setor já existe no cadastro.";
+				require('./includes/alert_error.php');
+			}
+			// Mensagem de erro ao tentar cadastrar um setor sem selecionar um local
+			if($missedReqField === true){
+				$errorMessage="<strong>Atenção!</strong> Você não selecionou um local.";
+				require('./includes/alert_error.php');
+			}
+			// Mensagem de erro ao tentar deletar um setor com dependências
+			if($blocked === true){
+				$errorMessage="<strong>Atenção!</strong> Esse setor está vinculado a um ou mais usuários. Não é possível efetuar a exclusão."; 
+				require('./includes/alert_error.php');
+			} ?>
 				
 			<!-- Tabela com a lista de locais -->
 			<table class="table table-condensed table-hover">
@@ -196,81 +155,11 @@ if(isset($_POST[$btnInsert])){
 					} ?>
 				</tbody>
 			</table>
-		</div> <!-- /Row -->
-	</div> <!-- /Container-Fluid -->
-
-	<!-- Modal update-setor -->
-	<div class="modal fade" <?php echo(" id=\"".$modalUpdate."\""); ?> tabindex="-1" role="dialog">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title">Editar Setor</h4>
-				</div>
-				<div class="modal-body">
-					<form role="form" method="post" <?php echo(" action=\"".$page."\""); ?>>
-						<div class="form-group">
-							<label for="setor-heading">Setor</label>
-							<input type="hidden" <?php echo(" name=\"".$dataId."\""); ?> <?php echo(" id=\"".$dataId."\""); ?> value=""/>
-							<input type="text" <?php echo(" name=\"".$inputSetor."\""); ?> class="form-control" value="" <?php echo(" id=\"".$inputSetor."\""); ?> required>
-						</div>
-						<div class="btn-group" role="group">
-							<div class="form-group">
-								<select <?php echo(" id=\"".$inputLocal."\""); ?> <?php echo(" name=\"".$inputLocal."\""); ?> class="selectpicker" data-width="100%">
-									<?php
-									for($i = 0; $i <count($locais); $i++){
-										echo "<option>".$locais[$i]['nome']."</option>";
-									}
-									?>
-								</select> 
-							</div>
-						</div>
-						<div class="form-group">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                			<input <?php echo(" name=\"".$btnUpdate."\""); ?> type="submit" class="btn btn-primary" value="Salvar"/>
-                			<input <?php echo(" name=\"".$btnDelete."\""); ?> type="submit" class="btn btn-danger" value="Delete" onclick="return confirm('Você tem certeza?');"/>
-        				</div>
-					</form>
-				</div>
-			</div>
 		</div>
 	</div>
 
-	<!-- Modal insert-setor -->
-	<div class="modal fade" <?php echo(" id=\"".$modalInsert."\""); ?> tabindex="-1" role="dialog">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title">Incluir Setor</h4>
-				</div>
-				<div class="modal-body">
-					<form role="form" method="post" <?php echo(" action=\"".$page."\""); ?>>
-						<div class="form-group">
-							<label for="setor-heading">Setor</label>
-							<input type="text" <?php echo(" name=\"".$inputSetor."\""); ?> class="form-control" value="" <?php echo(" id=\"".$inputSetor."\""); ?> required>
-						</div>
-						<div class="btn-group" role="group">
-							<div class="form-group">
-								<select <?php echo(" id=\"".$inputLocal."\""); ?> <?php echo(" name=\"".$inputLocal."\""); ?> class="selectpicker" data-width="100%">
-								<option>Selecione o local:</option>
-									<?php
-									for($i = 0; $i <count($locais); $i++){
-										echo "<option>".$locais[$i]['nome']."</option>";
-									}
-									?>
-								</select> 
-							</div>
-						</div>
-						<div class="form-group">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                			<input <?php echo(" name=\"".$btnInsert."\""); ?> type="submit" class="btn btn-primary" value="Salvar"/>
-        				</div>
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
+	<!-- Footer -->
+	<?php require_once('./includes/footer.php'); ?>
 
 	<script type="text/javascript">
 	    $('tr').on('click', function (e) {
@@ -285,7 +174,7 @@ if(isset($_POST[$btnInsert])){
 		    $("#update-setor #inputLocal").selectpicker('val', local);
 		});
 
-	    // seta o foco pro text field inputSetor
+	    // seta o foco pro text field
 		$("#insert-setor").on('shown.bs.modal', function(){
 	        $(this).find('#inputSetor').focus();
 	    });
@@ -293,7 +182,7 @@ if(isset($_POST[$btnInsert])){
 	        $(this).find('#inputSetor').focus();
 	    });
 
-	    // altera o estilo doselectpicker
+	    // altera o estilo do selectpicker
 		$('.selectpicker').selectpicker();	
 	</script>
 

@@ -9,6 +9,7 @@
     <!-- CSS Styles -->
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/bootstrap-datepicker.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-select.min.css" />
     <link rel="stylesheet" type="text/css" href="css/custom.css">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->

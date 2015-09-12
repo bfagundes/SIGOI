@@ -82,6 +82,7 @@ if(isset($_POST[$btnInsert])){
 
 // Modals
 $inputName1 = $inputFuncao;
+$inputTitle1 = "Função";
 include('./includes/modal_single_insert.php');
 include('./includes/modal_single_update.php');
 
@@ -92,14 +93,14 @@ require_once('./includes/navbar_default.php');
 ?>
 	<div class="container-fluid">
 		<div class="row">
-			<!-- Mensagem de erro ao cadastrar uma funcao duplicada -->
-			<?php if($duplicate === true){
+			<?php
+			// Mensagem de erro ao cadastrar uma funcao duplicada
+			if($duplicate === true){
 				$errorMessage="<strong>Atenção!</strong> Essa função já existe no cadastro.";
 				require('./includes/alert_error.php');
-			} ?>
-
-			<!-- Mensagem de erro ao tentar deletar uma funcao com dependências -->
-			<?php if($blocked === true){
+			}
+			// Mensagem de erro ao tentar deletar uma funcao com dependências
+			if($blocked === true){
 				$errorMessage="<strong>Atenção!</strong> Essa função está vinculada a um ou mais usuários. Não é possível efetuar a exclusão."; 
 				require('./includes/alert_error.php');
 			} ?>
@@ -140,7 +141,7 @@ require_once('./includes/navbar_default.php');
 		    $("#update-funcao #inputFuncao").val(nome);
 		});
 
-	    // seta o foco pro text field inputFuncao
+	    // seta o foco pro text field
 		$("#insert-funcao").on('shown.bs.modal', function(){
 	        $(this).find('#inputFuncao').focus();
 	    });
