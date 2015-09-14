@@ -63,5 +63,27 @@ require_once('./includes/navbar_default.php');
 	<!-- Footer -->
 	<?php require_once('./includes/footer.php'); ?>
 
+	<!-- Scripts -->
+	<script type="text/javascript">
+		// funcao que busca um parametro na URL
+		var getUrlParameter = function getUrlParameter(sParam) {
+		    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+		        sURLVariables = sPageURL.split('&'),
+		        sParameterName,
+		        i;
+
+		    for (i = 0; i < sURLVariables.length; i++) {
+		        sParameterName = sURLVariables[i].split('=');
+
+		        if (sParameterName[0] === sParam) {
+		            return sParameterName[1] === undefined ? true : sParameterName[1];
+		        }
+		    }
+		};
+		// seta a tab ativa de acordo com o parametro
+		var tab = getUrlParameter('tab');
+		$('.nav-tabs a[href="#' + tab + '"]').tab('show');
+	</script>
+
 </body>
 </html>

@@ -14,7 +14,7 @@ if(isset($_POST[$btnUpdatePrioridade])){
 	if($result === false) {
 		$error = pg_result_error($result);
 	}
-	header('Location: parametros.php');
+	header('Location: parametros.php?tab=1');
 }
 
 ?>

@@ -2,12 +2,14 @@
 
 // variaveis
 $modalUpdateSituacao = "update-situacao";
+$modalInsertSituacao = "insert-situacao";
 $inputSituacao = "inputSituacao";
 $inputName = "Situação";
 $dataId = "idSituacao";
+$btnInsertSituacao = "btnInsertSituacao";
 $btnUpdateSituacao = "btnUpdateSituacao";
 $btnDeleteSituacao = "btnDeleteSituacao";
-$sqlTabSituacao = "situacao";
+$duplicate = false;
 
 // altera situacoes no banco
 if(isset($_POST[$btnUpdateSituacao])){
@@ -15,7 +17,7 @@ if(isset($_POST[$btnUpdateSituacao])){
 	if($result === false) {
 		$error = pg_result_error($result);
 	}
-	header('Location: parametros.php');
+	header('Location: parametros.php?tab=2');
 }
 
 // deleta situacoes do banco
@@ -24,15 +26,45 @@ if(isset($_POST[$btnDeleteSituacao])){
 	if($result === false) {
 		$error = pg_result_error($result);
 	}
-	header('Location: parametros.php');
+	header('Location: parametros.php?tab=2');
+}
+
+// insere situacoes no banco
+if(isset($_POST[$btnInsertSituacao])){
+	// testa se já não existe uma entrada duplicada (case insensitive)
+	$duplicate = false;
+	for ($i = 0; $i < count($situacoes); $i++) {
+		if(strcasecmp($situacoes[$i]['nome'], $_POST[$inputSituacao]) == 0){
+			$duplicate = true;
+		}
+	}
+
+	// executa a inclusao
+	if($duplicate === false){
+		$result = db_query("INSERT INTO ".$sqlTabSituacao." (nome) VALUES (".db_quote($_POST[$inputSituacao]).")");
+		if($result === false) {
+			$error = pg_result_error($result);
+		}
+		// atualiza a lista de funcoes
+		$situacoes = db_select("SELECT * FROM ".$sqlTabSituacao." ".$sqlOrderSituacao);
+		header('Location: parametros.php?tab=2');
+	}
 }
 
 ?>
 
+<?php
+// Mensagem de erro ao cadastrar um tipo duplicada
+if($duplicate === true){
+	$errorMessage="<strong>Atenção!</strong> Essa situação já existe no cadastro.";
+	echo "<br>";
+	require('./includes/alert_error.php');
+}?>
+
 <table class="table table-condensed table-hover">
 	<thead>
 		<tr>
-			<th width="1%"></th>
+			<th width="1%"><div style="text-align: center;"><input <?php echo(" name=\"".$btnInsertSituacao."\""); ?> data-toggle="modal" <?php echo ("data-target=\"#".$modalInsertSituacao."\""); ?> class="btn btn-warning btn-add-small" value="+"/></div></th>
 			<th class="col-sm-3">Situação</th>
 		</tr>
 	</thead>
@@ -47,7 +79,7 @@ if(isset($_POST[$btnDeleteSituacao])){
 	</tbody>
 </table>
 
-<!-- Modal -->
+<!-- Modal-Update -->
 <div class="modal fade" <?php echo(" id=\"".$modalUpdateSituacao."\""); ?> tabindex="-1" role="dialog">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
@@ -73,6 +105,31 @@ if(isset($_POST[$btnDeleteSituacao])){
 	</div>
 </div>
 
+<!-- Modal-Insert -->
+<div class="modal fade" <?php echo(" id=\"".$modalInsertSituacao."\""); ?> tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title"><?php echo $pageTitle; ?></h4>
+			</div>
+			<div class="modal-body">
+				<form role="form" method="post" <?php echo(" action=\"".$pageUrl."\""); ?>>
+					<div class="form-group">
+						<label for="funcao-heading"><?php echo $inputName; ?></label>
+						<input type="hidden" <?php echo(" name=\"".$dataId."\" id=\"".$dataId."\""); ?> value=""/>
+						<input type="text" <?php echo("name=\"".$inputSituacao."\" id=\"".$inputSituacao."\""); ?> class="form-control" value="" required>
+					</div>
+					<div class="form-group">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+						<input <?php echo(" name=\"".$btnInsertSituacao."\""); ?> type="submit" class="btn btn-primary" value="Salvar"/>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
 <script type="text/javascript">
 	$('tr').on('click', function (e) {
 	    e.preventDefault();
@@ -84,6 +141,9 @@ if(isset($_POST[$btnDeleteSituacao])){
 	    $("#update-situacao #inputSituacao").val(nome);
 	});
     $("#update-situacao").on('shown.bs.modal', function(){
+        $(this).find('#inputSituacao').focus();
+    });
+    $("#insert-situacao").on('shown.bs.modal', function(){
         $(this).find('#inputSituacao').focus();
     });
 </script>

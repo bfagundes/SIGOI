@@ -19,7 +19,7 @@
 						<li><a href="cadastro_local.php">Cadastro de Locais</a></li>
 						<li><a href="cadastro_funcao.php">Cadastro de Funções</a></li>
 						<li role="separator" class="divider"></li>
-						<li><a href="parametros.php">Parâmetros SIGOI</a></li>
+						<li><a href="parametros.php?tab=1">Parâmetros SIGOI</a></li>
 					</ul>
 				</li>
 				<li class="dropdown">

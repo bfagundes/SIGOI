@@ -32,3 +32,9 @@ div#idlogin {
 	text-align: right;
 	font-size: 12px;
 }
+
+.btn-add-small{
+	width: 25px;
+	padding: 0px 6px;
+	text-align: center;
+}
