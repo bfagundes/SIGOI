@@ -13,120 +13,84 @@ if(session_isValid() === false){
 $pageTitle = "SIGOI";
 $pageUrl = "index.php";
 
+// buscando a lista de chamados abertos
+$chamados = db_select("SELECT ".
+	"CHAMADO.id as id, ".
+	"USUARIO.nome as solicitante, ".
+    "SETOR.nome as setor, ".
+   	"LOCAL.nome as local, ".
+    "CHAMADO.dataabertura as dataabertura, ".
+    "CHAMADO.datafechamento as datafechamento, ".
+    "USUARIO.nome as tecnico, ".
+    "TIPO.nome as tipo, ".
+    "PRIORIDADE.nome as prioridade, ".
+    "SITUACAO.nome as situacao, ".
+    "CHAMADO.ASSUNTO as assunto, ".
+    "CHAMADO.descricao as descricao, ".
+    "CHAMADO.idsituacao as idsituacao, ".
+    "CHAMADO.idprioridade as idprioridade, ".
+    "CHAMADO.idtipo as idtipo ".
+    "FROM chamado ".
+ 	"INNER JOIN usuario on (chamado.idsolicitante = usuario.id) ".
+ 	"INNER JOIN setor on (chamado.idsetor = setor.id) ".
+ 	"INNER JOIN local on (chamado.idlocal = local.id) ".
+ 	"INNER JOIN tipo on (chamado.idtipo = tipo.id) ".
+ 	"INNER JOIN prioridade on (chamado.idprioridade = prioridade.id) ".
+ 	"INNER JOIN situacao on (chamado.idsituacao = situacao.id) ".
+ 	"ORDER BY idPrioridade");
+
+$situacoes = db_select("SELECT DISTINCT chamado.idsituacao, situacao.nome FROM chamado INNER JOIN situacao on (chamado.idsituacao = situacao.id) ORDER BY idsituacao");
+
 // Header
 require_once('./includes/header.php');
 require_once('./includes/navbar_index.php');
 ?>
 	<div class="container-fluid">
-		<!-- Tabela de Chamados Abertos -->
-		<table class="table table-condensed table-hover">
-			<thead>
-				<tr>
-					<th width="2%"></th>
-					<th width="2%"></th>
-					<th class="col-sm-3">Chamados Abertos</th>
-					<th class="col-sm-2">Solicitante</th>
-					<th class="col-sm-2">Local</th>
-					<th class="col-sm-1">Data</th>
-					<th class="col-sm-2">Técnico</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-			  		<td><input type="checkbox" class="Ch-Abertos"></td>
-			  		<td><span class="label label-danger">Urgente</span></td> 
-			  		<td>Mudar as mesas de lugar</td>
-			  		<td>Anne</td>
-			  		<td>Assessoria Técnica</td>
-			  		<td>10/Ago/15</td>
-			  		<td>Matteus Barragan</td>
-		  		</tr>
-		  		<tr>
-			  		<td><input type="checkbox" class="Ch-Abertos"></td>
-			  		<td><span class="label label-warning">Alta</span></td> 
-			  		<td>A pasta da farmácia sumui do desktop</td>
-			  		<td>Karina da Farmácia</td>
-			  		<td>Farmácia</td>
-			  		<td>10/Ago/15</td>
-			  		<td>Elisa Penteado</td>
-		  		</tr>
-		  		<tr>
-			  		<td><input type="checkbox" class="Ch-Abertos"></td>
-			  		<td><span class="label label-info">Média</span></td> 
-			  		<td>Problemas com terroristas sírios</td>
-			  		<td>Tera Giga</td>
-			  		<td>Egenharia</td>
-			  		<td>10/Ago/15</td>
-			  		<td>Bruno Fagundes</td>
-		  		</tr>
-		  		<tr>
-			  		<td><input type="checkbox" class="Ch-Abertos"></td>
-			  		<td><span class="label label-success">Baixa</span></td> 
-			  		<td>Quebrar 38 contas</td>
-			  		<td>Adriana</td>
-			  		<td>Faturamento</td>
-			  		<td>10/Ago/15</td>
-			  		<td>Igor Nunes</td>
-		  		</tr>
-			</tbody>
-		</table>
-
-		<!-- Tabela de Chamados Pendentes -->
-		<table class="table table-condensed table-hover">
-			<thead>
-				<tr>
-					<th width="2%"></th>
-					<th width="2%"></th>
-					<th class="col-sm-3">Chamados Pendentes</th>
-					<th class="col-sm-2">Solicitante</th>
-					<th class="col-sm-2">Local</th>
-					<th class="col-sm-1">Data</th>
-					<th class="col-sm-2">Técnico</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-			  		<td><input type="checkbox" id="blankCheckbox" value="option1" aria-label="..."></td>
-			  		<td><span class="label label-danger">Urgente</span></td> 
-			  		<td>Mudar as mesas de lugar</td>
-			  		<td>Anne</td>
-			  		<td>Assessoria Técnica</td>
-			  		<td>10/Ago/15</td>
-			  		<td>Matteus Barragan</td>
-		  		</tr>
-		  		<tr>
-			  		<td><input type="checkbox" id="blankCheckbox" value="option1" aria-label="..."></td>
-			  		<td><span class="label label-warning">Alta</span></td> 
-			  		<td>A pasta da farmácia sumui do desktop</td>
-			  		<td>Karina da Farmácia</td>
-			  		<td>Farmácia</td>
-			  		<td>10/Ago/15</td>
-			  		<td>Elisa Penteado</td>
-		  		</tr>
-		  		<tr>
-			  		<td><input type="checkbox" id="blankCheckbox" value="option1" aria-label="..."></td>
-			  		<td><span class="label label-info">Média</span></td> 
-			  		<td>Problemas com terroristas sírios</td>
-			  		<td>Tera Giga</td>
-			  		<td>Egenharia</td>
-			  		<td>10/Ago/15</td>
-			  		<td>Bruno Fagundes</td>
-		  		</tr>
-		  		<tr>
-			  		<td><input type="checkbox" id="blankCheckbox" value="option1" aria-label="..."></td>
-			  		<td><span class="label label-success">Baixa</span></td> 
-			  		<td>Quebrar 38 contas</td>
-			  		<td>Adriana</td>
-			  		<td>Faturamento</td>
-			  		<td>10/Ago/15</td>
-			  		<td>Igor Nunes</td>
-		  		</tr>
-			</tbody>
-		</table>
-	</div>
+		<!-- Tabela de Chamados -->
+		<?php if(!empty($chamados)){
+			foreach($situacoes as $situacao){ ?>
+				<table class="table table-condensed table-hover">
+					<thead>
+						<tr>
+							<th width="2%"></th>
+							<th width="2%"></th>
+							<th class="col-sm-3"><?php echo $situacao['nome'] ?></th>
+							<th class="col-sm-2">Solicitante</th>
+							<th class="col-sm-2">Local</th>
+							<th class="col-sm-1">Data</th>
+							<th class="col-sm-2">Técnico</th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php
+						foreach($chamados as $chamado){
+							if($chamado['idsituacao'] == $situacao['idsituacao']){
+								echo "<tr data-id=\"".$chamado['id']."\">";
+								//echo "<td><input type=\"checkbox\" class=\"Ch-Abertos\"></td>";
+								echo "<td></td>";
+								echo "<td><span class=\"label label-danger\">Urgente</span></td>";
+								echo "<td>".$chamado['assunto']."</td>";
+								echo "<td>".$chamado['solicitante']."</td>";
+								echo "<td>".$chamado['setor']."</td>";
+								echo "<td>".$chamado['dataabertura']."</td>";
+								echo "<td>".$chamado['tecnico']."</td>";
+								echo "</tr>";
+						}} ?>
+					</tbody>
+				</table>
+		<?php }} ?>
 
 	<!-- Footer -->
 	<?php require_once('./includes/footer.php'); ?>
+
+	<script type="text/javascript">
+		jQuery( function($) {
+			$('tr').addClass('clickable').click(function() {
+				var id = $(this).closest('tr').data('id');
+				window.location = "chamado.php?id=" + id;
+			});
+		});
+	</script>
 
 </body>
 </html>
