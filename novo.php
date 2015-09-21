@@ -12,6 +12,32 @@ if(session_isValid() === false){
 // variaveis
 $pageTitle = "SIGOI";
 $pageUrl = "index.php";
+$sqlTabSetor = "setor";
+$sqlTabUsuario = "usuario";
+$sqlOrderUsuario = "ORDER BY LOWER(nome)";
+$sqlTabTipo = "tipo";
+$sqlOrderTipo = "ORDER BY LOWER(nome)";
+$sqlTabPrioridade = "prioridade";
+$sqlOrderPrioridade = "ORDER BY id";
+$sqlTabSituacao = "situacao";
+$sqlOrderSituacao = "ORDER BY LOWER(nome)";
+$inputTipo = "inputTipo";
+$inputSituacao = "inputSituacao";
+$inputPrioridade = "inputPrioridade";
+$inputSolicitante = "inputSolicitante";
+$inputSetor = "inputSetor";
+$inputLocal = "inputLocal";
+$inputDataAbertura = "inputDataAbertura";
+$inputDataFechamento = "inputDataFechamento";
+
+// buscando a lista de tecnicos
+$setorId = db_select("SELECT id from ".$sqlTabSetor." WHERE nome = 'Informatica'");
+$tecnicos = db_select("SELECT * from ".$sqlTabUsuario." WHERE idSetor = ".$setorId[0]['id']." ".$sqlOrderUsuario);
+
+// buscando a lista de tipos, prioridades e situacoes
+$tipos = db_select("SELECT * from ".$sqlTabTipo." ".$sqlOrderTipo);
+$prioridades = db_select("SELECT * FROM ".$sqlTabPrioridade." ".$sqlOrderPrioridade);
+$situacoes = db_select("SELECT * FROM ".$sqlTabSituacao." ".$sqlOrderSituacao);
 
 // Header
 $navBackUrl = "index.php";
@@ -29,30 +55,30 @@ $data_hoje = date("d/m/y");
 
 					<div class="form-group">
 						<label for="nome-solicitante">Solicitante:</label>
-						<input type="text" class="form-control" placeholder="Solicitante" id="nome-solicitante">
+						<div id="prefetch"><input type="text" class="typeahead form-control" placeholder="Solicitante" <?php echo(" id=\"".$inputSolicitante."\" name=\"".$inputSolicitante."\""); ?>></div>
 					</div>
 
 					<div class="form-group">
 						<label for="nome-setor">Setor:</label>
-						<input type="text" class="form-control" placeholder="Setor" id="nome-setor">
+						<input type="text" class="form-control" placeholder="Setor" <?php echo(" id=\"".$inputSetor."\" name=\"".$inputSetor."\""); ?>>
 					</div>
 
 					<div class="form-group">
 						<label for="nome-local">Local:</label>
-						<input type="text" class="form-control" placeholder="Local" id="nome-local">
+						<input type="text" class="form-control" placeholder="Local" <?php echo(" id=\"".$inputLocal."\" name=\"".$inputLocal."\""); ?>>
 					</div>
 
 					<div class="row">
 						<div class="col-lg-6">
 							<div class="form-group">
 								<label for="data-abertura">Data de Abertura:</label>
-								<input type="text" class="form-control" placeholder="<?php echo($data_hoje); ?>" id="data-abertura" disabled="disabled">
+								<input type="text" class="form-control" placeholder="<?php echo($data_hoje); ?>" <?php echo(" id=\"".$inputDataAbertura."\" name=\"".$inputDataAbertura."\""); ?> disabled="disabled">
 							</div>
 						</div>
 						<div class="col-lg-6">
 							<div class="form-group">
 								<label for="data-abertura">Data de Fechamento:</label>
-								<input type="text" class="form-control" placeholder="Data de Fechamento" id="data-fechamento" disabled="disabled">
+								<input type="text" class="form-control" placeholder="Data de Fechamento" <?php echo(" id=\"".$inputDataFechamento."\" name=\"".$inputDataFechamento."\""); ?> disabled="disabled">
 							</div>
 						</div>
 					</div>
@@ -60,65 +86,48 @@ $data_hoje = date("d/m/y");
 					<div class="form-group">
 						<label>Técnico Respponsável:</label><br>
 						<div class="form-group">
-								<select id="tipo-chamado" class="selectpicker" data-width="100%" disabled>
-									<option>Técnico Responsável</option>
-									<option>Bruno Fagundes</option>
-									<option>Matteus Barragan</option>
-								</select> 
-							</div>
+							<select id="tipo-chamado" class="selectpicker" data-width="100%">
+								<?php echo "<option>Técnico Responsável</option>";
+								foreach($tecnicos as $tecnico){
+									echo "<option>".$tecnico['nome']."</option>";
+								} ?>
+							</select> 
+						</div>
 					</div>
 
 					<!-- ----- Dropdowns ------ -->
 					<div class="btn-group btn-group-justified" role="group">
 						<div class="btn-group" role="group">
 							<div class="form-group">
-								<select id="tipo-chamado" class="selectpicker" data-width="100%">
-									<option>Problema</option>
-									<option>Incidente</option>
-									<option>Pergunta</option>
+								<select <?php echo(" id=\"".$inputTipo."\" name=\"".$inputTipo."\""); ?> class="selectpicker" data-width="100%">
+									<?php 
+									foreach($tipos as $tipo){
+										echo "<option>".$tipo['nome']."</option>";
+									} ?>
 								</select> 
 							</div>
 						</div>
 						<div class="btn-group" role="group">
 							<div class="form-group">
-								<select id="prioridade-chamado" class="selectpicker" data-width="100%">
-									<option>Urgente</option>
-									<option>Alta</option>
-									<option>Média</option>
-									<option>Baixa</option>
+								<select <?php echo(" id=\"".$inputPrioridade."\" name=\"".$inputPrioridade."\""); ?> class="selectpicker" data-width="100%">
+									<?php 
+									foreach($prioridades as $prioridade){
+										echo "<option>".$prioridade['nome']."</option>";
+									} ?>
 								</select> 
 							</div>
 						</div>
 						<div class="btn-group" role="group">
 							<div class="form-group">
-								<select id="situacao-chamado" class="selectpicker" data-width="100%">
-									<option>Aberto</option>
-									<option>Pendente</option>
-									<option>Fechado</option>
+								<select <?php echo(" id=\"".$inputSituacao."\" name=\"".$inputSituacao."\""); ?> class="selectpicker" data-width="100%">
+									<?php 
+									foreach($situacoes as $situacao){
+										echo "<option>".$situacao['nome']."</option>";
+									} ?>
 								</select> 
 							</div>
 						</div>
 					</div> <!-- dropdonws group -->
-
-					<!-- // <script>
-					// 	$(function() {
-					// 		$('#prioridade-chamado').on('change', function(){
-					// 			if($(this).find("option:selected").val() == "Urgente"){
-					// 				$('#prioridade-chamado').selectpicker('setStyle', 'btn-danger');
-					// 			} 
-					// 			if($(this).find("option:selected").val() == "Alta"){
-					// 				$('#prioridade-chamado').selectpicker('setStyle', 'btn-warning');
-					// 			} 
-					// 			if($(this).find("option:selected").val() == "Média"){
-					// 				$('#prioridade-chamado').selectpicker('setStyle', 'btn-success');
-					// 			} 
-					// 			if($(this).find("option:selected").val() == "Baixa"){
-					// 				$('#prioridade-chamado').selectpicker('setStyle', 'btn-info');
-					// 			}
-					// 		});
-					// 	});
-					// </script> -->
-
   				</div> <!-- panel-body -->
 			</div> <!-- panel -->
 		</div> <!-- col-md-3 -->
@@ -151,6 +160,23 @@ $data_hoje = date("d/m/y");
 
 	<script>
 		$('.selectpicker').selectpicker();
+		$("#inputPrioridade").selectpicker('val', 'Média' );
+
+		// Autocomplete for inputSolicitante
+		var countries = new Bloodhound({
+			datumTokenizer: Bloodhound.tokenizers.whitespace,
+			queryTokenizer: Bloodhound.tokenizers.whitespace,
+			prefetch: 'data/countries.json'
+		});
+
+		$('#prefetch .typeahead').typeahead({
+		    autoselect: true,
+		    highlight: true,
+		},
+		{
+		  name: 'countries',
+		  source: countries
+		});
 	</script>
 
 </body>

@@ -79,6 +79,7 @@ require_once('./includes/navbar_index.php');
 					</tbody>
 				</table>
 		<?php }} ?>
+	</div>
 
 	<!-- Footer -->
 	<?php require_once('./includes/footer.php'); ?>
