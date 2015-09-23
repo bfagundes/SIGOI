@@ -55,17 +55,17 @@ $data_hoje = date("d/m/y");
 
 					<div class="form-group">
 						<label for="nome-solicitante">Solicitante:</label>
-						<div id="prefetch"><input type="text" class="typeahead form-control" placeholder="Solicitante" <?php echo(" id=\"".$inputSolicitante."\" name=\"".$inputSolicitante."\""); ?>></div>
+						<div id="solicitante"><input type="text" class="typeahead form-control" placeholder="Solicitante" <?php echo(" id=\"".$inputSolicitante."\" name=\"".$inputSolicitante."\""); ?>></div>
 					</div>
 
 					<div class="form-group">
 						<label for="nome-setor">Setor:</label>
-						<input type="text" class="form-control" placeholder="Setor" <?php echo(" id=\"".$inputSetor."\" name=\"".$inputSetor."\""); ?>>
+						<div id="setor"><input type="text" class="typeahead form-control" placeholder="Setor" <?php echo(" id=\"".$inputSetor."\" name=\"".$inputSetor."\""); ?>></div>
 					</div>
 
 					<div class="form-group">
 						<label for="nome-local">Local:</label>
-						<input type="text" class="form-control" placeholder="Local" <?php echo(" id=\"".$inputLocal."\" name=\"".$inputLocal."\""); ?>>
+						<div id="local"><input type="text" class="typeahead form-control" placeholder="Local" <?php echo(" id=\"".$inputLocal."\" name=\"".$inputLocal."\""); ?>></div>
 					</div>
 
 					<div class="row">
@@ -162,20 +162,52 @@ $data_hoje = date("d/m/y");
 		$('.selectpicker').selectpicker();
 		$("#inputPrioridade").selectpicker('val', 'Média' );
 
-		// Autocomplete for inputSolicitante
-		var countries = new Bloodhound({
-			datumTokenizer: Bloodhound.tokenizers.whitespace,
+		// Autocomplete do inputSolicitante
+		var solicitantes = new Bloodhound({
+			datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
 			queryTokenizer: Bloodhound.tokenizers.whitespace,
-			prefetch: 'data/countries.json'
+			prefetch: '../data/films/post_1960.json',
+			remote: {
+				url: 'functions/typeahead.php?solicitante=%QUERY',
+				wildcard: '%QUERY'
+			}
+		});
+		$('#solicitante .typeahead').typeahead(null, {
+			name: 'nome',
+			display: 'nome',
+			source: solicitantes
 		});
 
-		$('#prefetch .typeahead').typeahead({
-		    autoselect: true,
-		    highlight: true,
-		},
-		{
-		  name: 'countries',
-		  source: countries
+		// Autocomplete do inputSetor
+		var setores = new Bloodhound({
+			datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+			queryTokenizer: Bloodhound.tokenizers.whitespace,
+			prefetch: '../data/films/post_1960.json',
+			remote: {
+				url: 'functions/typeahead.php?setor=%QUERY',
+				wildcard: '%QUERY'
+			}
+		});
+		$('#setor .typeahead').typeahead(null, {
+			name: 'nome',
+			display: 'nome',
+			source: setores
+		});
+
+		// Autocomplete do inputLocal
+		var locais = new Bloodhound({
+			datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+			queryTokenizer: Bloodhound.tokenizers.whitespace,
+			prefetch: '../data/films/post_1960.json',
+			remote: {
+				url: 'functions/typeahead.php?local=%QUERY',
+				wildcard: '%QUERY'
+			}
+		});
+		$('#local .typeahead').typeahead(null, {
+			name: 'nome',
+			display: 'nome',
+			source: locais
 		});
 	</script>
 
