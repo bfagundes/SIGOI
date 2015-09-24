@@ -101,3 +101,6 @@ span.twitter-typeahead {
 	width: 100%; 
 }
 
+.form-control{
+	background-color: #FFF !important;
+}

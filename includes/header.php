@@ -9,7 +9,7 @@
 
     <!-- CSS Styles -->
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="css/bootstrap-datepicker.min.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-datetimepicker.css">
     <link rel="stylesheet" type="text/css" href="css/bootstrap-select.min.css" />
     <link rel="stylesheet" type="text/css" href="css/custom.css">
 
@@ -25,7 +25,8 @@
     <!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> -->
     <script type="text/javascript" src="js/jquery1-11-3.min.js"></script>
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="js/bootstrap-datepicker.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap-datetimepicker.js"></script>
+    <script type="text/javascript" src="js/bootstrap-datetimepicker.pt-BR.js"></script>
     <script type="text/javascript" src="js/bootstrap-select.min.js"></script>
     <script type="text/javascript" src="js/twitter-typeahead.js"></script>
-    <script type="text/javascript" src="js/custom.js"></script> 
+    <script type="text/javascript" src="js/custom.js"></script>

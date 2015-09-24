@@ -45,7 +45,7 @@ $navOptions = "";
 require_once('./includes/header.php');
 require_once('./includes/navbar_default.php');
 
-$data_hoje = date("d/m/y");
+$data_hoje = date("d/m/Y");
 ?>
 	<div class="container-fluid">
 	<div class="row">
@@ -70,16 +70,20 @@ $data_hoje = date("d/m/y");
 
 					<div class="row">
 						<div class="col-lg-6">
-							<div class="form-group">
-								<label for="data-abertura">Data de Abertura:</label>
-								<input type="text" class="form-control" placeholder="<?php echo($data_hoje); ?>" <?php echo(" id=\"".$inputDataAbertura."\" name=\"".$inputDataAbertura."\""); ?> disabled="disabled">
-							</div>
+							<label for="dtp_input1" class="control-label">Data Abertura</label>
+			                <div class="input-group date form_abertura" data-date="01-01-2000T00:00:00Z" data-date-format="dd/mm/yyyy hh:ii" data-link-field="dtp_input1">
+			                    <input class="form-control" size="16" type="text" value="" readonly>
+								<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+			                </div>
+							<input type="hidden" id="dtp_input1" value="" /><br/>
 						</div>
 						<div class="col-lg-6">
-							<div class="form-group">
-								<label for="data-abertura">Data de Fechamento:</label>
-								<input type="text" class="form-control" placeholder="Data de Fechamento" <?php echo(" id=\"".$inputDataFechamento."\" name=\"".$inputDataFechamento."\""); ?> disabled="disabled">
-							</div>
+							<label for="dtp_input1" class="control-label">Data Fechamento</label>
+			                <div class="input-group date form_abertura" data-date="01-01-2000T00:00:00Z" data-date-format="dd/mm/yyyy hh:ii" data-link-field="dtp_input1">
+			                    <input class="form-control" size="16" type="text" value="" readonly>
+								<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+			                </div>
+							<input type="hidden" id="dtp_input1" value="" /><br/>
 						</div>
 					</div>
 
@@ -158,7 +162,37 @@ $data_hoje = date("d/m/y");
 	<!-- Footer -->
 	<?php require_once('./includes/footer.php'); ?>
 
-	<script>
+	<script type="text/javascript">
+		var dp_now = new Date();
+	    dp_now.setHours(0,0,0,0);
+	    $('.form_abertura').datetimepicker({
+	        format: "dd/mm/yyyy hh:ii",
+	        startDate: dp_now,
+	        language:  'pt-BR',
+	        weekStart: 1,
+	        todayBtn:  1,
+			autoclose: 1,
+			todayHighlight: 1,
+			startView: 2,
+	        minView: 1,
+			forceParse: 0,
+	        showMeridian: 1
+	    });
+
+	    $('.form_abertura').datetimepicker({
+	        format: "dd/mm/yyyy hh:ii",
+	        startDate: dp_now,
+	        language:  'pt-BR',
+	        weekStart: 1,
+	        todayBtn:  1,
+			autoclose: 1,
+			todayHighlight: 1,
+			startView: 2,
+	        minView: 1,
+			forceParse: 0,
+	        showMeridian: 1
+	    });
+
 		$('.selectpicker').selectpicker();
 		$("#inputPrioridade").selectpicker('val', 'Média' );
 
@@ -209,6 +243,8 @@ $data_hoje = date("d/m/y");
 			display: 'nome',
 			source: locais
 		});
+
+		
 	</script>
 
 </body>
