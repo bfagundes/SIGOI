@@ -30,5 +30,6 @@ $sqlOrdUsuario = "ORDER BY LOWER(nome)";
 $btnUpdate = "btnUpdate";
 $btnInsert = "btnInsert";
 $btnDelete = "btnDelete";
+$btnSubmit  ="btnSubmit";
 
 ?>

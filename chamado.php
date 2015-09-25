@@ -12,7 +12,7 @@ if(session_isValid() === false){
 
 // variaveis
 $pageTitle = "SIGOI";
-$pageUrl = "index.php";
+$pageUrl = "chamado.php";
 $inputTipo = "inputTipo";
 $inputSituacao = "inputSituacao";
 $inputPrioridade = "inputPrioridade";
@@ -22,10 +22,54 @@ $inputLocal = "inputLocal";
 $inputDataAbertura = "inputDataAbertura";
 $inputDataFechamento = "inputDataFechamento";
 $inputTecnico = "inputTecnico";
+$dataId = $_GET['id'];
 
-// buscando a lista de tecnicos
-$setorId = db_select("SELECT id from ".$sqlTabSetor." WHERE nome = 'Informatica'");
-$tecnicos = db_select("SELECT * from ".$sqlTabUsuario." WHERE idSetor = ".$setorId[0]['id']." ".$sqlOrdUsuario);
+// altera chamados no banco
+// insere chamados no banco
+
+// evita buscas se estiver no modo incluir_chamado
+if($dataId > 0){
+	// busca no banco o usuario e seus respectivos setor e funcao
+	$chamado = db_select("SELECT ".
+		"CHAMADO.id as id, ".
+		"USUARIO.nome as solicitante, ".
+    	"SETOR.nome as setor, ".
+   		"LOCAL.nome as local, ".
+    	"CHAMADO.dataabertura as dataabertura, ".
+    	"CHAMADO.datafechamento as datafechamento, ".
+    	"USUARIO.nome as tecnico, ".
+    	"TIPO.nome as tipo, ".
+    	"PRIORIDADE.nome as prioridade, ".
+    	"SITUACAO.nome as situacao, ".
+    	"CHAMADO.assunto as assunto, ".
+    	"CHAMADO.descricao as descricao, ".
+    	"CHAMADO.idsituacao as idsituacao, ".
+    	"CHAMADO.idprioridade as idprioridade, ".
+    	"CHAMADO.idtipo as idtipo ".
+    	"FROM chamado ".
+ 		"INNER JOIN usuario on (chamado.idsolicitante = usuario.id) ".
+ 		"INNER JOIN setor on (chamado.idsetor = setor.id) ".
+ 		"INNER JOIN local on (chamado.idlocal = local.id) ".
+ 		"INNER JOIN tipo on (chamado.idtipo = tipo.id) ".
+ 		"INNER JOIN prioridade on (chamado.idprioridade = prioridade.id) ".
+ 		"INNER JOIN situacao on (chamado.idsituacao = situacao.id) ".
+ 		"WHERE CHAMADO.id = ".$dataId);
+		$chamado = $chamado[0];
+}else{
+	$chamado = array(
+		"solicitante" => "",
+		"setor" => "",
+		"local" => "",
+		"dataabertura" => "",
+		"datafechamento" => "",
+		"tecnico" => "",
+		"tipo" => "Incidente",
+		"prioridade" => "Média",
+		"situacao" => "Aberto",
+		"assunto" => "",
+		"descricao" => ""
+	);
+}
 
 // buscando a lista de tipos, prioridades e situacoes
 $tipos = db_select("SELECT * from ".$sqlTabTipo." ".$sqlOrdTipo);
@@ -40,6 +84,7 @@ require_once('./includes/navbar_default.php');
 
 $data_hoje = date("d/m/Y");
 ?>
+	<form role="form" method="post" <?php echo "action=\"".$pageUrl."?id=".$dataId."\""; ?>>
 	<div class="container-fluid">
 	<div class="row">
 		<div class="col-md-3">
@@ -48,24 +93,24 @@ $data_hoje = date("d/m/Y");
 
 					<div class="form-group">
 						<label for="nome-solicitante">Solicitante:</label>
-						<div id="solicitante"><input type="text" class="typeahead form-control" placeholder="Solicitante" <?php echo(" id=\"".$inputSolicitante."\" name=\"".$inputSolicitante."\""); ?>></div>
+						<div id="solicitante"><input type="text" class="typeahead form-control" placeholder="Solicitante" <?php echo(" id=\"".$inputSolicitante."\" name=\"".$inputSolicitante."\" value=\"".$chamado['solicitante']."\""); ?>></div>
 					</div>
 
 					<div class="form-group">
 						<label for="nome-setor">Setor:</label>
-						<div id="setor"><input type="text" class="typeahead form-control" placeholder="Setor" <?php echo(" id=\"".$inputSetor."\" name=\"".$inputSetor."\""); ?>></div>
+						<div id="setor"><input type="text" class="typeahead form-control" placeholder="Setor" <?php echo(" id=\"".$inputSetor."\" name=\"".$inputSetor."\" value=\"".$chamado['setor']."\""); ?>></div>
 					</div>
 
 					<div class="form-group">
 						<label for="nome-local">Local:</label>
-						<div id="local"><input type="text" class="typeahead form-control" placeholder="Local" <?php echo(" id=\"".$inputLocal."\" name=\"".$inputLocal."\""); ?>></div>
+						<div id="local"><input type="text" class="typeahead form-control" placeholder="Local" <?php echo(" id=\"".$inputLocal."\" name=\"".$inputLocal."\" value=\"".$chamado['local']."\""); ?>></div>
 					</div>
 
 					<div class="row">
 						<div class="col-lg-6">
 							<label for="dtp_input1" class="control-label">Data Abertura</label>
 			                <div class="input-group date form_abertura" data-date="01-01-2000T00:00:00Z" data-date-format="dd/mm/yyyy hh:ii" data-link-field="dtp_input1">
-			                    <input class="form-control" size="16" type="text" value="" readonly>
+			                    <input class="form-control" size="16" type="text" <?php if(empty($chamado['dataabertura'])){ echo("value=\"\""); } else { echo("value=\"".date('d/m/Y h:i',strtotime($chamado['dataabertura']))."\""); }?> readonly>
 								<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
 			                </div>
 							<input type="hidden" id="dtp_input1" value="" /><br/>
@@ -73,7 +118,7 @@ $data_hoje = date("d/m/Y");
 						<div class="col-lg-6">
 							<label for="dtp_input1" class="control-label">Data Fechamento</label>
 			                <div class="input-group date form_abertura" data-date="01-01-2000T00:00:00Z" data-date-format="dd/mm/yyyy hh:ii" data-link-field="dtp_input1">
-			                    <input class="form-control" size="16" type="text" value="" readonly>
+			                    <input class="form-control" size="16" type="text" <?php if(empty($chamado['datafechamento'])){ echo("value=\"\""); } else { echo("value=\"".date('d/m/Y h:i',strtotime($chamado['datafechamento']))."\""); }?> readonly>
 								<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
 			                </div>
 							<input type="hidden" id="dtp_input1" value="" /><br/>
@@ -82,7 +127,7 @@ $data_hoje = date("d/m/Y");
 
 					<div class="form-group">
 						<label for="nome-solicitante">Técnico Responsável:</label>
-						<div id="tecnico"><input type="text" class="typeahead form-control" placeholder="Técnico Responsável" <?php echo(" id=\"".$inputTecnico."\" name=\"".$inputTecnico."\""); ?>></div>
+						<div id="tecnico"><input type="text" class="typeahead form-control" placeholder="Técnico Responsável" <?php echo(" id=\"".$inputTecnico."\" name=\"".$inputTecnico."\" value=\"".$chamado['tecnico']."\""); ?>></div>
 					</div>
 
 					<!-- ----- Dropdowns ------ -->
@@ -125,18 +170,22 @@ $data_hoje = date("d/m/Y");
 		<div class="col-md-9">
 			<div class="panel panel-default">
   				<div class="panel-body">
-    				<h4><small>#00000 </small>Novo Chamado</h4>
+    				<!-- <h4><small><?php printf("#%05d", $dataId); ?> </small><?php echo($chamado['assunto']); ?></h4> -->
 
     				<!-- Assunto -->
     				<div class="form-group">
-						<label for="nome-solicitante">Assunto:</label>
-						<input type="text" class="form-control" placeholder="Assunto do Chamado" id="assunto-chamado">
+						<label for="nome-solicitante"><?php printf("Chamado #%05d", $dataId); ?></label>
+						<input type="text" class="form-control" placeholder="Assunto" id="assunto-chamado" placeholder="Assunto" <?php echo("value=\"".$chamado['assunto']."\""); ?>>
 					</div>
 
 					<!-- Descricao -->
 					<label for="comentario">Descrição:</label>
-					<div class="input-group">
-						<textarea class="form-control custom-control" rows="3" style="resize:none"></textarea><span class="input-group-addon btn btn-primary">Enviar</span>
+					<div class="form-group">
+						<textarea class="form-control custom-control" rows="4" style="resize:none" placeholder="Descrição"><?php echo($chamado['descricao']); ?></textarea>
+					</div>
+					<div class="form-group">
+						<input <?php echo(" name=\"".$btnUpdate."\""); ?> type="submit" class="btn btn-primary" value="Botao 1"/>
+						<input <?php echo(" name=\"".$btnDelete."\""); ?> type="submit" class="btn btn-danger" value="Botao 2" onclick="return confirm('Você tem certeza?');"/>
 					</div>
   				</div>
   				<div class="panel-footer"></div>
@@ -144,11 +193,18 @@ $data_hoje = date("d/m/Y");
 		</div> <!-- col-md-9 -->
 	</div> <!-- Entire Row -->
 	</div> <!-- Container Fluid -->
+	</form>
 
 	<!-- Footer -->
 	<?php require_once('./includes/footer.php'); ?>
 
 	<script type="text/javascript">
+		// selecionando valores nos dropdowns
+		$('.selectpicker').selectpicker();
+		$("#inputTipo").selectpicker('val', <?php echo '\''.$chamado['tipo'].'\''; ?> );
+		$("#inputPrioridade").selectpicker('val', <?php echo '\''.$chamado['prioridade'].'\''; ?> );
+		$("#inputSituacao").selectpicker('val', <?php echo '\''.$chamado['situacao'].'\''; ?> );
+
 		var dp_now = new Date();
 	    dp_now.setHours(0,0,0,0);
 	    $('.form_abertura').datetimepicker({
@@ -178,9 +234,6 @@ $data_hoje = date("d/m/Y");
 			forceParse: 0,
 	        showMeridian: 1
 	    });
-
-		$('.selectpicker').selectpicker();
-		$("#inputPrioridade").selectpicker('val', 'Média' );
 
 		// Autocomplete do inputSolicitante
 		var solicitantes = new Bloodhound({
