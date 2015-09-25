@@ -1,6 +1,7 @@
 <?php
-include ("./functions/conexao.php");
-include ("./functions/sessao.php");
+include("./functions/conexao.php");
+include("./functions/sessao.php");
+include("./functions/defaults.php");
 session_start();
 
 // Testa se o usuario está logado
@@ -12,9 +13,6 @@ if(session_isValid() === false){
 // variaveis
 $pageTitle = "Cadastro de Usuarios";
 $pageUrl = "cadastro_usuario.php";
-$btnUpdate = "btnUpdate";
-$btnInsert = "btnInsert";
-$btnDelete = "btnDelete";
 $inputNome = "inputNome";
 $inputSetor = "inputSetor";
 $inputFuncao = "inputFuncao";
@@ -22,10 +20,6 @@ $inputLogin = "inputLogin";
 $dataId = $_GET['id'];
 $duplicate = false;
 $missedReqField = false;
-$sqlTabUsuario = "usuario";
-$sqlTabSetor = "setor";
-$sqlTabFuncao = "funcao";
-$sqlOrder = "ORDER BY LOWER(nome)";
 $defaultPassword = 123;
 $hashedPassword;
 
@@ -156,8 +150,8 @@ if($dataId > 0){
 	$usrFuncao = array(0 => array("nome" => ""));
 }
 // busca a lista de setores e funcoes
-$setores = db_select("SELECT * FROM ".$sqlTabSetor." ".$sqlOrder);
-$funcoes = db_select("SELECT * FROM ".$sqlTabFuncao." ".$sqlOrder);
+$setores = db_select("SELECT * FROM ".$sqlTabSetor." ".$sqlOrdSetor);
+$funcoes = db_select("SELECT * FROM ".$sqlTabFuncao." ".$sqlOrdFuncao);
 
 // Header
 $navBackUrl = "lista_usuario.php";

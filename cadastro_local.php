@@ -1,6 +1,7 @@
 <?php
-include ("./functions/conexao.php");
-include ("./functions/sessao.php");
+include("./functions/conexao.php");
+include("./functions/sessao.php");
+include("./functions/defaults.php");
 session_start();
 
 // Testa se o usuario está logado
@@ -12,21 +13,16 @@ if(session_isValid() === false){
 // variaveis
 $pageTitle = "Cadastro de Locais";
 $pageUrl = "cadastro_local.php";
-$btnUpdate = "btnUpdate";
-$btnInsert = "btnInsert";
-$btnDelete = "btnDelete";
 $modalInsert = "insert-local";
 $modalUpdate = "update-local";
 $inputLocal = "inputLocal";
 $dataId = "idLocal";
 $duplicate = false;
 $blocked = false;
-$sqlTabLocal = "local";
-$sqlTabSetor = "setor";
-$sqlOrder = "ORDER BY LOWER(nome)";
+
 
 // busca a lista de locais no banco
-$locais = db_select("SELECT * FROM ".$sqlTabLocal." ".$sqlOrder);
+$locais = db_select("SELECT * FROM ".$sqlTabLocal." ".$sqlOrdLocal);
 
 // altera locais no banco
 if(isset($_POST[$btnUpdate])){
@@ -75,7 +71,7 @@ if(isset($_POST[$btnInsert])){
 			$error = pg_result_error($result);
 		}
 		// atualiza a lista de locais
-		$locais = db_select("SELECT * FROM ".$sqlTabLocal." ".$sqlOrder);
+		$locais = db_select("SELECT * FROM ".$sqlTabLocal." ".$sqlOrdLocal);
 		header('Location: cadastro_local.php');
 	}
 }

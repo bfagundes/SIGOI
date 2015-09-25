@@ -8,7 +8,7 @@
 		</div>
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
-				<li class="nav nav-btn"><a href="novo.php">Novo Chamado</a></li>
+				<li class="nav nav-btn"><a href="chamado.php?id=0">Novo Chamado</a></li>
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Opções <span class="caret"></span></a>
 					<ul class="dropdown-menu">

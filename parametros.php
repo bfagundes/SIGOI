@@ -1,6 +1,7 @@
 <?php
-include ("./functions/conexao.php");
-include ("./functions/sessao.php");
+include("./functions/conexao.php");
+include("./functions/sessao.php");
+include("./functions/defaults.php");
 session_start();
 
 // Testa se o usuario está logado
@@ -12,20 +13,16 @@ if(session_isValid() === false){
 // variaveis
 $pageTitle = "Parâmetros SIGOI";
 $pageUrl = "parametros.php";
-$sqlTabPrioridade = "prioridade";
-$sqlTabSituacao = "situacao";
-$sqlTabTipo = "tipo";
-$sqlTabResPadrao = "respostaPadrao";
-$sqlOrderPrioridade = "ORDER BY id";
-$sqlOrderSituacao = "ORDER BY LOWER(nome)";
-$sqlOrderTipo = "ORDER BY LOWER(nome)";
-$sqlOrderResPadrao = "ORDER by LOWER(titulo)";
+$sqlOrdPrioridade = "ORDER BY id";
+$sqlOrdSituacao = "ORDER BY LOWER(nome)";
+$sqlOrdTipo = "ORDER BY LOWER(nome)";
+$sqlOrdResPadrao = "ORDER by LOWER(titulo)";
 
 // buscando as listas no banco
-$prioridades = db_select("SELECT * FROM ".$sqlTabPrioridade." ".$sqlOrderPrioridade);
-$situacoes = db_select("SELECT * FROM ".$sqlTabSituacao." ".$sqlOrderSituacao);
-$tipos = db_select("SELECT * FROM ".$sqlTabTipo." ".$sqlOrderTipo);
-$respostasPadrao = db_select("SELECT * FROM ".$sqlTabResPadrao." ".$sqlOrderResPadrao); 
+$prioridades = db_select("SELECT * FROM ".$sqlTabPrioridade." ".$sqlOrdPrioridade);
+$situacoes = db_select("SELECT * FROM ".$sqlTabSituacao." ".$sqlOrdSituacao);
+$tipos = db_select("SELECT * FROM ".$sqlTabTipo." ".$sqlOrdTipo);
+$respostasPadrao = db_select("SELECT * FROM ".$sqlTabResPadrao." ".$sqlOrdResPadrao); 
 
 // Header
 $navBackUrl = "index.php";

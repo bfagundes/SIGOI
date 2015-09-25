@@ -1,6 +1,7 @@
 <?php
-include ("./functions/conexao.php");
-include ("./functions/sessao.php");
+include("./functions/conexao.php");
+include("./functions/sessao.php");
+include("./functions/defaults.php");
 session_start();
 
 // Testa se o usuario está logado
@@ -12,21 +13,15 @@ if(session_isValid() === false){
 // variaveis
 $pageTitle = "Cadastro de Funções";
 $pageUrl = "cadastro_funcao.php";
-$btnUpdate = "btnUpdate";
-$btnInsert = "btnInsert";
-$btnDelete = "btnDelete";
 $modalInsert = "insert-funcao";
 $modalUpdate = "update-funcao";
 $inputFuncao = "inputFuncao";
 $dataId = "idFuncao";
 $duplicate = false;
 $blocked = false;
-$sqlTabFuncao = "funcao";
-$sqlOrder = "ORDER BY LOWER(nome)";
-$sqlTabUsuario = "usuario";
 
 // busca a lista de funcoes no banco
-$funcoes = db_select("SELECT * FROM ".$sqlTabFuncao." ".$sqlOrder);
+$funcoes = db_select("SELECT * FROM ".$sqlTabFuncao." ".$sqlOrdFuncao);
 
 // altera funcoes no banco
 if(isset($_POST[$btnUpdate])){
@@ -75,7 +70,7 @@ if(isset($_POST[$btnInsert])){
 			$error = pg_result_error($result);
 		}
 		// atualiza a lista de funcoes
-		$funcoes = db_select("SELECT * FROM ".$sqlTabFuncao." ".$sqlOrder);
+		$funcoes = db_select("SELECT * FROM ".$sqlTabFuncao." ".$sqlOrdFuncao);
 		header('Location: cadastro_funcao.php');
 	}
 }

@@ -1,6 +1,7 @@
 <?php
-include ("./functions/conexao.php");
-include ("./functions/sessao.php");
+include("./functions/conexao.php");
+include("./functions/sessao.php");
+include("./functions/defaults.php");
 session_start();
 
 // Testa se o usuario está logado
@@ -12,7 +13,6 @@ if(session_isValid() === false){
 // variaveis
 $pageTitle = "Cadastro de Usuários";
 $pageUrl = "lista_usuario.php";
-$sqlTabUsuario = "usuario";
 $sqlJoin = "INNER JOIN setor on (usuario.idsetor = setor.id)";
 $sqlOrder = "ORDER BY LOWER(USUARIO.nome)";
 

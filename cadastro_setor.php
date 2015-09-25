@@ -1,6 +1,7 @@
 <?php
-include ("./functions/conexao.php");
-include ("./functions/sessao.php");
+include("./functions/conexao.php");
+include("./functions/sessao.php");
+include("./functions/defaults.php");
 session_start();
 
 // Testa se o usuario está logado
@@ -12,9 +13,6 @@ if(session_isValid() === false){
 // variaveis
 $pageTitle = "Cadastro de Setores";
 $pageUrl = "cadastro_setor.php";
-$btnUpdate = "btnUpdate";
-$btnInsert = "btnInsert";
-$btnDelete = "btnDelete";
 $modalInsert = "insert-setor";
 $modalUpdate = "update-setor";
 $inputSetor = "inputSetor";
@@ -23,16 +21,12 @@ $dataId = "idSetor";
 $duplicate = false;
 $blocked = false;
 $missedReqField = false;
-$sqlTabSetor = "setor";
 $sqlJoin = "INNER JOIN local on (setor.idlocal = local.id)";
-$sqlOrderSetor = "ORDER BY LOWER(SETOR.nome)";
-$sqlTabLocal = "local";
-$sqlOrderLocal = "ORDER BY LOWER(nome)";
-$sqlTabUsuario = "usuario";
+$sqlOrdSetor = "ORDER BY LOWER(SETOR.nome)";
 
 // busca a lista de locais e setores no banco
-$setores = db_select("SELECT SETOR.id AS id, SETOR.nome AS setor, LOCAL.nome AS local FROM ".$sqlTabSetor." ".$sqlJoin." ".$sqlOrderSetor);
-$locais = db_select("SELECT * FROM ".$sqlTabLocal." ".$sqlOrderLocal);
+$setores = db_select("SELECT SETOR.id AS id, SETOR.nome AS setor, LOCAL.nome AS local FROM ".$sqlTabSetor." ".$sqlJoin." ".$sqlOrdSetor);
+$locais = db_select("SELECT * FROM ".$sqlTabLocal." ".$sqlOrdLocal);
 
 // altera setores no banco
 if(isset($_POST[$btnUpdate])){
@@ -94,7 +88,7 @@ if(isset($_POST[$btnInsert])){
 				$error = pg_result_error($result);
 			}
 			// atualiza a lista de setores
-			$setores = db_select("SELECT SETOR.id AS id, SETOR.nome AS setor, LOCAL.nome AS local FROM ".$sqlTabSetor." ".$sqlJoin." ".$sqlOrderSetor);
+			$setores = db_select("SELECT SETOR.id AS id, SETOR.nome AS setor, LOCAL.nome AS local FROM ".$sqlTabSetor." ".$sqlJoin." ".$sqlOrdSetor);
 			header('Location: cadastro_setor.php');
 		}
 	}

@@ -1,6 +1,7 @@
 <?php
-include ("./functions/conexao.php");
-include ("./functions/sessao.php");
+include("./functions/conexao.php");
+include("./functions/sessao.php");
+include("./functions/defaults.php");
 session_start();
 
 // Testa se o usuario está logado
@@ -12,20 +13,33 @@ if(session_isValid() === false){
 // variaveis
 $pageTitle = "SIGOI";
 $pageUrl = "index.php";
+$inputTipo = "inputTipo";
+$inputSituacao = "inputSituacao";
+$inputPrioridade = "inputPrioridade";
+$inputSolicitante = "inputSolicitante";
+$inputSetor = "inputSetor";
+$inputLocal = "inputLocal";
+$inputDataAbertura = "inputDataAbertura";
+$inputDataFechamento = "inputDataFechamento";
+$inputTecnico = "inputTecnico";
+
+// buscando a lista de tecnicos
+$setorId = db_select("SELECT id from ".$sqlTabSetor." WHERE nome = 'Informatica'");
+$tecnicos = db_select("SELECT * from ".$sqlTabUsuario." WHERE idSetor = ".$setorId[0]['id']." ".$sqlOrdUsuario);
+
+// buscando a lista de tipos, prioridades e situacoes
+$tipos = db_select("SELECT * from ".$sqlTabTipo." ".$sqlOrdTipo);
+$prioridades = db_select("SELECT * FROM ".$sqlTabPrioridade." ".$sqlOrdPrioridade);
+$situacoes = db_select("SELECT * FROM ".$sqlTabSituacao." ".$sqlOrdSituacao);
 
 // Header
 $navBackUrl = "index.php";
-$navOptions = "<li class=\"dropdown\">"
-	."<a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">Opções <span class=\"caret\"></span></a>"
-	."<ul class=\"dropdown-menu\">"
-	."<li><a href=\"#\">Editar Chamado</a></li>"
-	."<li><a href=\"#\">Excluir Chamado</a></li>"
-	."</ul></li>";
+$navOptions = "";
 require_once('./includes/header.php');
 require_once('./includes/navbar_default.php');
-?>
 
-<!DOCTYPE html>
+$data_hoje = date("d/m/Y");
+?>
 	<div class="container-fluid">
 	<div class="row">
 		<div class="col-md-3">
@@ -34,96 +48,72 @@ require_once('./includes/navbar_default.php');
 
 					<div class="form-group">
 						<label for="nome-solicitante">Solicitante:</label>
-						<input type="text" class="form-control" placeholder="Solicitante" id="nome-solicitante">
+						<div id="solicitante"><input type="text" class="typeahead form-control" placeholder="Solicitante" <?php echo(" id=\"".$inputSolicitante."\" name=\"".$inputSolicitante."\""); ?>></div>
 					</div>
 
 					<div class="form-group">
 						<label for="nome-setor">Setor:</label>
-						<input type="text" class="form-control" placeholder="Setor" id="nome-setor">
+						<div id="setor"><input type="text" class="typeahead form-control" placeholder="Setor" <?php echo(" id=\"".$inputSetor."\" name=\"".$inputSetor."\""); ?>></div>
 					</div>
 
 					<div class="form-group">
 						<label for="nome-local">Local:</label>
-						<input type="text" class="form-control" placeholder="Local" id="nome-local">
+						<div id="local"><input type="text" class="typeahead form-control" placeholder="Local" <?php echo(" id=\"".$inputLocal."\" name=\"".$inputLocal."\""); ?>></div>
 					</div>
 
 					<div class="row">
 						<div class="col-lg-6">
-							<div class="form-group">
-								<label for="data-abertura">Data de Abertura:</label>
-								<input type="text" class="form-control" placeholder="Data de Abertura" id="data-abertura">
-							</div>
+							<label for="dtp_input1" class="control-label">Data Abertura</label>
+			                <div class="input-group date form_abertura" data-date="01-01-2000T00:00:00Z" data-date-format="dd/mm/yyyy hh:ii" data-link-field="dtp_input1">
+			                    <input class="form-control" size="16" type="text" value="" readonly>
+								<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+			                </div>
+							<input type="hidden" id="dtp_input1" value="" /><br/>
 						</div>
 						<div class="col-lg-6">
-							<div class="form-group">
-								<label for="data-abertura">Data de Fechamento:</label>
-								<input type="text" class="form-control" placeholder="Data de Fechamento" id="data-fechamento">
-							</div>
+							<label for="dtp_input1" class="control-label">Data Fechamento</label>
+			                <div class="input-group date form_abertura" data-date="01-01-2000T00:00:00Z" data-date-format="dd/mm/yyyy hh:ii" data-link-field="dtp_input1">
+			                    <input class="form-control" size="16" type="text" value="" readonly>
+								<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+			                </div>
+							<input type="hidden" id="dtp_input1" value="" /><br/>
 						</div>
 					</div>
-					
-					<script type="text/javascript">
-						$('#data-abertura').datepicker({
-						    format: "dd/mm/yyyy",
-						    todayBtn: "linked",
-						    language: "pt-BR",
-						    orientation: "bottom auto",
-						    keyboardNavigation: false,
-						    autoclose: true,
-						    todayHighlight: true
-						});
-					</script>
-
-					<script type="text/javascript">
-						$('#data-fechamento').datepicker({
-						    format: "dd/mm/yyyy",
-						    todayBtn: "linked",
-						    language: "pt-BR",
-						    orientation: "bottom auto",
-						    keyboardNavigation: false,
-						    autoclose: true,
-						    todayHighlight: true
-						});
-					</script>
 
 					<div class="form-group">
-						<label>Técnico Respponsável:</label><br>
-						<div class="form-group">
-								<select id="tipo-chamado" class="selectpicker" data-width="100%">
-									<option>Técnico Responsável</option>
-									<option>Bruno Fagundes</option>
-									<option>Matteus Barragan</option>
-								</select> 
-							</div>
+						<label for="nome-solicitante">Técnico Responsável:</label>
+						<div id="tecnico"><input type="text" class="typeahead form-control" placeholder="Técnico Responsável" <?php echo(" id=\"".$inputTecnico."\" name=\"".$inputTecnico."\""); ?>></div>
 					</div>
 
-					<!-- Dropdowns -->
+					<!-- ----- Dropdowns ------ -->
 					<div class="btn-group btn-group-justified" role="group">
 						<div class="btn-group" role="group">
 							<div class="form-group">
-								<select id="tipo-chamado" class="selectpicker" data-width="100%" data-style="btn-inverse">
-									<option>Problema</option>
-									<option>Incidente</option>
-									<option>Pergunta</option>
+								<select <?php echo(" id=\"".$inputTipo."\" name=\"".$inputTipo."\""); ?> class="selectpicker" data-width="100%">
+									<?php 
+									foreach($tipos as $tipo){
+										echo "<option>".$tipo['nome']."</option>";
+									} ?>
 								</select> 
 							</div>
 						</div>
 						<div class="btn-group" role="group">
 							<div class="form-group">
-								<select id="prioridade-chamado" class="selectpicker" data-width="100%" data-style="btn-danger">
-									<option>Urgente</option>
-									<option>Alta</option>
-									<option>Média</option>
-									<option>Baixa</option>
+								<select <?php echo(" id=\"".$inputPrioridade."\" name=\"".$inputPrioridade."\""); ?> class="selectpicker" data-width="100%">
+									<?php 
+									foreach($prioridades as $prioridade){
+										echo "<option>".$prioridade['nome']."</option>";
+									} ?>
 								</select> 
 							</div>
 						</div>
 						<div class="btn-group" role="group">
 							<div class="form-group">
-								<select id="situacao-chamado" class="selectpicker" data-width="100%" data-style="btn-danger">
-									<option>Aberto</option>
-									<option>Pendente</option>
-									<option>Fechado</option>
+								<select <?php echo(" id=\"".$inputSituacao."\" name=\"".$inputSituacao."\""); ?> class="selectpicker" data-width="100%">
+									<?php 
+									foreach($situacoes as $situacao){
+										echo "<option>".$situacao['nome']."</option>";
+									} ?>
 								</select> 
 							</div>
 						</div>
@@ -135,44 +125,22 @@ require_once('./includes/navbar_default.php');
 		<div class="col-md-9">
 			<div class="panel panel-default">
   				<div class="panel-body">
-    				<h4><small>#00000 </small>Título do Chamado</h4>
+    				<h4><small>#00000 </small>Novo Chamado</h4>
 
-    				<p>Nullam quis risus eget urna mollis ornare vel eu leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam id dolor id nibh ultricies vehicula.
-					<p>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec ullamcorper nulla non metus auctor fringilla. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Donec ullamcorper nulla non metus auctor fringilla.</p>
+    				<!-- Assunto -->
+    				<div class="form-group">
+						<label for="nome-solicitante">Assunto:</label>
+						<input type="text" class="form-control" placeholder="Assunto do Chamado" id="assunto-chamado">
+					</div>
 
-					<label for="comentario">Comentário:</label>
-					<!-- <textarea class="form-control" rows="3" id="comentario"></textarea> -->
-
+					<!-- Descricao -->
+					<label for="comentario">Descrição:</label>
 					<div class="input-group">
 						<textarea class="form-control custom-control" rows="3" style="resize:none"></textarea><span class="input-group-addon btn btn-primary">Enviar</span>
 					</div>
-
-					<!-- Enviar e Resposta Padrão -->
-					<div class="btn-group pull-right" role="group">
-						<div class="dropdown pull-right">
-							<button class="btn btn-default dropdown-toggle pull-right" type="button" id="dropdownMenu1" data-toggle="dropdown">Resposta Padrão<span class="caret"></span></button>
-							<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-								<li><a href="#">Action</a></li>
-								<li><a href="#">Another action</a></li>
-								<li><a href="#">Something else here</a></li>
-								<li><a href="#">Separated link</a></li>
-							</ul>
-						</div>
-						<select id="situacao-chamado" class="selectpicker pull-right" data-width="auto">
-							<option>Público</option>
-							<option>Privado</option>
-						</select> 
-					</div>
-
   				</div>
-  				<div class="panel-footer">
-  					<h5><strong>Bruno Fagundes</strong><small> (14/Ago/15 16:37 | Status > Pendente) </small></h5>
-					<p>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec ullamcorper nulla non metus auctor fringilla. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Donec ullamcorper nulla non metus auctor fringilla.</p>
-
-					<p><h5><strong>Matteus Barragan</strong><small> (14/Ago/15 13:08) </small></h5>
-					<p>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec ullamcorper nulla non metus auctor fringilla. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Donec ullamcorper nulla non metus auctor fringilla.</p>
-  				</div>
-			</div>
+  				<div class="panel-footer"></div>
+			</div> <!-- panel-default -->
 		</div> <!-- col-md-9 -->
 	</div> <!-- Entire Row -->
 	</div> <!-- Container Fluid -->
@@ -180,8 +148,104 @@ require_once('./includes/navbar_default.php');
 	<!-- Footer -->
 	<?php require_once('./includes/footer.php'); ?>
 
-	<script>
+	<script type="text/javascript">
+		var dp_now = new Date();
+	    dp_now.setHours(0,0,0,0);
+	    $('.form_abertura').datetimepicker({
+	        format: "dd/mm/yyyy hh:ii",
+	        startDate: dp_now,
+	        language:  'pt-BR',
+	        weekStart: 1,
+	        todayBtn:  1,
+			autoclose: 1,
+			todayHighlight: 1,
+			startView: 2,
+	        minView: 1,
+			forceParse: 0,
+	        showMeridian: 1
+	    });
+
+	    $('.form_abertura').datetimepicker({
+	        format: "dd/mm/yyyy hh:ii",
+	        startDate: dp_now,
+	        language:  'pt-BR',
+	        weekStart: 1,
+	        todayBtn:  1,
+			autoclose: 1,
+			todayHighlight: 1,
+			startView: 2,
+	        minView: 1,
+			forceParse: 0,
+	        showMeridian: 1
+	    });
+
 		$('.selectpicker').selectpicker();
+		$("#inputPrioridade").selectpicker('val', 'Média' );
+
+		// Autocomplete do inputSolicitante
+		var solicitantes = new Bloodhound({
+			datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+			queryTokenizer: Bloodhound.tokenizers.whitespace,
+			prefetch: '../data/films/post_1960.json',
+			remote: {
+				url: 'functions/typeahead.php?solicitante=%QUERY',
+				wildcard: '%QUERY'
+			}
+		});
+		$('#solicitante .typeahead').typeahead(null, {
+			name: 'nome',
+			display: 'nome',
+			source: solicitantes
+		});
+
+		// Autocomplete do inputSetor
+		var setores = new Bloodhound({
+			datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+			queryTokenizer: Bloodhound.tokenizers.whitespace,
+			prefetch: '../data/films/post_1960.json',
+			remote: {
+				url: 'functions/typeahead.php?setor=%QUERY',
+				wildcard: '%QUERY'
+			}
+		});
+		$('#setor .typeahead').typeahead(null, {
+			name: 'nome',
+			display: 'nome',
+			source: setores
+		});
+
+		// Autocomplete do inputLocal
+		var locais = new Bloodhound({
+			datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+			queryTokenizer: Bloodhound.tokenizers.whitespace,
+			prefetch: '../data/films/post_1960.json',
+			remote: {
+				url: 'functions/typeahead.php?local=%QUERY',
+				wildcard: '%QUERY'
+			}
+		});
+		$('#local .typeahead').typeahead(null, {
+			name: 'nome',
+			display: 'nome',
+			source: locais
+		});
+
+		// Autocomplete do inputTecnico
+		var tecnicos = new Bloodhound({
+			datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+			queryTokenizer: Bloodhound.tokenizers.whitespace,
+			prefetch: '../data/films/post_1960.json',
+			remote: {
+				url: 'functions/typeahead.php?tecnico=%QUERY',
+				wildcard: '%QUERY'
+			}
+		});
+		$('#tecnico .typeahead').typeahead(null, {
+			name: 'nome',
+			display: 'nome',
+			source: tecnicos
+		});
+		
 	</script>
 
 </body>
