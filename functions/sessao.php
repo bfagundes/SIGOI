@@ -1,10 +1,11 @@
 <?php
 
 /** Autentica um usuario a uma sessao */
-function session_login($username){
+function session_login($username, $userid){
 	session_regenerate_id ();
 	$_SESSION['valid'] = 1;
 	$_SESSION['username'] = $username;
+	$_SESSION['userid'] = $userid;
 	$_SESSION['last_activity'] = time();
 }
 

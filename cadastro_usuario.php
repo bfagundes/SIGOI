@@ -142,8 +142,10 @@ if(isset($_POST[$btnInsert])){
 if($dataId > 0){
 	// busca no banco o usuario e seus respectivos setor e funcao
 	$usuarios = db_select("SELECT * FROM ".$sqlTabUsuario." WHERE id = ".$dataId);
-	$usrSetor = db_select("SELECT nome from ".$sqlTabSetor." WHERE id = ".$usuarios[0]['idsetor']);
-	$usrFuncao = db_select("SELECT nome from ".$sqlTabFuncao." WHERE id = ".$usuarios[0]['idfuncao']);
+	$usuarios = $usuarios[0];
+
+	$usrSetor = db_select("SELECT nome from ".$sqlTabSetor." WHERE id = ".$usuarios['idsetor']);
+	$usrFuncao = db_select("SELECT nome from ".$sqlTabFuncao." WHERE id = ".$usuarios['idfuncao']);
 }else{
 	$usuarios = array(0 => array("nome" => "", "login" => "", "ativo" => "t", "admin" => "f", "resetarsenha" => "t"));
 	$usrSetor = array(0 => array("nome" => ""));
@@ -185,7 +187,7 @@ require_once('./includes/header.php');
 							</div>
 							<div class="form-group">
 								<label for="usuario-nome">Nome*</label>
-								<input type="text" name=<?php echo("\"".$inputNome."\" value=\"".$usuarios[0]['nome']."\""); ?> class="form-control">
+								<input type="text" name=<?php echo("\"".$inputNome."\" value=\"".$usuarios['nome']."\""); ?> class="form-control">
 							</div>
 							<div class="btn-group" role="group">
 								<div class="form-group">
@@ -215,20 +217,20 @@ require_once('./includes/header.php');
 							</div>
 							<div class="form-group">
 								<label for="usuario-login">Login</label>
-								<input type="text" <?php echo("name=\"".$inputLogin."\" value=\"".$usuarios[0]['login']."\""); ?> class="form-control">
+								<input type="text" <?php echo("name=\"".$inputLogin."\" value=\"".$usuarios['login']."\""); ?> class="form-control">
 							</div>
 							Último Acesso: 20/09/1835
 
 							<div class="checkbox">
-								<label><input type="checkbox" name="ckAtivo" <?php if($usuarios[0]['ativo'] === 't'){echo "checked";} ?>>Usuário Ativo</label>
+								<label><input type="checkbox" name="ckAtivo" <?php if($usuarios['ativo'] === 't'){echo "checked";} ?>>Usuário Ativo</label>
 							</div>
 
 							<div class="checkbox">
-								<label><input type="checkbox" name="ckAdmin" <?php if($usuarios[0]['admin'] === 't'){echo "checked";} ?>>Usuário Administrador</label>
+								<label><input type="checkbox" name="ckAdmin" <?php if($usuarios['admin'] === 't'){echo "checked";} ?>>Usuário Administrador</label>
 							</div>
 
 							<div class="checkbox">
-								<label><input type="checkbox" name="ckResetarSenha" <?php if($usuarios[0]['resetarsenha'] === 't'){echo "checked";} ?>>Resetar a Senha</label>
+								<label><input type="checkbox" name="ckResetarSenha" <?php if($usuarios['resetarsenha'] === 't'){echo "checked";} ?>>Resetar a Senha</label>
 							</div>
 						</div> <!-- /Form-Group -->
 					</div> <!-- /Panel-Body -->

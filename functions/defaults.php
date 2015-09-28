@@ -3,6 +3,7 @@
 // SQL Tables
 $sqlTabChamado = "chamado";
 $sqlTabComentario = "comentario";
+$sqlTabFollowUp = "followup";
 $sqlTabFuncao = "Funcao";
 $sqlTabLocal = "local";
 $sqlTabPrioridade = "prioridade";
@@ -16,6 +17,7 @@ $sqlTabUsuario = "usuario";
 // SQL ORDER BY's
 $sqlOrdChamado = "";
 $sqlOrdComentario = "";
+$sqlOrdFollowUp = "ORDER BY data DESC";
 $sqlOrdFuncao = "ORDER BY LOWER(nome)";
 $sqlOrdLocal = "ORDER BY LOWER(nome)";
 $sqlOrdPrioridade = "ORDER BY id";
@@ -30,6 +32,7 @@ $sqlOrdUsuario = "ORDER BY LOWER(nome)";
 $btnUpdate = "btnUpdate";
 $btnInsert = "btnInsert";
 $btnDelete = "btnDelete";
-$btnSubmit  ="btnSubmit";
+$btnSubmit = "btnSubmit";
+$btnFollowUp = "btnFollowUp";
 
 ?>

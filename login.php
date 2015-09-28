@@ -24,7 +24,7 @@ if(isset($_GET['reset'])) {
 
 if(isset($_POST[$btnLogin])){
 	// buscando a senha no banco
-	$realPass = db_select("SELECT senha from ".$sqlTabUsuario." WHERE login = ".db_quote($_POST[$inputUser]));
+	$realPass = db_select("SELECT id,senha from ".$sqlTabUsuario." WHERE login = ".db_quote($_POST[$inputUser]));
 	
 	// se o usuario não existe
 	if($realPass == null){
@@ -39,7 +39,7 @@ if(isset($_POST[$btnLogin])){
 			}else{
 				// autentica o usuario
 				session_start();
-				session_login($_POST[$inputUser]);
+				session_login($_POST[$inputUser], $realPass[0]['id']);
 				// redireciona pra página inicial
 				header('Location: index.php');
     			die();

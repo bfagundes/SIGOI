@@ -22,10 +22,163 @@ $inputLocal = "inputLocal";
 $inputDataAbertura = "inputDataAbertura";
 $inputDataFechamento = "inputDataFechamento";
 $inputTecnico = "inputTecnico";
+$inputAssunto = "inputAssunto";
+$inputDescricao = "inputDescricao";
+$inputFollowUp = "inputFollowUp";
 $dataId = $_GET['id'];
+$missedReqField = false;
 
 // altera chamados no banco
+if(isset($_POST[$btnUpdate])){
+	// buscando o ID do setor selecionado
+	$setorSelected = $_POST[$inputSetor];
+	$setorSelected = db_select("SELECT id from ".$sqlTabSetor." WHERE nome =".db_quote($setorSelected));
+	if($setorSelected == null){ $missedReqField = true;
+	}else{ $setorSelected = $setorSelected[0]['id']; }
+	
+	// buscando o ID do local selecionada
+	$localSelected = $_POST[$inputLocal];
+	$localSelected = db_select("SELECT id from ".$sqlTabLocal." WHERE nome =".db_quote($localSelected));
+	if($localSelected == null){ $missedReqField = true;
+	}else{ $localSelected = $localSelected[0]['id']; }
+
+	// buscando o ID do solicitante selecionado
+	$solicitanteSelected = $_POST[$inputSolicitante];
+	$solicitanteSelected = db_select("SELECT id from ".$sqlTabUsuario." WHERE nome = ".db_quote($solicitanteSelected));
+	if($solicitanteSelected == null){ $missedReqField = true;
+	}else{ $solicitanteSelected = $solicitanteSelected[0]['id']; }
+
+	// buscando o ID do tecnico solicitado
+	$tecnicoSelected = $_POST[$inputTecnico];
+	$tecnicoSelected = db_select("SELECT id from ".$sqlTabUsuario." WHERE nome = ".db_quote($tecnicoSelected));
+	if($tecnicoSelected == null){ $missedReqField = true;
+	}else{ $tecnicoSelected = $tecnicoSelected[0]['id']; }
+
+	// buscando o ID do tipo solicitado
+	$tipoSelected = $_POST[$inputTipo];
+	$tipoSelected = db_select("SELECT id from ".$sqlTabTipo." WHERE nome = ".db_quote($tipoSelected));
+	if($tipoSelected == null){ $missedReqField = true;
+	}else{ $tipoSelected = $tipoSelected[0]['id']; }
+
+	// buscando o ID da prioridade solicitado
+	$prioridadeSelected = $_POST[$inputPrioridade];
+	$prioridadeSelected = db_select("SELECT id from ".$sqlTabPrioridade." WHERE nome = ".db_quote($prioridadeSelected));
+	if($prioridadeSelected == null){ $missedReqField = true;
+	}else{ $prioridadeSelected = $prioridadeSelected[0]['id']; }
+
+	$situacaoSelected = $_POST[$inputSituacao];
+	$situacaoSelected = db_select("SELECT id from ".$sqlTabSituacao." WHERE nome = ".db_quote($situacaoSelected));
+	if($situacaoSelected == null){ $missedReqField = true;
+	}else{ $situacaoSelected = $situacaoSelected[0]['id']; }
+
+	if(empty($_POST[$inputAssunto])){ $missedReqField = true; }
+	if(empty($_POST[$inputDescricao])){ $missedReqField = true; }
+
+	if(empty($_POST[$inputDataAbertura])){ $missedReqField = true; }
+	if(empty($_POST[$inputDataFechamento])){ $dataFechamento = "null"; }else{ $dataFechamento = db_quote($_POST[$inputDataFechamento]); }
+
+	// executa a query	
+	if($missedReqField === false){
+		$result = db_query("UPDATE ".$sqlTabChamado." SET".
+			"  idSolicitante=".$solicitanteSelected.
+			", idSetor=".$setorSelected.
+			", idLocal=".$localSelected.
+			", dataAbertura=".db_quote($_POST[$inputDataAbertura]).
+			", dataFechamento=" .$dataFechamento.
+			", idTecnico=".$tecnicoSelected.
+			", idTipo=".$tipoSelected.
+			", idPrioridade=".$prioridadeSelected.
+			", idSituacao=".$situacaoSelected.
+			", assunto=".db_quote($_POST[$inputAssunto]).
+			", descricao=".db_quote($_POST[$inputDescricao]).
+			" WHERE id=".$dataId);
+		if($result === false) {
+			$error = pg_result_error($result);
+		}
+		header('Location: chamado.php?id='.$dataId);
+		die();
+	}
+}
+
 // insere chamados no banco
+if(isset($_POST[$btnInsert])){
+	// buscando o ID do setor selecionado
+	$setorSelected = $_POST[$inputSetor];
+	$setorSelected = db_select("SELECT id from ".$sqlTabSetor." WHERE nome =".db_quote($setorSelected));
+	if($setorSelected == null){ $missedReqField = true;
+	}else{ $setorSelected = $setorSelected[0]['id']; }
+	
+	// buscando o ID do local selecionada
+	$localSelected = $_POST[$inputLocal];
+	$localSelected = db_select("SELECT id from ".$sqlTabLocal." WHERE nome =".db_quote($localSelected));
+	if($localSelected == null){ $missedReqField = true;
+	}else{ $localSelected = $localSelected[0]['id']; }
+
+	// buscando o ID do solicitante selecionado
+	$solicitanteSelected = $_POST[$inputSolicitante];
+	$solicitanteSelected = db_select("SELECT id from ".$sqlTabUsuario." WHERE nome = ".db_quote($solicitanteSelected));
+	if($solicitanteSelected == null){ $missedReqField = true;
+	}else{ $solicitanteSelected = $solicitanteSelected[0]['id']; }
+
+	// buscando o ID do tecnico solicitado
+	$tecnicoSelected = $_POST[$inputTecnico];
+	$tecnicoSelected = db_select("SELECT id from ".$sqlTabUsuario." WHERE nome = ".db_quote($tecnicoSelected));
+	if($tecnicoSelected == null){ $missedReqField = true;
+	}else{ $tecnicoSelected = $tecnicoSelected[0]['id']; }
+
+	// buscando o ID do tipo solicitado
+	$tipoSelected = $_POST[$inputTipo];
+	$tipoSelected = db_select("SELECT id from ".$sqlTabTipo." WHERE nome = ".db_quote($tipoSelected));
+	if($tipoSelected == null){ $missedReqField = true;
+	}else{ $tipoSelected = $tipoSelected[0]['id']; }
+
+	// buscando o ID da prioridade solicitado
+	$prioridadeSelected = $_POST[$inputPrioridade];
+	$prioridadeSelected = db_select("SELECT id from ".$sqlTabPrioridade." WHERE nome = ".db_quote($prioridadeSelected));
+	if($prioridadeSelected == null){ $missedReqField = true;
+	}else{ $prioridadeSelected = $prioridadeSelected[0]['id']; }
+
+	$situacaoSelected = $_POST[$inputSituacao];
+	$situacaoSelected = db_select("SELECT id from ".$sqlTabSituacao." WHERE nome = ".db_quote($situacaoSelected));
+	if($situacaoSelected == null){ $missedReqField = true;
+	}else{ $situacaoSelected = $situacaoSelected[0]['id']; }
+
+	if(empty($_POST[$inputAssunto])){ $missedReqField = true; }
+	if(empty($_POST[$inputDescricao])){ $missedReqField = true; }
+
+	if(empty($_POST[$inputDataAbertura])){ $missedReqField = true; }
+	if(empty($_POST[$inputDataFechamento])){ $dataFechamento = "null"; }else{ $dataFechamento = db_quote($_POST[$inputDataFechamento]); }
+
+	// executa a query	
+	if($missedReqField === false){
+		$result = db_query("INSERT INTO ".$sqlTabChamado.
+			" (idSolicitante, idSetor, idLocal, dataAbertura, dataFechamento, idTecnico, idTipo, idPrioridade, idSituacao, assunto, descricao) VALUES".
+			" (".$solicitanteSelected.
+			", ".$setorSelected.
+			", ".$localSelected.
+			", ".db_quote($_POST[$inputDataAbertura]).
+			"," .$dataFechamento.
+			", ".$tecnicoSelected.
+			", ".$tipoSelected.
+			", ".$prioridadeSelected.
+			", ".$situacaoSelected.
+			", ".db_quote($_POST[$inputAssunto]).
+			", ".db_quote($_POST[$inputDescricao]).
+			")");
+		if($result === false) {
+			$error = pg_result_error($result);
+		}
+		header('Location: index.php');
+		die();
+	}
+}
+
+if(isset($_POST[$btnFollowUp])){
+	if(!empty($_POST[$inputFollowUp])){
+		$result = db_query("INSERT INTO ".$sqlTabFollowUp."(idChamado, idUsuario, data, texto, observacoes)".
+			"VALUES (".$dataId.", ".$_SESSION['userid'].", ".db_quote(date('d/m/Y H:i')).", ".db_quote($_POST[$inputFollowUp]).", ".db_quote('').")");
+	}
+}
 
 // evita buscas se estiver no modo incluir_chamado
 if($dataId > 0){
@@ -54,7 +207,10 @@ if($dataId > 0){
  		"INNER JOIN prioridade on (chamado.idprioridade = prioridade.id) ".
  		"INNER JOIN situacao on (chamado.idsituacao = situacao.id) ".
  		"WHERE CHAMADO.id = ".$dataId);
-		$chamado = $chamado[0];
+	$chamado = $chamado[0];
+
+	$followups = db_select("SELECT * FROM ".$sqlTabFollowUp." WHERE idchamado=".$dataId." ".$sqlOrdFollowUp);
+	$usuarios = db_select("SELECT id,nome from ".$sqlTabUsuario);
 }else{
 	$chamado = array(
 		"solicitante" => "",
@@ -87,50 +243,59 @@ $data_hoje = date("d/m/Y");
 	<form role="form" method="post" <?php echo "action=\"".$pageUrl."?id=".$dataId."\""; ?>>
 	<div class="container-fluid">
 	<div class="row">
+
+		<?php 
+		if($missedReqField === true){
+			$errorMessage="<strong>Atenção!</strong> Preencha todos os campos obrigatórios"; 
+			require('./includes/alert_error.php');
+		} ?>
+
 		<div class="col-md-3">
 			<div class="panel panel-default">
   				<div class="panel-body">
 
 					<div class="form-group">
-						<label for="nome-solicitante">Solicitante:</label>
+						<label for="nome-solicitante">Solicitante*</label>
 						<div id="solicitante"><input type="text" class="typeahead form-control" placeholder="Solicitante" <?php echo(" id=\"".$inputSolicitante."\" name=\"".$inputSolicitante."\" value=\"".$chamado['solicitante']."\""); ?>></div>
 					</div>
 
 					<div class="form-group">
-						<label for="nome-setor">Setor:</label>
+						<label for="nome-setor">Setor*</label>
 						<div id="setor"><input type="text" class="typeahead form-control" placeholder="Setor" <?php echo(" id=\"".$inputSetor."\" name=\"".$inputSetor."\" value=\"".$chamado['setor']."\""); ?>></div>
 					</div>
 
 					<div class="form-group">
-						<label for="nome-local">Local:</label>
+						<label for="nome-local">Local*</label>
 						<div id="local"><input type="text" class="typeahead form-control" placeholder="Local" <?php echo(" id=\"".$inputLocal."\" name=\"".$inputLocal."\" value=\"".$chamado['local']."\""); ?>></div>
 					</div>
 
 					<div class="row">
 						<div class="col-lg-6">
-							<label for="dtp_input1" class="control-label">Data Abertura</label>
-			                <div class="input-group date form_abertura" data-date="01-01-2000T00:00:00Z" data-date-format="dd/mm/yyyy hh:ii" data-link-field="dtp_input1">
-			                    <input class="form-control" size="16" type="text" <?php if(empty($chamado['dataabertura'])){ echo("value=\"\""); } else { echo("value=\"".date('d/m/Y h:i',strtotime($chamado['dataabertura']))."\""); }?> readonly>
+							<label for="dtp_input1" class="control-label">Data Abertura*</label>
+			                <div class="input-group date form_abertura" data-date="01-01-2000T00:00:00Z" data-date-format="dd/mm/yyyy HH:ii" data-link-field="dtp_input1">
+			                    <input class="form-control" type="text" <?php echo("id=\"".$inputDataAbertura."\" name=\"".$inputDataAbertura."\""); if(empty($chamado['dataabertura'])){ echo("value=\"\""); } else { echo("value=\"".date('d/m/Y H:00',strtotime($chamado['dataabertura']))."\""); }?> readonly>
 								<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+								<span class="input-group-addon remove"><span class="glyphicon glyphicon-remove"></span></span>
 			                </div>
 							<input type="hidden" id="dtp_input1" value="" /><br/>
 						</div>
 						<div class="col-lg-6">
 							<label for="dtp_input1" class="control-label">Data Fechamento</label>
-			                <div class="input-group date form_abertura" data-date="01-01-2000T00:00:00Z" data-date-format="dd/mm/yyyy hh:ii" data-link-field="dtp_input1">
-			                    <input class="form-control" size="16" type="text" <?php if(empty($chamado['datafechamento'])){ echo("value=\"\""); } else { echo("value=\"".date('d/m/Y h:i',strtotime($chamado['datafechamento']))."\""); }?> readonly>
+			                <div class="input-group date form_abertura" data-date="01-01-2000T00:00:00Z" data-date-format="dd/mm/yyyy HH:ii" data-link-field="dtp_input1">
+			                    <input class="form-control" type="text" <?php echo("id=\"".$inputDataFechamento."\" name=\"".$inputDataFechamento."\""); if(empty($chamado['datafechamento'])){ echo("value=\"\""); } else { echo("value=\"".date('d/m/Y H:00',strtotime($chamado['datafechamento']))."\""); }?> readonly>
 								<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+								<span class="input-group-addon remove"><span class="glyphicon glyphicon-remove"></span></span>
 			                </div>
 							<input type="hidden" id="dtp_input1" value="" /><br/>
 						</div>
 					</div>
 
 					<div class="form-group">
-						<label for="nome-solicitante">Técnico Responsável:</label>
+						<label for="nome-solicitante">Técnico Responsável*</label>
 						<div id="tecnico"><input type="text" class="typeahead form-control" placeholder="Técnico Responsável" <?php echo(" id=\"".$inputTecnico."\" name=\"".$inputTecnico."\" value=\"".$chamado['tecnico']."\""); ?>></div>
 					</div>
 
-					<!-- ----- Dropdowns ------ -->
+					<!-- Dropdowns -->
 					<div class="btn-group btn-group-justified" role="group">
 						<div class="btn-group" role="group">
 							<div class="form-group">
@@ -170,25 +335,50 @@ $data_hoje = date("d/m/Y");
 		<div class="col-md-9">
 			<div class="panel panel-default">
   				<div class="panel-body">
-    				<!-- <h4><small><?php printf("#%05d", $dataId); ?> </small><?php echo($chamado['assunto']); ?></h4> -->
-
     				<!-- Assunto -->
     				<div class="form-group">
 						<label for="nome-solicitante"><?php printf("Chamado #%05d", $dataId); ?></label>
-						<input type="text" class="form-control" placeholder="Assunto" id="assunto-chamado" placeholder="Assunto" <?php echo("value=\"".$chamado['assunto']."\""); ?>>
+						<input type="text" class="form-control" placeholder="Assunto" placeholder="Assunto" <?php echo("value=\"".$chamado['assunto']."\" id=\"".$inputAssunto."\" name=\"".$inputAssunto."\""); ?>>
 					</div>
 
 					<!-- Descricao -->
 					<label for="comentario">Descrição:</label>
 					<div class="form-group">
-						<textarea class="form-control custom-control" rows="4" style="resize:none" placeholder="Descrição"><?php echo($chamado['descricao']); ?></textarea>
+						<textarea class="form-control custom-control" rows="4" style="resize:none" placeholder="Descrição" <?php echo("id=\"".$inputDescricao."\" name=\"".$inputDescricao."\""); ?>><?php echo($chamado['descricao']); ?></textarea>
 					</div>
 					<div class="form-group">
-						<input <?php echo(" name=\"".$btnUpdate."\""); ?> type="submit" class="btn btn-primary" value="Botao 1"/>
-						<input <?php echo(" name=\"".$btnDelete."\""); ?> type="submit" class="btn btn-danger" value="Botao 2" onclick="return confirm('Você tem certeza?');"/>
+						<?php 
+						if($dataId == 0){
+							echo("<input name=\"".$btnInsert."\" type=\"submit\" class=\"btn btn-primary\" value=\"Adicionar Chamado\"/>");
+						}else{
+							echo("<input name=\"".$btnUpdate."\" type=\"submit\" class=\"btn btn-primary\" value=\"Alterar Chamado\"/>");
+						} ?>
 					</div>
   				</div>
-  				<div class="panel-footer"></div>
+  				<div class="panel-footer">
+  					<?php if($dataId > 0){ ?>
+  						<label for="comentario">Follow Up:</label>
+						<div class="form-group">
+							<textarea class="form-control custom-control" rows="4" style="resize:none" placeholder="Follow Up" <?php echo("id=\"".$inputFollowUp."\" name=\"".$inputFollowUp."\""); ?>></textarea>
+						</div>
+						<div class="form-group">
+							<input <?php echo("name=".$btnFollowUp); ?> type="submit" class="btn btn-primary" value="Adicionar Follow Up"/>
+						</div>
+
+						<?php
+						if($dataId > 0){
+							foreach($followups as $followup){
+								echo("<h5><strong>".$usuarios[$followup['idusuario']]['nome']."</strong><small> (".date('d/m/Y H:i',strtotime($followup['data'])));
+								if(!empty($followup['observacoes'])){
+									echo(" | ".$followup['observacoes'].")</small></h5>");
+								}else{
+									echo(")</small></h5>");
+								}
+								echo("<p>".$followup['texto']);
+							}
+						}
+					} ?>
+  				</div>
 			</div> <!-- panel-default -->
 		</div> <!-- col-md-9 -->
 	</div> <!-- Entire Row -->

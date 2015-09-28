@@ -104,3 +104,7 @@ span.twitter-typeahead {
 .form-control{
 	background-color: #FFF !important;
 }
+
+.input-group-addon{
+	padding: 6px 4px;
+}

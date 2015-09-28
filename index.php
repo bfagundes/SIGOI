@@ -54,7 +54,7 @@ require_once('./includes/navbar_index.php');
 					<thead>
 						<tr>
 							<th width="2%"></th>
-							<th width="2%"></th>
+							<th width="4%"></th>
 							<th class="col-sm-3"><?php echo $situacao['nome'] ?></th>
 							<th class="col-sm-2">Solicitante</th>
 							<th class="col-sm-2">Local</th>
@@ -69,7 +69,14 @@ require_once('./includes/navbar_index.php');
 								echo "<tr data-id=\"".$chamado['id']."\">";
 								//echo "<td><input type=\"checkbox\" class=\"Ch-Abertos\"></td>";
 								echo "<td></td>";
-								echo "<td><span class=\"label label-danger\">Urgente</span></td>";
+
+								if($chamado['idprioridade'] == 1){ echo "<td><span class=\"label label-danger\">".$chamado['prioridade']."</span></td>";}
+								else if($chamado['idprioridade'] == 2){ echo "<td><span class=\"label label-warning\">".$chamado['prioridade']."</span></td>";}
+								else if($chamado['idprioridade'] == 3){ echo "<td><span class=\"label label-primary\">".$chamado['prioridade']."</span></td>";}
+								else if($chamado['idprioridade'] == 4){ echo "<td><span class=\"label label-info\">".$chamado['prioridade']."</span></td>";}
+								else if($chamado['idprioridade'] == 5){ echo "<td><span class=\"label label-success\">".$chamado['prioridade']."</span></td>";}
+
+								
 								echo "<td>".$chamado['assunto']."</td>";
 								echo "<td>".$chamado['solicitante']."</td>";
 								echo "<td>".$chamado['setor']."</td>";
