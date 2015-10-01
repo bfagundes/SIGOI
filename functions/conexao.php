@@ -2,14 +2,11 @@
 	/** Faz a conexão com o banco */
 	function db_connect() {
 		static $connection;
-
 		// Pega os dados do arquivo de configuração
 		$config = parse_ini_file('dbconf.ini'); 
-
 		// tenta conectar
   		$db_handle = pg_pconnect("host=".$config['host']." dbname=".$config['db']." user=".$config['username']." password=".$config['password']);
-
-  		// Tratamento de erros
+  		// tratamento de erros
 	    if (!$db_handle) {   
     		echo (pg_last_error($connection));
 		}
@@ -52,5 +49,19 @@
 	function db_quote($value) {
     	$connection = db_connect();
     	return "'" . pg_escape_string($value) . "'";
+	}
+
+	/* testa se um valor já existe em determinada coluna */
+	function db_exists($sqlTable, $sqlColumn, $value){
+		if(empty($value)){
+			return false;
+		}
+		return db_query("SELECT exists (SELECT * FROM ".$sqlTable." WHERE ".$sqlColumn." = ".db_quote($value)." LIMIT 1)");
+	}
+
+	/* retorna o id de um dado no banco */
+	function getId($sqlTable, $sqlColumn, $name){
+		$value = db_select("SELECT id from ".$sqlTable." WHERE ".$sqlColumn." = ".db_quote($name));
+		return $value[0]['id'];
 	}
 ?>

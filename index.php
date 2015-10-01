@@ -20,6 +20,7 @@ $chamados = db_select("SELECT ".
 	"USUARIO.nome as solicitante, ".
     "SETOR.nome as setor, ".
    	"LOCAL.nome as local, ".
+   	"CHAMADO.nrofo as nrofo, ".
     "CHAMADO.dataabertura as dataabertura, ".
     "CHAMADO.datafechamento as datafechamento, ".
     "USUARIO.nome as tecnico, ".
@@ -55,6 +56,7 @@ require_once('./includes/navbar_index.php');
 						<tr>
 							<th width="2%"></th>
 							<th width="4%"></th>
+							<th width="4%">FO</th>
 							<th class="col-sm-3"><?php echo $situacao['nome'] ?></th>
 							<th class="col-sm-2">Solicitante</th>
 							<th class="col-sm-2">Local</th>
@@ -67,7 +69,6 @@ require_once('./includes/navbar_index.php');
 						foreach($chamados as $chamado){
 							if($chamado['idsituacao'] == $situacao['idsituacao']){
 								echo "<tr data-id=\"".$chamado['id']."\">";
-								//echo "<td><input type=\"checkbox\" class=\"Ch-Abertos\"></td>";
 								echo "<td></td>";
 
 								if($chamado['idprioridade'] == 1){ echo "<td><span class=\"label label-danger\">".$chamado['prioridade']."</span></td>";}
@@ -75,12 +76,12 @@ require_once('./includes/navbar_index.php');
 								else if($chamado['idprioridade'] == 3){ echo "<td><span class=\"label label-primary\">".$chamado['prioridade']."</span></td>";}
 								else if($chamado['idprioridade'] == 4){ echo "<td><span class=\"label label-info\">".$chamado['prioridade']."</span></td>";}
 								else if($chamado['idprioridade'] == 5){ echo "<td><span class=\"label label-success\">".$chamado['prioridade']."</span></td>";}
-
 								
+								echo "<td>".$chamado['nrofo']."</td>";
 								echo "<td>".$chamado['assunto']."</td>";
 								echo "<td>".$chamado['solicitante']."</td>";
 								echo "<td>".$chamado['setor']."</td>";
-								echo "<td>".$chamado['dataabertura']."</td>";
+								echo("<td>".date('d/m/Y H:i',strtotime($chamado['dataabertura']))."</td>");
 								echo "<td>".$chamado['tecnico']."</td>";
 								echo "</tr>";
 						}} ?>

@@ -23,6 +23,8 @@ if(isset($_GET['reset'])) {
 }
 
 if(isset($_POST[$btnLogin])){
+	//testa se o campo de login esta em branco
+
 	// buscando a senha no banco
 	$realPass = db_select("SELECT id,senha from ".$sqlTabUsuario." WHERE login = ".db_quote($_POST[$inputUser]));
 	

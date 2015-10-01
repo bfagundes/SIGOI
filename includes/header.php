@@ -29,4 +29,4 @@
     <script type="text/javascript" src="js/bootstrap-datetimepicker.pt-BR.js"></script>
     <script type="text/javascript" src="js/bootstrap-select.min.js"></script>
     <script type="text/javascript" src="js/twitter-typeahead.js"></script>
-    <script type="text/javascript" src="js/custom.js"></script>
+    <script type="text/javascript" src="js/functions.js"></script>

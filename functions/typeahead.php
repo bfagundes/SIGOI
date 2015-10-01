@@ -14,6 +14,12 @@ if(isset($_GET['setor'])){
 	echo json_encode($results);
 }
 
+if(isset($_GET['funcao'])){
+	$query = $_GET['funcao'];
+	$results = db_select("SELECT nome FROM ".$sqlTabFuncao." WHERE nome ILIKE".db_quote("%".$query."%")."ORDER BY nome = ".db_quote($query)."DESC, nome ILIKE ".db_quote($query."%")." DESC, nome");
+	echo json_encode($results);
+}
+
 if(isset($_GET['local'])){
 	$query = $_GET['local'];
 	$results = db_select("SELECT nome FROM ".$sqlTabLocal." WHERE nome ILIKE".db_quote("%".$query."%")."ORDER BY nome = ".db_quote($query)."DESC, nome ILIKE ".db_quote($query."%")." DESC, nome");

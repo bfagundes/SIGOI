@@ -35,4 +35,10 @@ $btnDelete = "btnDelete";
 $btnSubmit = "btnSubmit";
 $btnFollowUp = "btnFollowUp";
 
+// Inputs (Text Fields)
+$inputNome = "inputNome";
+$inputSetor = "inputSetor";
+$inputFuncao = "inputFuncao";
+$inputLogin = "inputLogin";
+
 ?>

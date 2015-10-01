@@ -108,3 +108,8 @@ span.twitter-typeahead {
 .input-group-addon{
 	padding: 6px 4px;
 }
+
+.inputNroFo{
+	width: 120%;
+	padding-left: 7px;
+}

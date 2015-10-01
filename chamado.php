@@ -25,11 +25,14 @@ $inputTecnico = "inputTecnico";
 $inputAssunto = "inputAssunto";
 $inputDescricao = "inputDescricao";
 $inputFollowUp = "inputFollowUp";
+$inputNroFo = "inputNroFo";
 $dataId = $_GET['id'];
 $missedReqField = false;
 
 // altera chamados no banco
 if(isset($_POST[$btnUpdate])){
+	if(empty($_POST[$inputNroFo])){ $missedReqField = true; }
+
 	// buscando o ID do setor selecionado
 	$setorSelected = $_POST[$inputSetor];
 	$setorSelected = db_select("SELECT id from ".$sqlTabSetor." WHERE nome =".db_quote($setorSelected));
@@ -80,7 +83,8 @@ if(isset($_POST[$btnUpdate])){
 	// executa a query	
 	if($missedReqField === false){
 		$result = db_query("UPDATE ".$sqlTabChamado." SET".
-			"  idSolicitante=".$solicitanteSelected.
+			"  nrofo=".db_quote($_POST[$inputNroFo]).
+			", idSolicitante=".$solicitanteSelected.
 			", idSetor=".$setorSelected.
 			", idLocal=".$localSelected.
 			", dataAbertura=".db_quote($_POST[$inputDataAbertura]).
@@ -102,6 +106,7 @@ if(isset($_POST[$btnUpdate])){
 
 // insere chamados no banco
 if(isset($_POST[$btnInsert])){
+	if(empty($_POST[$inputNroFo])){ $missedReqField = true; }
 	// buscando o ID do setor selecionado
 	$setorSelected = $_POST[$inputSetor];
 	$setorSelected = db_select("SELECT id from ".$sqlTabSetor." WHERE nome =".db_quote($setorSelected));
@@ -152,8 +157,9 @@ if(isset($_POST[$btnInsert])){
 	// executa a query	
 	if($missedReqField === false){
 		$result = db_query("INSERT INTO ".$sqlTabChamado.
-			" (idSolicitante, idSetor, idLocal, dataAbertura, dataFechamento, idTecnico, idTipo, idPrioridade, idSituacao, assunto, descricao) VALUES".
-			" (".$solicitanteSelected.
+			" (nrofo, idSolicitante, idSetor, idLocal, dataAbertura, dataFechamento, idTecnico, idTipo, idPrioridade, idSituacao, assunto, descricao) VALUES".
+			" (".db_quote($_POST[$inputNroFo]).
+			", ".$solicitanteSelected.
 			", ".$setorSelected.
 			", ".$localSelected.
 			", ".db_quote($_POST[$inputDataAbertura]).
@@ -185,6 +191,7 @@ if($dataId > 0){
 	// busca no banco o usuario e seus respectivos setor e funcao
 	$chamado = db_select("SELECT ".
 		"CHAMADO.id as id, ".
+		"CHAMADO.nrofo as nrofo, ".
 		"USUARIO.nome as solicitante, ".
     	"SETOR.nome as setor, ".
    		"LOCAL.nome as local, ".
@@ -213,6 +220,7 @@ if($dataId > 0){
 	$usuarios = db_select("SELECT id,nome from ".$sqlTabUsuario);
 }else{
 	$chamado = array(
+		"nrofo" => "",
 		"solicitante" => "",
 		"setor" => "",
 		"local" => "",
@@ -336,9 +344,17 @@ $data_hoje = date("d/m/Y");
 			<div class="panel panel-default">
   				<div class="panel-body">
     				<!-- Assunto -->
-    				<div class="form-group">
-						<label for="nome-solicitante"><?php printf("Chamado #%05d", $dataId); ?></label>
-						<input type="text" class="form-control" placeholder="Assunto" placeholder="Assunto" <?php echo("value=\"".$chamado['assunto']."\" id=\"".$inputAssunto."\" name=\"".$inputAssunto."\""); ?>>
+    				<div class="col-md-1">
+	    				<div class="form-group">
+							<label for="nro-fo">Nro FO</label>
+							<input type="text" class="form-control inputNroFo" placeholder="Nro FO" <?php echo("value=\"".$chamado['nrofo']."\" id=\"".$inputNroFo."\" name=\"".$inputNroFo."\""); ?>>
+						</div>
+					</div>
+					<div class="col-md-11">
+						<div class="form-group">
+							<label for="nome-solicitante"><?php echo("Assunto"); ?></label>
+							<input type="text" class="form-control" placeholder="Assunto" <?php echo("value=\"".$chamado['assunto']."\" id=\"".$inputAssunto."\" name=\"".$inputAssunto."\""); ?>>
+						</div>
 					</div>
 
 					<!-- Descricao -->
@@ -357,7 +373,6 @@ $data_hoje = date("d/m/Y");
   				</div>
   				<div class="panel-footer">
   					<?php if($dataId > 0){ ?>
-  						<label for="comentario">Follow Up:</label>
 						<div class="form-group">
 							<textarea class="form-control custom-control" rows="4" style="resize:none" placeholder="Follow Up" <?php echo("id=\"".$inputFollowUp."\" name=\"".$inputFollowUp."\""); ?>></textarea>
 						</div>
