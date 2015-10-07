@@ -13,15 +13,42 @@ if(session_isValid() === false){
 // variaveis
 $pageTitle = "Cadastro de Usuários";
 $pageUrl = "lista_usuario.php";
+$sqlSelect = "SELECT USUARIO.*, SETOR.nome as setor";
 $sqlJoin = "INNER JOIN setor on (usuario.idsetor = setor.id)";
 $sqlOrder = "ORDER BY LOWER(USUARIO.nome)";
 
 // busca a lista de usuarios no banco
-$usuarios = db_select("SELECT USUARIO.id AS id, USUARIO.nome AS nome, USUARIO.login AS login, SETOR.nome as setor FROM ".$sqlTabUsuario." ".$sqlJoin." ".$sqlOrder);
+$usuarios = db_select($sqlSelect." FROM ".$sqlTabUsuario." ".$sqlJoin." ".$sqlOrder);
+
+// busca a lista de usuarios de acordo com visualizacoes personalizadas
+if(isset($_GET['view'])){
+	if(strcasecmp($_GET['view'], 'usr_ativo') == 0){
+		$usuarios = db_select($sqlSelect." FROM ".$sqlTabUsuario." ".$sqlJoin." WHERE ativo = true ".$sqlOrder);
+	}
+	if(strcasecmp($_GET['view'], 'usr_inativo') == 0){
+		$usuarios = db_select($sqlSelect." FROM ".$sqlTabUsuario." ".$sqlJoin." WHERE ativo = false AND login IS NOT NULL ".$sqlOrder);
+	}
+	if(strcasecmp($_GET['view'], 'all') == 0){
+		$usuarios = db_select($sqlSelect." FROM ".$sqlTabUsuario." ".$sqlJoin." ".$sqlOrder);
+	}
+	if(strcasecmp($_GET['view'], 'ppl') == 0){
+		$usuarios = db_select($sqlSelect." FROM ".$sqlTabUsuario." ".$sqlJoin." WHERE login IS NULL ".$sqlOrder);
+	}
+}
 
 // Header
 $navBackUrl = "index.php";
 $navOptions = "<li class=\"nav nav-btn\"><a href=\"cadastro_usuario.php?id=0\">Incluir Usuario</a></li>";
+$navOptions = $navOptions."<li class=\"dropdown\">";
+$navOptions = $navOptions."<a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">Visualizações <span class=\"caret\"></span></a>";
+$navOptions = $navOptions."<ul class=\"dropdown-menu\">";
+$navOptions = $navOptions."<li><a href=\"".$pageUrl."?view=usr_ativo\">Usuarios Ativos</a></li>";
+$navOptions = $navOptions."<li><a href=\"".$pageUrl."?view=usr_inativo\">Usuarios Inativos</a></li>";
+$navOptions = $navOptions."<li role=\"separator\" class=\"divider\"></li>";
+$navOptions = $navOptions."<li><a href=\"".$pageUrl."?view=ppl\">Pessoas</a></li>";
+$navOptions = $navOptions."<li><a href=\"".$pageUrl."?view=all\">Todos</a></li>";
+$navOptions = $navOptions."</ul></li>";
+
 require_once('./includes/header.php');
 require_once('./includes/navbar_default.php');
 ?>

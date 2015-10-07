@@ -26,7 +26,7 @@ if(isset($_POST[$btnLogin])){
 	//testa se o campo de login esta em branco
 
 	// buscando a senha no banco
-	$realPass = db_select("SELECT id,senha from ".$sqlTabUsuario." WHERE login = ".db_quote($_POST[$inputUser]));
+	$realPass = db_select("SELECT id,senha from ".$sqlTabUsuario." WHERE login = ".db_quote($_POST[$inputUser])." AND ativo = true");
 	
 	// se o usuario não existe
 	if($realPass == null){

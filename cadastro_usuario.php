@@ -15,7 +15,6 @@ $pageTitle = "Cadastro de Usuario";
 $pageUrl = "cadastro_usuario.php";
 $dataId = $_GET['id'];
 $defaultPassword = 123;
-$hashedPassword;
 
 /* testa se os campos obrigatórios foram preenchidos */
 function missedReqField(){
@@ -33,10 +32,19 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 	if(isset($_POST['ckAdmin']) && $_POST['ckAdmin'] == 'on'){ $admin = true; }else{ $admin=0; }
 	if(isset($_POST['ckResetarSenha']) && $_POST['ckResetarSenha'] == 'on'){ 
 		$resetarSenha = true; 
-		$hashedPassword = password_hash($defaultPassword, PASSWORD_DEFAULT);
+		//$hashedPassword = password_hash($defaultPassword, PASSWORD_DEFAULT);
 	}else{ 
 		$resetarSenha = 0; 
 	}
+
+	// fix for empty logins
+	if(strcasecmp($_POST[$inputLogin], '') == 0){
+		$login = 'null';
+		$ativo = 0;
+	}else{
+		$login = db_quote($_POST[$inputLogin]);
+	}
+	
 }
 
 // altera usuarios no banco
@@ -52,7 +60,7 @@ if(isset($_POST[$btnUpdate])){
 			" SET nome=".db_quote($_POST[$inputNome]).
 			", idsetor=".getId($sqlTabSetor, 'nome', $_POST[$inputSetor]).
 			", idFuncao=".getId($sqlTabFuncao, 'nome', $_POST[$inputFuncao]).
-			", login=".db_quote($_POST[$inputLogin]).
+			", login=".$login.
 			", ativo=".db_quote($ativo).
 			", admin=".db_quote($admin).
 			", resetarSenha=".db_quote($resetarSenha).
@@ -68,6 +76,7 @@ if(isset($_POST[$btnUpdate])){
 
 /* Insere usuários no banco */
 if(isset($_POST[$btnInsert])){
+	$hashedPassword = password_hash($defaultPassword, PASSWORD_DEFAULT);
 	// executa a query
 	if(!missedReqField() && !db_exists($sqlTabUsuario, 'login', $_POST[$inputLogin])){
 		$result = db_query("INSERT INTO ".$sqlTabUsuario.
@@ -75,11 +84,11 @@ if(isset($_POST[$btnInsert])){
 			" (".db_quote($_POST[$inputNome]).
 			", ".getId($sqlTabSetor, 'nome', $_POST[$inputSetor]).
 			", ".getId($sqlTabFuncao, 'nome', $_POST[$inputFuncao]).
-			", ".db_quote($_POST[$inputLogin]).
+			", ".$login.
 			", ".db_quote($hashedPassword).
-			", ".$ativo.
-			", ".$admin.
-			", ".$resetarSenha.
+			", ".db_quote($ativo).
+			", ".db_quote($admin).
+			", ".db_quote($resetarSenha).
 			", null)");
 		if($result === false) {
 			$error = pg_result_error($result);
@@ -161,7 +170,7 @@ require_once('./includes/header.php');
 									<label for="usuario-login">Login</label>
 									<input type="text" <?php echo("name=\"".$inputLogin."\" value=\"".$usuario['login']."\""); ?> class="form-control">
 								</div>
-								Último Acesso: 20/09/1835
+								<!--Último Acesso: 20/09/1835-->
 
 								<div class="checkbox">
 									<label><input type="checkbox" name="ckAtivo" <?php if($usuario['ativo'] === 't'){echo "checked";} ?>>Usuário Ativo</label>
