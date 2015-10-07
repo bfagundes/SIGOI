@@ -241,7 +241,7 @@ $prioridades = db_select("SELECT * FROM ".$sqlTabPrioridade." ".$sqlOrdPrioridad
 $situacoes = db_select("SELECT * FROM ".$sqlTabSituacao." ".$sqlOrdSituacao);
 
 // Header
-$navBackUrl = "index.php";
+$navBackUrl = "sigoi.php";
 $navOptions = "";
 require_once('./includes/header.php');
 require_once('./includes/navbar_default.php');

@@ -4,7 +4,7 @@
 			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
 				<span class="sr-only">Toggle navigation</span>
 			</button>
-			<a class="navbar-brand" href="index.php">SIGOI</a>
+			<a class="navbar-brand" href="sigoi.php">SIGOI</a>
 		</div>
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">

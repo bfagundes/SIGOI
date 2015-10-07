@@ -11,8 +11,8 @@ if(session_isValid() === false){
 }
 
 // variaveis
-$pageTitle = "SIGO";
-$pageUrl = "index2.php";
+$pageTitle = "SIGOI";
+$pageUrl = "sigoi.php";
 
 // buscando a lista de chamados abertos
 $chamados = db_select("SELECT ".
@@ -45,11 +45,11 @@ $situacoes = db_select("SELECT DISTINCT chamado.idsituacao, situacao.nome FROM c
 
 // Header
 require_once('./includes/header.php');
-require_once('./includes/navbar_index.php');
+require_once('./includes/navbar_sigoi.php');
 ?>
 	<div class="container-fluid">
 		<!-- Tabela de Chamados -->
-<!-- 		<?php if(!empty($chamados)){
+		<?php if(!empty($chamados)){
 			foreach($situacoes as $situacao){ ?>
 				<table class="table table-condensed table-hover">
 					<thead>
@@ -87,7 +87,7 @@ require_once('./includes/navbar_index.php');
 						}} ?>
 					</tbody>
 				</table>
-		<?php }} ?> -->
+		<?php }} ?>
 	</div>
 
 	<!-- Footer -->

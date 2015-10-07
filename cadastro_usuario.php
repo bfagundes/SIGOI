@@ -124,7 +124,7 @@ if(isset($_POST[$inputFuncao])){ $usuario['funcao'] = $_POST[$inputFuncao]; }
 if(isset($_POST[$inputLogin])){ $usuario['login'] = $_POST[$inputLogin]; }
 
 // Header
-$navBackUrl = "lista_usuario.php";
+$navBackUrl = "lista_usuario.php?view=usr_ativo";
 require_once('./includes/header.php');
 ?>
 	<form role="form" method="post" <?php echo "action=\"".$pageUrl."\""; ?>>
