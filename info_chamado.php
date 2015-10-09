@@ -12,7 +12,7 @@ if(session_isValid() === false){
 
 // variaveis
 $pageTitle = "SIGOI";
-$pageUrl = "chamado.php";
+$pageUrl = "info_chamado.php";
 $inputTipo = "inputTipo";
 $inputSituacao = "inputSituacao";
 $inputPrioridade = "inputPrioridade";
@@ -99,7 +99,7 @@ if(isset($_POST[$btnUpdate])){
 		if($result === false) {
 			$error = pg_result_error($result);
 		}
-		header('Location: chamado.php?id='.$dataId);
+		header('Location: info_chamado.php?id='.$dataId);
 		die();
 	}
 }
@@ -174,7 +174,7 @@ if(isset($_POST[$btnInsert])){
 		if($result === false) {
 			$error = pg_result_error($result);
 		}
-		header('Location: index.php');
+		header('Location: info_index.php');
 		die();
 	}
 }
@@ -241,7 +241,7 @@ $prioridades = db_select("SELECT * FROM ".$sqlTabPrioridade." ".$sqlOrdPrioridad
 $situacoes = db_select("SELECT * FROM ".$sqlTabSituacao." ".$sqlOrdSituacao);
 
 // Header
-$navBackUrl = "sigoi.php";
+$navBackUrl = "info_index.php";
 $navOptions = "";
 require_once('./includes/header.php');
 require_once('./includes/navbar_default.php');

@@ -4,24 +4,24 @@
 			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
 				<span class="sr-only">Toggle navigation</span>
 			</button>
-			<a class="navbar-brand" href="sigoi.php">SIGOI</a>
+			<a class="navbar-brand" href="index.php">FHGV</a>
 		</div>
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
-				<li class="nav nav-btn"><a href="chamado.php?id=0">Novo Chamado</a></li>
-				<li class="dropdown">
+				<li class="nav nav-btn"><a href="info_chamado.php?id=0">Novo Chamado</a></li>
+				<!-- <li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Opções <span class="caret"></span></a>
-					<ul class="dropdown-menu">
+					<ul class="dropdown-menu"> -->
 						<!--<li class="disabled"><a href="#">Excluir Chamado</a></li>-->
 						<!--<li role="separator" class="divider"></li>-->
-						<li><a href="lista_usuario.php?view=usr_ativo">Cadastro de Usuários</a></li>
+						<!-- <li><a href="lista_usuario.php?view=usr_ativo">Cadastro de Usuários</a></li>
 						<li><a href="cadastro_setor.php">Cadastro de Setores</a></li>
 						<li><a href="cadastro_local.php">Cadastro de Locais</a></li>
 						<li><a href="cadastro_funcao.php">Cadastro de Funções</a></li>
 						<li role="separator" class="divider"></li>
 						<li><a href="parametros.php?tab=1">Parâmetros SIGOI</a></li>
-					</ul>
-				</li>
+					</ul> -->
+				<!-- </li> -->
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Visualizações <span class="caret"></span></a>
 					<ul class="dropdown-menu">

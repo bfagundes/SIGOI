@@ -12,7 +12,7 @@ if(session_isValid() === false){
 
 // variaveis
 $pageTitle = "SIGOI";
-$pageUrl = "sigoi.php";
+$pageUrl = "info_index.php";
 
 // buscando a lista de chamados abertos
 $chamados = db_select("SELECT ".
@@ -45,7 +45,7 @@ $situacoes = db_select("SELECT DISTINCT chamado.idsituacao, situacao.nome FROM c
 
 // Header
 require_once('./includes/header.php');
-require_once('./includes/navbar_sigoi.php');
+require_once('./includes/navbar_info.php');
 ?>
 	<div class="container-fluid">
 		<!-- Tabela de Chamados -->
@@ -97,7 +97,7 @@ require_once('./includes/navbar_sigoi.php');
 		jQuery( function($) {
 			$('tr').addClass('clickable').click(function() {
 				var id = $(this).closest('tr').data('id');
-				window.location = "chamado.php?id=" + id;
+				window.location = "info_chamado.php?id=" + id;
 			});
 		});
 	</script>

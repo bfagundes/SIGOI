@@ -12,7 +12,7 @@ if(session_isValid() === false){
 
 // variaveis
 $pageTitle = "Parâmetros SIGOI";
-$pageUrl = "parametros.php";
+$pageUrl = "admin_parametros.php";
 $sqlOrdPrioridade = "ORDER BY id";
 $sqlOrdSituacao = "ORDER BY LOWER(nome)";
 $sqlOrdTipo = "ORDER BY LOWER(nome)";
